@@ -1,6 +1,6 @@
 /* Service worker: guarda la app para que abra rápido y funcione sin conexión.
    Todo el contenido va incluido en la app. */
-const CACHE = 'fluent-v4.0.1';
+const CACHE = 'fluent-v4.0.2';
 const SHELL = ['./', 'index.html', 'styles.css', 'config.js', 'app.js', 'mine.js', 'sync.js', 'data.js', 'manifest.webmanifest',
   'content/vocab_general.js', 'content/vocab_general2.js', 'content/vocab_general3.js', 'content/vocab_expr.js', 'content/vocab_expr2.js',
   'content/vocab_legal.js', 'content/vocab_legal2.js', 'content/grammar.js', 'content/grammar2.js', 'content/situations.js', 'content/situations2.js',
