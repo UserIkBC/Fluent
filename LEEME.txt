@@ -1,0 +1,16 @@
+FLUENT · APP PARA APRENDER INGLÉS (versión 4)
+
+PROBARLA EN EL ORDENADOR
+Haz doble clic en index.html. Para verla con tamaño de iPhone, pulsa F12 y luego Ctrl+Shift+M.
+Casi todo funciona sin internet. Solo la traducción automática, el diccionario y el ejercicio «Tradúcela tú» necesitan conexión.
+
+QUÉ HAY EN LA CARPETA
+index.html, styles.css, app.js, mine.js, sync.js y data.js son la app.
+config.js es donde va la configuración de tu cuenta (Firebase).
+La carpeta content tiene todo el contenido.
+firestore.rules son las reglas de seguridad que hay que pegar en Firebase.
+sw.js, manifest.webmanifest y la carpeta icons sirven para instalarla en el iPhone.
+
+REGLAS DE FIRESTORE
+En la consola de Firebase, entra en Firestore Database, pestaña Reglas, borra lo que haya, pega el contenido de firestore.rules y pulsa Publicar.
+Así cada usuario solo puede leer y escribir sus propios datos.
