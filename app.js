@@ -4,7 +4,7 @@
    Datos guardados en el propio dispositivo (localStorage).
    ========================================================== */
 
-const VERSION = '4.0.0';
+const VERSION = '5.0.0';
 
 /* ---------- utilidades ---------- */
 const $ = (s, el = document) => el.querySelector(s);
@@ -26,8 +26,8 @@ const store = {
 /* ---------- estado ---------- */
 const DEFAULT_SETTINGS = {
   newPerDay: 10, newNotesPerDay: 15, voice: '', rate: 0.95, theme: 'auto', readSize: 19, goalExercises: 20, goalReviews: 15,
-  mix: { word: true, phrasal: true, idiom: true, convo: true, colloc: true, linker: true, false: true, legal: true, business: true },
-  name: 'Iker', accent: 'blue', font: 'serif', uiSize: 'normal', cardFront: 'en', autoplay: true, exLen: 10, showEs: true, startTab: 'home',
+  mix: { word: true, phrasal: true, idiom: true, convo: true, colloc: true, linker: true, false: true, legal: true, business: true, chunk: true, slang: true, ukus: true },
+  aiModel: 'claude-haiku-5-5', name: 'Iker', accent: 'blue', font: 'serif', uiSize: 'normal', cardFront: 'en', autoplay: true, exLen: 10, showEs: true, startTab: 'home',
   home: { plan: true, words: true, exp: true, legal: true, sugg: true }
 };
 let S = Object.assign({}, DEFAULT_SETTINGS, store.get('settings', {}));
@@ -43,7 +43,7 @@ const saveStats = () => store.set('stats', STATS);
 
 const CATS = {
   word: 'Vocabulario', vocab: 'Vocabulario', phrasal: 'Phrasal verb', idiom: 'Expresión', convo: 'Para conversar', colloc: 'Collocation',
-  linker: 'Conector', false: 'Falso amigo', legal: 'Inglés jurídico', business: 'Negocios', grammar: 'Gramática', other: 'Otro'
+  linker: 'Conector', false: 'Falso amigo', legal: 'Inglés jurídico', business: 'Negocios', chunk: 'Chunk', slang: 'Slang', ukus: 'UK / US', grammar: 'Gramática', other: 'Otro'
 };
 
 function today() { const k = dayKey(); if (!STATS[k]) STATS[k] = { art: 0, sec: 0, ex: 0, ok: 0, rev: 0, saved: 0, spoke: 0 }; return STATS[k]; }
@@ -86,6 +86,7 @@ function closeSheet() {
 
 /* ---------- iconos ---------- */
 const IC = {
+  globe: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/></svg>',
   flag: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4M5 4h11l-2 4 2 4H5"/></svg>',
   book: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5M19 17H6a2 2 0 00-2 2"/></svg>',
   link: '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/></svg>',
@@ -115,29 +116,42 @@ const IC = {
    VOZ (síntesis británica)
    ========================================================== */
 const TTS = {
-  voices: [],
+  voices: [], all: [], playing: 0, startedAt: 0,
   load() {
     if (!('speechSynthesis' in window)) return;
-    const v = speechSynthesis.getVoices();
-    this.voices = v.filter(x => /^en/i.test(x.lang));
+    this.all = speechSynthesis.getVoices();
+    this.voices = this.all.filter(x => /^en/i.test(x.lang));
   },
   voice() {
     if (!this.voices.length) this.load();
     return this.voices.find(v => v.name === S.voice) || this.voices.find(v => /en[-_]GB/i.test(v.lang) && /premium|enhanced|natural/i.test(v.name))
       || this.voices.find(v => /en[-_]GB/i.test(v.lang)) || this.voices[0] || null;
   },
+  esVoice() { if (!this.all.length) this.load(); return this.all.find(v => /^es[-_]ES/i.test(v.lang)) || this.all.find(v => /^es/i.test(v.lang)) || null; },
+  /* dos voces distintas para diálogos (hombre / mujer si es posible) */
+  pair() {
+    if (!this.voices.length) this.load();
+    const gb = this.voices.filter(v => /en[-_]GB/i.test(v.lang)); const pool = gb.length >= 2 ? gb : this.voices;
+    const male = /daniel|arthur|oliver|george|james|rishi|aaron|fred|tom|alex|male|guy/i, female = /kate|serena|martha|stephanie|samantha|karen|moira|tessa|fiona|victoria|female|susan|catherine|libby|sonia/i;
+    const m = pool.find(v => male.test(v.name)) || pool[0] || null;
+    const f = pool.find(v => female.test(v.name) && v !== m) || pool.find(v => v !== m) || m;
+    return { m, f };
+  },
   speak(text, opts = {}) {
     if (!('speechSynthesis' in window)) { toast('Este navegador no tiene voz'); return null; }
     if (!opts.queue) speechSynthesis.cancel();
     const u = new SpeechSynthesisUtterance(text);
-    const v = this.voice(); if (v) u.voice = v;
-    u.lang = v ? v.lang : 'en-GB';
+    const v = opts.voice || (opts.es ? this.esVoice() : this.voice()); if (v) u.voice = v;
+    u.lang = v ? v.lang : (opts.es ? 'es-ES' : 'en-GB');
     u.rate = opts.rate || S.rate;
-    if (opts.onend) u.onend = opts.onend;
-    if (opts.onerror) u.onerror = opts.onerror;
+    if (opts.pitch) u.pitch = opts.pitch;
+    u.onstart = () => { this.startedAt = Date.now(); };
+    u.onend = () => { this.track(); if (opts.onend) opts.onend(); };
+    u.onerror = () => { this.track(); if (opts.onerror) opts.onerror(); };
     speechSynthesis.speak(u);
     return u;
   },
+  track() { if (this.startedAt) { const s = (Date.now() - this.startedAt) / 1000; this.startedAt = 0; if (s > 0 && s < 120) { const t = today(); t.lsec = (t.lsec || 0) + s; saveStats(); } } },
   stop() { if ('speechSynthesis' in window) speechSynthesis.cancel(); }
 };
 if ('speechSynthesis' in window) { TTS.load(); speechSynthesis.onvoiceschanged = () => TTS.load(); }
@@ -154,7 +168,10 @@ const LIB_CATS = {
   linker: { name: 'Conectores', desc: 'Para enlazar ideas al hablar y escribir', ic: 'order' },
   false: { name: 'Falsos amigos', desc: 'Palabras que parecen españolas y no lo son', ic: 'quiz' },
   legal: { name: 'Inglés jurídico', desc: 'Vocabulario por áreas del Derecho', ic: 'scale' },
-  business: { name: 'Inglés de negocios', desc: 'Finanzas, reuniones, negociación y correos', ic: 'chat' }
+  business: { name: 'Inglés de negocios', desc: 'Finanzas, reuniones, negociación y correos', ic: 'chat' },
+  chunk: { name: 'Chunks', desc: 'Bloques de frase para hablar con fluidez', ic: 'link' },
+  slang: { name: 'Slang y coloquial', desc: 'Lo que oirás en la calle, en series y entre amigos', ic: 'spark' },
+  ukus: { name: 'Británico vs americano', desc: 'Palabras que cambian a cada lado del Atlántico', ic: 'chat' }
 };
 const TOPICS = {
   daily: 'Día a día y casa', people: 'Personas y carácter', feelings: 'Sentimientos', opinion: 'Opiniones', work: 'Trabajo',
@@ -166,7 +183,8 @@ const TOPICS = {
   shopping: 'Compras', media: 'Ocio y medios', body: 'Cuerpo y salud', politics: 'Política', environment: 'Medio ambiente', science: 'Ciencia',
   advanced: 'Nivel avanzado (C1-C2)', cooking: 'Cocina', sport: 'Deporte', verbs: 'Verbos del día a día', quantity: 'Cantidades',
   property: 'Inmobiliario', family_law: 'Familia', tax: 'Fiscal', public: 'Público y UE', dispute: 'Procedimiento y arbitraje', 'finance-law': 'Bancario y M&A', practice: 'La profesión',
-  finance: 'Finanzas', meetings: 'Reuniones y negociación', emails: 'Correos', strategy: 'Estrategia y empresa'
+  start: 'Empezar y ganar tiempo', plans: 'Planes', react: 'Reaccionar', request: 'Pedir cosas', bye: 'Despedirse', uk: 'Británico', us: 'Americano',
+  general: 'General', grammar: 'Gramática', spelling: 'Ortografía', finance: 'Finanzas', meetings: 'Reuniones y negociación', emails: 'Correos', strategy: 'Estrategia y empresa'
 };
 let LEARN = store.get('learn', {});
 let GPROG = store.get('gprog', {});
@@ -193,6 +211,8 @@ function buildPool() {
   (window.READINGS || []).forEach(r => r.body.forEach(par => splitSentences(par).forEach(se => { const n = se.s.split(/\s+/).length; if (n >= 6 && n <= 30) p.push({ s: se.s, src: r.headline, id: r.id, legal: r.legal }); })));
   (window.SITUATIONS || []).forEach(si => { si.phrases.forEach(ph => p.push({ s: ph[0], src: si.title, id: si.id, legal: si.legal })); si.dialogue.forEach(d => { if (d[1].split(/\s+/).length >= 5) p.push({ s: d[1], src: si.title, id: si.id, legal: si.legal }); }); });
   NOTES.forEach(n => { if (n.ex && n.ex.split(/\s+/).length >= 5) p.push({ s: n.ex, src: 'Mis notas', id: n.id }); });
+  (window.DIALOGUES || []).forEach(d => d.lines.forEach(l => { if (l[1].split(/\s+/).length >= 5) p.push({ s: l[1], src: d.title, id: d.id }); }));
+  (window.TEXTS || []).forEach(t => String(t.body || '').split(/\n+/).forEach(par => splitSentences(par).forEach(se => { const n = se.s.split(/\s+/).length; if (n >= 5 && n <= 30) p.push({ s: se.s, src: t.title || 'Mi texto', id: t.id }); })));
   POOL = p.filter(x => /^[A-Z“"‘']/.test(x.s));
 }
 
@@ -204,21 +224,23 @@ let reading = null;
 let PENDING_PROMPT = null;
 function go(hash) { if (location.hash === hash) route(); else location.hash = hash; }
 window.addEventListener('hashchange', route);
-const SUBTITLE = { mine: 'Mío', list: 'Mis listas', nb: 'Cuaderno', set: 'Marcas', home: 'Hoy', learn: 'Aprender', lib: 'Aprender', legal: 'Inglés jurídico', grammar: 'Gramática', sit: 'Situaciones', read: 'Lecturas', pron: 'Pronunciación', new: 'Palabras nuevas', practice: 'Practicar', ex: 'Practicar', notes: 'Mis notas', progress: 'Progreso', settings: 'Ajustes' };
-const TAB_OF = { mine: 'mine', notes: 'mine', list: 'mine', nb: 'mine', set: 'mine', home: 'home', new: 'home', learn: 'learn', lib: 'learn', legal: 'learn', grammar: 'learn', sit: 'learn', read: 'learn', pron: 'learn', practice: 'practice', ex: 'practice', notes: 'notes', progress: 'progress' };
+const SUBTITLE = { listen: 'Escuchar', dlg: 'Diálogos', fast: 'Inglés rápido', accents: 'Acentos', handsfree: 'Manos libres', videos: 'Vídeos y podcasts', speak: 'Hablar', ai: 'Conversación IA', rp: 'Role-plays', native: 'Dilo como un nativo', diary: 'Diario hablado', texts: 'Mis textos', phrasal: 'Phrasal verbs', level: 'Test de nivel', packs: 'Lo que dicen los nativos', mine: 'Mío', list: 'Mis listas', nb: 'Cuaderno', set: 'Marcas', home: 'Hoy', learn: 'Aprender', lib: 'Aprender', legal: 'Inglés jurídico', grammar: 'Gramática', sit: 'Situaciones', read: 'Lecturas', pron: 'Pronunciación', new: 'Palabras nuevas', practice: 'Practicar', ex: 'Practicar', notes: 'Mis notas', progress: 'Progreso', settings: 'Ajustes' };
+const TAB_OF = { listen: 'listen', dlg: 'listen', fast: 'listen', accents: 'listen', handsfree: 'listen', videos: 'listen', speak: 'speak', ai: 'speak', rp: 'speak', native: 'speak', diary: 'speak', texts: 'learn', phrasal: 'learn', level: 'home', packs: 'learn', mine: 'mine', notes: 'mine', list: 'mine', nb: 'mine', set: 'mine', home: 'home', new: 'home', learn: 'learn', lib: 'learn', legal: 'learn', grammar: 'learn', sit: 'learn', read: 'learn', pron: 'learn', practice: 'practice', ex: 'practice', progress: 'home' };
 function route() {
   endReadingSession(); TTS.stop(); stopRecording(); stopDialogue();
+  if (typeof stopHandsFree === 'function') { stopHandsFree(); stopDialogPlay(); stopVideoTimer(); }
   $('#view').onclick = null;
+  if ($('#sheet') && !$('#sheet').classList.contains('hidden')) closeSheet();
   const h = decodeURIComponent(location.hash.slice(1) || S.startTab || 'home');
   const [view, ...rest] = h.split('/');
   const arg = rest.join('/');
-  const isRoot = ['home', 'learn', 'practice', 'mine', 'progress'].includes(view);
+  const isRoot = ['home', 'learn', 'listen', 'speak', 'practice', 'mine'].includes(view);
   $('#backBtn').classList.toggle('hidden', isRoot || !SUBTITLE[view]);
   currentTab = TAB_OF[view] || currentTab;
   $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === currentTab));
   $('#brandSub').textContent = SUBTITLE[view] || 'Hoy';
   window.scrollTo(0, 0);
-  const R = { home: renderHome, learn: renderLearn, lib: renderLib, legal: () => renderLib('legal'), grammar: renderGrammar, sit: renderSit, read: renderRead, pron: renderPron, new: renderNewWords, practice: renderPractice, ex: startExercise, notes: renderMine, mine: renderMine, list: renderList, nb: renderNB, set: renderSet, progress: renderProgress, settings: renderSettings };
+  const R = { home: renderHome, learn: renderLearn, lib: renderLib, legal: () => renderLib('legal'), grammar: renderGrammar, sit: renderSit, read: renderRead, pron: renderPron, new: renderNewWords, practice: renderPractice, ex: startExercise, listen: renderListen, dlg: renderDialogues, fast: renderFast, accents: renderAccents, handsfree: renderHandsFree, videos: renderVideos, speak: renderSpeak, ai: renderAI, rp: renderRoleplays, native: renderNative, diary: renderDiary, texts: renderTexts, phrasal: renderPhrasal, level: renderLevel, packs: renderPacks, notes: renderMine, mine: renderMine, list: renderList, nb: renderNB, set: renderSet, progress: renderProgress, settings: renderSettings };
   (R[view] || renderHome)(arg);
 }
 $$('.tab').forEach(t => t.addEventListener('click', () => go('#' + t.dataset.tab)));
@@ -282,6 +304,7 @@ function renderHome() {
       ${exp && S.home.exp ? `<div class="card pad dayexp"><div class="eyebrow" style="margin:0 0 4px">Expresión del día</div><div class="row"><b class="grow" style="font-family:var(--serif);font-size:20px">${esc(exp.term)}</b><button class="mini" data-say="${esc(exp.term)}">${IC.speak}</button></div><div class="es">${esc(exp.es)}</div><div class="ex">${esc(exp.ex)}</div><div class="row" style="margin-top:8px;gap:6px">${!exp.srs ? `<button class="btn small" data-learn="${esc(exp.id)}">Aprenderla</button>` : ''}<button class="btn small" data-mark="${esc(exp.id)}">${IC.flag.replace('<svg', '<svg width="14" height="14"')} Marcar</button>${markBadges(exp.id)}</div></div>` : ''}
       ${legal && S.home.legal ? `<div class="card pad dayexp legal"><div class="eyebrow" style="margin:0 0 4px">Término jurídico del día</div><div class="row"><b class="grow" style="font-family:var(--serif);font-size:20px">${esc(legal.term)}</b><button class="mini" data-say="${esc(legal.term)}">${IC.speak}</button></div><div class="es">${esc(legal.es)}</div><div class="ex">${esc(legal.ex)}</div><div class="row" style="margin-top:8px;gap:6px">${!legal.srs ? `<button class="btn small" data-learn="${esc(legal.id)}">Aprenderlo</button>` : ''}<button class="btn small" data-mark="${esc(legal.id)}">${IC.flag.replace('<svg', '<svg width="14" height="14"')} Marcar</button>${markBadges(legal.id)}</div></div>` : ''}
     </div>
+    ${typeof routeCard === 'function' ? routeCard() : ''}
     <div class="suggest ${S.home.sugg ? '' : 'hidden'}">
       ${gram ? `<a class="card pad sug" href="#grammar/${gram.id}"><span class="sug-k">Gramática</span><b>${esc(gram.title)}</b><span class="muted">${esc(gram.es)}</span></a>` : ''}
       ${rd ? `<a class="card pad sug" href="#read/${rd.id}"><span class="sug-k">Lectura · ${esc(rd.level)}</span><b>${esc(rd.headline)}</b><span class="muted">${Math.max(1, Math.round(rd.body.join(' ').split(/\s+/).length / 200))} min · con audio</span></a>` : ''}
@@ -303,13 +326,17 @@ function renderLearn() {
     <p class="sub">Todo el contenido de la app. Toca cualquier palabra para escucharla y pulsa + para añadirla a tus repasos.</p>
     <a class="card pad legal-hero" href="#legal"><div class="ico">${IC.scale}</div><div class="grow"><b>Inglés jurídico</b><div class="muted" style="font-size:14px">${lc.total} términos en ${Object.keys(TOPICS).filter(t => LIB.some(x => x.cat === 'legal' && x.top === t)).length} áreas, más situaciones y lecturas del despacho</div><div class="mini-prog" style="margin-top:8px"><i style="width:${lc.learned / lc.total * 100}%"></i></div></div></a>
     <div class="h2">Vocabulario</div>
-    <div class="modes">${['word', 'phrasal', 'idiom', 'convo', 'colloc', 'linker', 'false', 'business'].map(c => tile('#lib/' + c, LIB_CATS[c].ic, LIB_CATS[c].name, LIB_CATS[c].desc, prog(c))).join('')}</div>
+    <div class="modes">${['word', 'phrasal', 'idiom', 'convo', 'chunk', 'slang', 'ukus', 'colloc', 'linker', 'false', 'business'].map(c => tile('#lib/' + c, LIB_CATS[c].ic, LIB_CATS[c].name, LIB_CATS[c].desc, prog(c))).join('')}</div>
     <div class="h2">Habilidades</div>
     <div class="modes">
       ${tile('#grammar', 'pen', 'Gramática', (window.GRAMMAR || []).length + ' lecciones con ejercicios', `<span class="muted" style="font-size:12px">${Object.keys(GPROG).length} completadas</span>`)}
       ${tile('#sit', 'chat', 'Situaciones', 'Frases y diálogos para la vida real y el despacho')}
       ${tile('#read', 'book', 'Lecturas', 'Textos cortos con audio y preguntas')}
       ${tile('#pron', 'ear', 'Pronunciación', 'Sonidos difíciles, acento y ritmo')}
+      ${tile('#phrasal', 'link', 'Phrasal verbs por partícula', 'Entiende qué significan up, out, off… y agrúpalos por verbo')}
+      ${tile('#packs', 'spark', 'Lo que dicen los nativos', 'Packs de frases para el pub, el gimnasio, la oficina…')}
+      ${tile('#texts', 'pen', 'Mis textos', 'Pega cualquier texto y conviértelo en lectura con audio')}
+      ${tile('#level', 'flag', 'Test de nivel', 'Descubre tu nivel y tu ruta personalizada')}
     </div>
     <div class="h2">Buscar</div>
     <div class="search">${IC.search}<input class="input" id="libq" type="search" placeholder="Busca en las ${LIB.length} entradas (inglés o español)…"></div>
@@ -452,7 +479,8 @@ function renderSit(id) {
   if (!id) {
     const row = s => `<a class="note" href="#sit/${s.id}" style="text-decoration:none;color:inherit"><div class="grow"><span class="term">${esc(s.title)}</span><div class="es">${esc(s.es)}</div></div><span class="muted">›</span></a>`;
     $('#view').innerHTML = `<div class="h1">Situaciones</div><p class="sub">Frases listas para usar y diálogos para escuchar y practicar. En el role-play tú dices las frases de Iker.</p>
-      <div class="h2">Día a día y trabajo</div><div class="card">${L.filter(s => !s.legal).map(row).join('')}</div>
+      <a class="card pad cta" href="#packs"><div class="grow"><b>Lo que dicen los nativos en…</b><div class="muted" style="font-size:14px">El pub, el gimnasio, la oficina, una cita, el fútbol…</div></div><span class="muted">›</span></a>
+      <div class="h2">Día a día y trabajo</div><div class="card">${L.filter(s => !s.legal && !s.pack).map(row).join('')}</div>
       <div class="h2">En el despacho</div><div class="card">${L.filter(s => s.legal).map(row).join('')}</div>`;
     return;
   }
@@ -461,10 +489,11 @@ function renderSit(id) {
     <div class="h2">Frases útiles</div>
     <div class="card">${s.phrases.map((p, k) => `<div class="note" data-say="${esc(p[0])}"><div class="grow"><span class="term" style="font-size:16px">${esc(p[0])}</span><div class="es">${esc(p[1])}</div></div><button class="mini">${IC.speak}</button></div>`).join('')}</div>
     <button class="btn block" id="savePh" style="margin-top:10px">Guardar estas frases en mis notas</button>
-    <div class="h2">Diálogo</div>
+    <div class="${s.dialogue.length ? '' : 'hidden'}"><div class="h2">Diálogo</div>
     <div class="row wrap" style="margin-bottom:10px"><button class="btn primary grow" id="dlgPlay">${IC.play.replace('<svg', '<svg width="16" height="16"')} Escuchar diálogo</button><button class="btn grow" id="dlgRole">${IC.mic.replace('<svg', '<svg width="16" height="16"')} Role-play (tú eres Iker)</button></div>
     <div class="card pad dialogue" id="dlg">${s.dialogue.map((d, k) => `<div class="dl ${d[0] === 'Iker' ? 'me' : ''}" data-k="${k}"><span class="who">${esc(d[0])}</span><span class="line">${esc(d[1])}</span></div>`).join('')}</div>
-    <div id="dlgHint" class="muted" style="font-size:14px;margin-top:8px"></div>`;
+    <div id="dlgHint" class="muted" style="font-size:14px;margin-top:8px"></div></div>
+    ${s.pack ? `<div class="row wrap" style="margin-top:14px"><a class="btn grow" href="#ex/say/${s.id}">${IC.mic.replace('<svg', '<svg width="16" height="16"')} Dilas en voz alta</a><a class="btn grow" href="#packs">Más packs</a></div>` : ''}`;
   $('#view').onclick = e => { const n = e.target.closest('.note[data-say]'); if (n) { TTS.speak(n.dataset.say); return; } const l = e.target.closest('.dl'); if (l && !DLG) TTS.speak(s.dialogue[+l.dataset.k][1]); };
   $('#savePh').onclick = () => { const have = new Set(NOTES.map(n => norm(n.term))); let c = 0; s.phrases.forEach(p => { if (have.has(norm(p[0]))) return; NOTES.unshift({ id: uid(), term: p[0], cat: s.legal ? 'legal' : 'convo', es: p[1], ex: '', def: '', note: '', src: s.title, created: Date.now(), srs: newSrs() }); c++; }); saveNotes(); toast(c ? c + ' frases guardadas' : 'Ya las tenías'); };
   const lines = $$('#dlg .dl');
@@ -650,39 +679,45 @@ function renderRead(id) {
   const read = new Set(HISTORY.map(h => h.id));
   if (!id) {
     const card = r => `<a class="story" href="#read/${r.id}"><div class="meta"><span class="tag ${r.legal ? 'warm' : ''}">${esc(r.topic)}</span><span>${esc(r.level)}</span><span>${Math.max(1, Math.round(rdWords(r) / 200))} min</span>${read.has(r.id) ? '<span class="read-badge">✓ Leída</span>' : ''}</div><h3>${esc(r.headline)}</h3><p class="trail">${esc(r.standfirst)}</p></a>`;
-    $('#view').innerHTML = `<div class="h1">Lecturas</div><p class="sub">Textos cortos con audio. Toca cualquier palabra para traducirla y guardarla.</p>
-      <div class="card list-card">${R.filter(r => !r.legal).map(card).join('')}</div>
-      <div class="h2">Inglés jurídico</div><div class="card list-card">${R.filter(r => r.legal).map(card).join('')}</div>`;
+    const series = Array.from(new Set(R.filter(r => r.series).map(r => r.series)));
+    $('#view').innerHTML = `<div class="h1">Lecturas</div><p class="sub">Textos con audio. Toca cualquier palabra para traducirla y guardarla.</p>
+      <a class="card pad cta" href="#texts"><div class="grow"><b>Lee lo que tú quieras</b><div class="muted" style="font-size:14px">Pega cualquier texto en inglés (un artículo, un email…) y conviértelo en lectura con audio</div></div><span class="btn primary small">Abrir</span></a>
+      ${series.map(sr => `<div class="h2">Historia · ${esc(sr)}</div><div class="card list-card">${R.filter(r => r.series === sr).sort((a, b) => a.chapter - b.chapter).map(card).join('')}</div>`).join('')}
+      <div class="h2">Lecturas cortas</div><div class="card list-card">${R.filter(r => !r.legal && !r.series).map(card).join('')}</div>
+      <div class="h2">Inglés jurídico</div><div class="card list-card">${R.filter(r => r.legal && !r.series).map(card).join('')}</div>`;
     return;
   }
-  const it = R.find(r => r.id === id); if (!it) return renderRead();
+  const tx = id.startsWith('tx-') ? (window.TEXTS || []).find(t => t.id === id) : null;
+  const it = tx ? { id: tx.id, headline: tx.title || 'Sin título', standfirst: tx.src || 'Texto añadido por ti', topic: 'Mi texto', level: '', legal: false, body: tx.body.split(/\n\s*\n|\n/).map(x => x.trim()).filter(Boolean), vocab: [], quiz: [], questions: [], mine: true } : R.find(r => r.id === id);
+  if (!it) return renderRead();
+  const nextCh = it.series ? R.find(r => r.series === it.series && r.chapter === it.chapter + 1) : null;
   const paras = it.body.map(t => ({ tag: 'p', text: t, tokens: tokenize(t) }));
   ART = { item: it, paras };
   const have = new Set(NOTES.map(n => norm(n.term)));
   $('#view').innerHTML = `
-    <div class="art-top"><span class="tag ${it.legal ? 'warm' : ''}">${esc(it.topic)}</span><span class="meta">${esc(it.level)} · ${rdWords(it)} palabras</span></div>
+    <div class="art-top"><span class="tag ${it.legal ? 'warm' : ''}">${esc(it.topic)}</span><span class="meta">${it.level ? esc(it.level) + ' · ' : ''}${rdWords(it)} palabras · ${Math.max(1, Math.round(rdWords(it) / 200))} min</span>${it.mine ? `<span class="grow"></span><button class="mini" id="txEdit">${IC.pen}</button>` : ''}</div>
     <h1 class="art-title">${esc(it.headline)}</h1><p class="art-stand">${esc(it.standfirst)}</p>
     <div class="hint-tap">Toca cualquier palabra para traducirla. Las que ya tienes en notas salen resaltadas.</div>
     <div class="player"><button class="iconbtn" id="pPlay" aria-label="Escuchar">${IC.play}</button><button class="iconbtn" id="pStop" aria-label="Parar">${IC.stop}</button><div class="label" id="pLabel">Escuchar el texto</div><button class="btn small" id="pRate">${S.rate}×</button></div>
     <div class="row" style="margin-top:8px"><button class="btn small" id="hideTxt">Modo listening: ocultar texto</button></div>
     <div class="art-body" id="artBody">${paras.map((p, i) => `<p data-pi="${i}">${paraHTML(p, i)}</p>`).join('')}</div>
-    <div class="h2">Comprensión</div>
+    ${it.quiz.length ? '<div class="h2">Comprensión</div>' : ''}
     ${it.quiz.map((q, k) => `<div class="card pad" style="margin-bottom:10px" data-qz="${k}"><b>${k + 1}. ${esc(q[0])}</b><div class="opts" style="margin-top:10px">${q[1].map((o, j) => `<button class="opt" data-j="${j}">${esc(o)}</button>`).join('')}</div></div>`).join('')}
-    <div class="h2">Vocabulario del texto</div>
-    <div class="card">${it.vocab.map((x, k) => `<div class="note"><div class="grow"><span class="term">${esc(x[0])}</span><div class="es">${esc(x[1])}</div><div class="ex">${esc(x[2])}</div></div>
+    ${it.vocab.length ? '<div class="h2">Vocabulario del texto</div>' : ''}
+    <div class="card ${it.vocab.length ? '' : 'hidden'}">${it.vocab.map((x, k) => `<div class="note"><div class="grow"><span class="term">${esc(x[0])}</span><div class="es">${esc(x[1])}</div>${x[2] ? `<div class="ex">${esc(x[2])}</div>` : ''}</div>
       <div style="display:flex;flex-direction:column;gap:6px"><button class="mini" data-say="${esc(x[0])}">${IC.speak}</button>${have.has(norm(x[0])) ? '<span class="tag good" style="text-align:center">✓</span>' : `<button class="mini" data-addv="${k}">${IC.plus}</button>`}</div></div>`).join('')}</div>
-    <div class="h2">Para hablar</div>
+    ${it.questions.length ? '<div class="h2">Para hablar</div>' : ''}
     ${it.questions.map((q, k) => `<div class="card pad" style="margin-bottom:10px"><div class="ctx" style="font-size:18px">${esc(q)}</div><div class="row" style="margin-top:10px"><button class="btn small" data-say="${esc(q)}">${IC.speak.replace('<svg', '<svg width="16" height="16"')} Escuchar</button><button class="btn small primary" data-q="${k}">${IC.mic.replace('<svg', '<svg width="16" height="16"')} Responder en voz alta</button></div></div>`).join('')}
     <div class="h2">Practica con este texto</div>
     <div class="row wrap"><a class="btn grow" href="#ex/gap/${it.id}">Huecos</a><a class="btn grow" href="#ex/dict/${it.id}">Dictado</a><a class="btn grow" href="#ex/shadow/${it.id}">Shadowing</a><a class="btn grow" href="#ex/trans/${it.id}">Tradúcelo tú</a></div>
-    <div class="art-end"><button class="btn primary block" id="doneBtn">${read.has(it.id) ? '✓ Ya la has leído' : 'He terminado de leer ✓'}</button></div>`;
+    <div class="art-end"><button class="btn primary block" id="doneBtn">${read.has(it.id) ? '✓ Ya la has leído' : 'He terminado de leer ✓'}</button>${nextCh ? `<a class="btn block" href="#read/${nextCh.id}">Siguiente capítulo ›</a>` : ''}</div>`;
   markKnown();
   reading = { id: it.id, start: Date.now() };
   $('#artBody').addEventListener('click', e => { const w = e.target.closest('.w'); if (w) openWord(+w.dataset.p, +w.dataset.t); });
   $('#hideTxt').onclick = () => { const b = $('#artBody'); b.classList.toggle('blurred'); $('#hideTxt').textContent = b.classList.contains('blurred') ? 'Mostrar texto' : 'Modo listening: ocultar texto'; };
   $('#view').onclick = e => {
     const s = e.target.closest('[data-say]'); if (s) { TTS.speak(s.dataset.say, { rate: 0.95 }); return; }
-    const a = e.target.closest('[data-addv]'); if (a) { const x = it.vocab[+a.dataset.addv]; NOTES.unshift({ id: uid(), term: x[0], cat: guessCat(x[0]), es: x[1], ex: x[2], def: '', note: '', src: it.headline, created: Date.now(), srs: newSrs() }); saveNotes(); bump('saved'); a.outerHTML = '<span class="tag good" style="text-align:center">✓</span>'; toast('Guardada en tus notas'); return; }
+    const a = e.target.closest('[data-addv]'); if (a) { const x = it.vocab[+a.dataset.addv]; NOTES.unshift({ id: uid(), term: x[0], cat: guessCat(x[0]), es: x[1], ex: x[2] || '', def: '', note: '', src: it.headline, created: Date.now(), upd: Date.now(), srs: newSrs() }); saveNotes(); bump('saved'); a.outerHTML = '<span class="tag good" style="text-align:center">✓</span>'; toast('Guardada en tus notas'); return; }
     const q = e.target.closest('[data-q]'); if (q) { PENDING_PROMPT = it.questions[+q.dataset.q]; go('#ex/speak'); return; }
     const o = e.target.closest('[data-qz] .opt'); if (o) {
       const c = o.closest('[data-qz]'); if (c.dataset.done) return; c.dataset.done = 1;
@@ -691,6 +726,7 @@ function renderRead(id) {
       bump('ex'); if (ok) bump('ok');
     }
   };
+  if ($('#txEdit')) $('#txEdit').onclick = () => openTextEditor(tx);
   $('#doneBtn').onclick = () => { if (!read.has(it.id)) { markRead(it); read.add(it.id); $('#doneBtn').textContent = '✓ Ya la has leído'; toast('¡Lectura completada!'); } };
   setupPlayer(paras);
 }
@@ -890,6 +926,12 @@ const MODES = [
   { id: 'pair', ic: 'ear', name: 'Escucha y elige', desc: 'Distingue sonidos parecidos' },
   { id: 'order', ic: 'order', name: 'Ordena la frase', desc: 'Construye frases correctas' },
   { id: 'trans', ic: 'pen', name: 'Tradúcela tú', desc: 'Del español al inglés' },
+  { id: 'prod', ic: 'cards', name: 'Producción', desc: 'Del español al inglés, en voz alta' },
+  { id: 'say', ic: 'mic', name: 'Pronuncia', desc: 'El móvil te dice si te entiende' },
+  { id: 'ear', ic: 'ear', name: 'Tarjetas de oído', desc: 'Reconoce tus palabras solo oyéndolas' },
+  { id: 'fast', ic: 'ear', name: 'Inglés rápido', desc: 'Frases dichas a velocidad nativa' },
+  { id: 'native', ic: 'spark', name: 'Dilo como un nativo', desc: 'Corrige frases que suenan traducidas' },
+  { id: 'accent', ic: 'globe', name: 'Acentos', desc: '¿De dónde es esta voz?' },
   { id: 'shadow', ic: 'ear', name: 'Shadowing', desc: 'Escucha, repite y grábate. La mejor forma de mejorar pronunciación y ritmo', wide: true },
   { id: 'speak', ic: 'mic', name: 'Speaking', desc: 'Habla un minuto sobre una pregunta y escúchate', wide: true }
 ];
@@ -920,7 +962,7 @@ function sentencePool(srcId) {
   if (!p.length) p = POOL;
   return p;
 }
-function isSetKey(a) { return a && (a.startsWith('set:') || a.startsWith('list:') || a.startsWith('label:') || !!SETS[a]); }
+function isSetKey(a) { return a && (a.startsWith('set:') || a.startsWith('list:') || a.startsWith('label:') || a.startsWith('cat:') || a.startsWith('phr:') || !!SETS[a]); }
 function setFromArg(a) { return setItems(a.startsWith('set:') ? a.slice(4) : a); }
 function vocabPool(arg) {
   if (arg === 'legal') return LIB.filter(x => x.cat === 'legal');
@@ -1021,12 +1063,14 @@ function startExercise(arg) {
   if (mode === 'review') return startReview(srcId);
   if (mode === 'speak') return startSpeaking(srcId);
   if (mode === 'shadow') return startShadow(srcId);
-  const gen = { gap: genGap, cloze: genCloze, order: genOrder, dict: genDict, vocab: genVocab, trans: genTrans, gram: genGram, pair: genPair, particle: genParticle }[mode];
+  if (window.EXTRA_STARTS && EXTRA_STARTS[mode]) return EXTRA_STARTS[mode](srcId);
+  const gen = (window.EXTRA_GENS && EXTRA_GENS[mode]) || { gap: genGap, cloze: genCloze, order: genOrder, dict: genDict, vocab: genVocab, trans: genTrans, gram: genGram, pair: genPair, particle: genParticle }[mode];
   if (!gen) return go('#practice');
   SESSION = { mode, srcId, gen, n: 0, total: S.exLen || 10, ok: 0 };
   nextQ();
 }
-const MODE_TITLE = { gap: 'Huecos en contexto', cloze: 'Palabra que falta', order: 'Ordena la frase', dict: 'Dictado', vocab: 'Test de vocabulario', trans: 'Tradúcela tú', gram: 'Gramática', pair: 'Escucha y elige', particle: 'Phrasal verbs' };
+const MODE_TITLE_BASE = { gap: 'Huecos en contexto', cloze: 'Palabra que falta', order: 'Ordena la frase', dict: 'Dictado', vocab: 'Test de vocabulario', trans: 'Tradúcela tú', gram: 'Gramática', pair: 'Escucha y elige', particle: 'Phrasal verbs' };
+const MODE_TITLE = new Proxy(MODE_TITLE_BASE, { get: (o, k) => o[k] || (window.EXTRA_TITLES || {})[k] || 'Práctica' });
 function exHeader() {
   return `<div class="row" style="margin-bottom:8px"><b class="grow">${MODE_TITLE[SESSION.mode]}${SESSION.srcId === 'legal' ? ' · jurídico' : SESSION.srcId === 'business' ? ' · negocios' : SESSION.srcId === 'false' ? ' · falsos amigos' : isSetKey(SESSION.srcId) ? ' · ' + esc(setName(SESSION.srcId.replace(/^set:/, ''))) : SESSION.srcId === 'today' ? ' · palabras de hoy' : SESSION.srcId && !['gram', 'pair'].includes(SESSION.mode) ? ' · este texto' : ''}</b><span class="muted">${SESSION.n + 1}/${SESSION.total}</span></div>
     <div class="progressbar"><i style="width:${(SESSION.n / SESSION.total) * 100}%"></i></div>`;
@@ -1037,9 +1081,10 @@ async function nextQ() {
   const sess = SESSION;
   const q = await SESSION.gen(SESSION.srcId);
   if (sess !== SESSION || !location.hash.startsWith('#ex/')) return;
+  if (!q && SESSION.mode === 'accent') { $('#view').innerHTML = `<div class="empty">Este dispositivo no tiene instaladas voces de varios acentos. En el iPhone puedes añadirlas en Ajustes › Accesibilidad › Contenido leído › Voces › Inglés.</div><a class="btn block" href="#accents">Volver</a>`; return; }
   if (!q) { $('#view').innerHTML = `<div class="empty">Aún no hay suficiente material para este ejercicio.<br>Lee algún artículo o añade notas y vuelve a intentarlo.</div><a class="btn block" href="#practice">Volver</a>`; return; }
   SESSION.q = q;
-  ({ gap: renderGapQ, cloze: renderClozeQ, order: renderOrderQ, dict: renderDictQ, vocab: renderVocabQ, trans: renderTransQ, gram: renderGramQ, pair: renderPairQ, particle: renderParticleQ })[q.type](q);
+  (({ gap: renderGapQ, cloze: renderClozeQ, order: renderOrderQ, dict: renderDictQ, vocab: renderVocabQ, trans: renderTransQ, gram: renderGramQ, pair: renderPairQ, particle: renderParticleQ })[q.type] || EXTRA_RENDER[q.type])(q);
 }
 function answered(ok, extraHTML) {
   SESSION.ok += ok ? 1 : 0; bump('ex'); if (ok) bump('ok');
@@ -1284,11 +1329,12 @@ function startShadow(srcId) {
       mr.onstop = () => {
         if (!$('#shOut')) return;
         const url = URL.createObjectURL(new Blob(chunks, { type: mr.mimeType || 'audio/mp4' }));
-        $('#shOut').innerHTML = `<div class="card pad"><b>Tu versión</b><audio controls src="${url}" style="width:100%;margin-top:8px"></audio><div class="row" style="margin-top:8px"><button class="btn small" id="shOrig">Escuchar la original otra vez</button></div></div>`;
+        $('#shOut').innerHTML = `<div class="card pad"><b>Tu versión</b><audio controls src="${url}" id="shMine" style="width:100%;margin-top:8px"></audio><div class="row wrap" style="margin-top:8px"><button class="btn small primary" id="shAB">A/B · original y luego tú</button><button class="btn small" id="shOrig">Solo la original</button></div><p class="meta" style="margin-top:8px">Fíjate en tres cosas: qué palabras se unen, dónde sube y baja la voz y qué sílabas suenan más fuertes.</p></div>`;
         $('#shOrig').onclick = () => TTS.speak(it.s);
-        const t = today(); t.shadow = (t.shadow || 0) + 1; saveStats(); renderStreak();
+        $('#shAB').onclick = () => { const a = $('#shMine'); a.pause(); a.currentTime = 0; TTS.speak(it.s, { onend: () => setTimeout(() => { try { a.play(); } catch (e) {} }, 350) }); };
+        const t = today(); t.shadow = (t.shadow || 0) + 1; t.ssec = (t.ssec || 0) + Math.round((Date.now() - mr._t0) / 1000); saveStats(); renderStreak();
       };
-      REC = { mr, stream };
+      REC = { mr, stream }; mr._t0 = Date.now();
       mr.start(); $('#shRec').classList.add('on'); $('#shRec').innerHTML = IC.stop; $('#shHint').textContent = 'Grabando… toca para parar';
     };
     setTimeout(() => TTS.speak(it.s), 250);
@@ -1326,7 +1372,7 @@ function renderTransQ(q) {
 /* ==========================================================
    PROGRESO
    ========================================================== */
-function isActive(d) { return d && ((d.art || 0) >= 1 || (d.ex || 0) >= 10 || (d.rev || 0) >= 10 || (d.newLib || 0) >= 5 || (d.spoke || 0) >= 1 || (d.shadow || 0) >= 1 || (d.sec || 0) >= 600); }
+function isActive(d) { return d && ((d.art || 0) >= 1 || (d.ex || 0) >= 10 || (d.rev || 0) >= 10 || (d.newLib || 0) >= 5 || (d.spoke || 0) >= 1 || (d.shadow || 0) >= 1 || (d.sec || 0) >= 600 || (d.lsec || 0) >= 300 || (d.ssec || 0) >= 120); }
 function streak() {
   let n = 0; const d = new Date();
   if (!isActive(STATS[dayKey(d)])) d.setDate(d.getDate() - 1);
@@ -1345,12 +1391,15 @@ function renderProgress() {
   const catBars = Object.keys(LIB_CATS).map(c => { const k = catCounts(c); const done = LIB.filter(x => x.cat === c && itemStatus(x) === 'done').length; return `<div class="goal"><div class="row"><span>${esc(LIB_CATS[c].name)}</span><span class="muted">${k.learned}/${k.total}</span></div><div class="progressbar dual"><i style="width:${k.learned / k.total * 100}%"></i><b style="width:${done / k.total * 100}%"></b></div></div>`; }).join('');
   $('#view').innerHTML = `
     <div class="h1">Progreso</div>
-    <div class="card hero-streak"><div class="big">${st}</div><div><b>${st === 1 ? 'día seguido' : 'días seguidos'}</b><div class="muted" style="font-size:14px">Un día cuenta si aprendes 5 palabras, haces 10 ejercicios o repasos, lees algo o practicas speaking o shadowing.</div></div></div>
+    <div class="card hero-streak"><div class="big">${st}</div><div><b>${st === 1 ? 'día seguido' : 'días seguidos'}</b><div class="muted" style="font-size:14px">Un día cuenta si aprendes 5 palabras, haces 10 ejercicios o repasos, lees algo, escuchas 5 minutos o hablas 2 minutos.</div></div></div>
     <div class="h2">Hoy</div>
     <div class="stats">
       <div class="card stat"><b>${t.newLib || 0}</b><span>nuevas</span></div>
       <div class="card stat"><b>${t.rev || 0}</b><span>repasos</span></div>
       <div class="card stat"><b>${t.ex || 0}</b><span>ejercicios</span></div>
+      <div class="card stat"><b>${Math.round((t.lsec || 0) / 60)}</b><span>min escuchando</span></div>
+      <div class="card stat"><b>${Math.round((t.ssec || 0) / 60)}</b><span>min hablando</span></div>
+      <div class="card stat"><b>${Math.round((t.sec || 0) / 60)}</b><span>min leyendo</span></div>
     </div>
     <div class="h2">Últimos 14 días</div>
     <div class="card pad"><div class="chart">${days.map((x, i) => `<div class="bar ${i === 13 ? 'today' : ''}"><i style="height:${x.v / max * 100}%"></i><span>${x.d.getDate()}</span></div>`).join('')}</div>
@@ -1370,7 +1419,8 @@ function renderProgress() {
       <div class="card stat"><b>${HISTORY.length}/${(window.READINGS || []).length}</b><span>lecturas</span></div>
       <div class="card stat"><b>${Object.keys(GPROG).length}/${(window.GRAMMAR || []).length}</b><span>gramática</span></div>
       <div class="card stat"><b>${Math.round((tot.sec || 0) / 60)}</b><span>min leyendo</span></div>
-    </div>`;
+    </div>
+    ${typeof progressExtra === 'function' ? progressExtra() : ''}`;
 }
 
 /* ==========================================================
@@ -1393,7 +1443,7 @@ function renderSettings() {
       <label class="lbl">Tipo de letra de títulos y textos</label><select class="select" id="sFont"><option value="serif">Clásica (con remates)</option><option value="sans">Moderna (sin remates)</option></select>
       <label class="lbl">Tamaño de la interfaz</label><select class="select" id="sUi"><option value="small">Pequeño</option><option value="normal">Normal</option><option value="large">Grande</option></select>
       <label class="lbl">Tamaño de letra de las lecturas · <span id="sSizeV">${S.readSize}</span> px</label><input type="range" id="sSize" min="15" max="26" step="1" value="${S.readSize}" style="width:100%">
-      <label class="lbl">Pestaña al abrir la app</label><select class="select" id="sStart"><option value="home">Hoy</option><option value="learn">Aprender</option><option value="practice">Practicar</option><option value="mine">Mío</option></select>
+      <label class="lbl">Pestaña al abrir la app</label><select class="select" id="sStart"><option value="home">Hoy</option><option value="learn">Aprender</option><option value="listen">Escuchar</option><option value="speak">Hablar</option><option value="practice">Practicar</option><option value="mine">Mío</option></select>
     </div>
     <div class="h2">Pantalla Hoy</div>
     <div class="card set-group">
@@ -1423,6 +1473,16 @@ function renderSettings() {
       <p class="meta" style="margin-top:6px">En el iPhone puedes descargar voces mucho más naturales en Ajustes › Accesibilidad › Contenido leído › Voces › Inglés (Reino Unido). Las «mejoradas» o «premium» suenan casi como una persona.</p>
       <div class="row" style="margin-top:8px"><button class="btn small" id="sTest">Probar voz</button></div>
       <label class="lbl">Velocidad · <span id="sRateV">${S.rate}</span>×</label><input type="range" id="sRate" min="0.6" max="1.4" step="0.05" value="${S.rate}" style="width:100%">
+    </div>
+    <div class="h2">Conversación con IA</div>
+    <div class="card set-group">
+      <p class="muted" style="font-size:14px">Para hablar con la IA necesitas una clave de la API de Anthropic (console.anthropic.com). Se guarda solo en este dispositivo y no se sube a tu cuenta.</p>
+      <label class="lbl">Clave de la API</label><div class="row"><input class="input grow" id="sAiKey" type="password" placeholder="sk-ant-…" autocomplete="off" autocapitalize="off" spellcheck="false" value="${esc(store.get('aikey', ''))}"><button class="btn" id="sAiDel">Quitar</button></div>
+      <label class="lbl">Modelo</label><select class="select" id="sAiModel"><option value="claude-haiku-5-5">Rápido y barato (Haiku)</option><option value="claude-sonnet-5-5">Más listo (Sonnet)</option></select>
+    </div>
+    <div class="h2">Recordatorio diario</div>
+    <div class="card set-group">
+      <p class="muted" style="font-size:14px">Las apps web del iPhone no pueden avisarte a una hora fija por sí solas. Lo mejor es un recordatorio en la app Recordatorios del iPhone que abra Fluent; pídemelo y te lo creo a la hora que quieras.</p>
     </div>
     <div class="h2">Mis datos</div>
     <div class="card set-group">
@@ -1454,6 +1514,10 @@ function renderSettings() {
   bind('#sVoice', v => { S.voice = v; });
   bind('#sRate', v => { S.rate = +v; $('#sRateV').textContent = v; }, 'input');
   $('#sTest').onclick = () => TTS.speak('Hi ' + (S.name || 'there') + '! This is how I sound. Shall we practise some English today?');
+  $('#sAiModel').value = S.aiModel || 'claude-haiku-5-5';
+  bind('#sAiModel', v => { S.aiModel = v; });
+  $('#sAiKey').addEventListener('change', e => { store.set('aikey', e.target.value.trim()); toast('Clave guardada en este dispositivo'); });
+  $('#sAiDel').onclick = () => { store.set('aikey', ''); $('#sAiKey').value = ''; toast('Clave quitada'); };
   $('#exp').onclick = exportBackup;
   $('#expCsv').onclick = exportCSV;
   $('#imp').onchange = importBackup;
@@ -1481,7 +1545,7 @@ function importBackup(e) {
     try {
       const d = JSON.parse(rd.result); if (d.app !== 'fluent') throw 0;
       if (!confirm('¿Combinar la copia con tus datos actuales? No se pierde nada de lo que ya tienes.')) return;
-      const R = { notes: d.notes || [], learn: d.learn || {}, gprog: d.gprog || {}, stats: d.stats || {}, history: d.history || [], marks: d.marks || {}, labels: d.labels || [], lists: d.lists || [], nb: d.nb || [], tombs: d.tombs || {}, settings: d.settings || {} };
+      const R = { notes: d.notes || [], learn: d.learn || {}, gprog: d.gprog || {}, stats: d.stats || {}, history: d.history || [], marks: d.marks || {}, labels: d.labels || [], lists: d.lists || [], nb: d.nb || [], tombs: d.tombs || {}, settings: d.settings || {}, texts: d.texts || [], videos: d.videos || [] };
       applyState(merge(snapshot(), R)); route();
       toast('Copia importada'); renderStreak();
     } catch (err) { toast('El archivo no es una copia válida de Fluent'); }

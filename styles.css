@@ -344,3 +344,41 @@ a.btn.primary{color:#fff}
 .hide-es .note .es{filter:blur(5px);cursor:pointer;transition:filter .15s}
 .hide-es .note .es.show{filter:none}
 .tabbar-inner{grid-template-columns:repeat(5,1fr)}
+
+/* v5 · escuchar y hablar */
+.tabbar-inner{grid-template-columns:repeat(6,1fr)}
+.tab{font-size:10px;letter-spacing:-.01em}
+.tab svg{width:23px;height:23px}
+.gapw{display:inline-block;min-width:3.2em;border-bottom:2px solid var(--accent);color:var(--accent);cursor:pointer;text-align:center;font-weight:700}
+.gapw.shown{border-bottom-color:var(--good);color:var(--good)}
+.vwrap{position:relative;width:100%;padding-top:56.25%;border-radius:14px;overflow:hidden;background:#000;margin-top:10px}
+.vwrap iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.hfnow{min-height:140px;display:flex;flex-direction:column;justify-content:center;gap:6px}
+.hfnow .term{font-size:26px}
+.note.off{opacity:.55}
+.rpopts{display:flex;flex-direction:column;gap:8px;margin:4px 0 10px}
+.rpopts .opt{text-align:left}
+.opt.meh{border-color:var(--warm);background:var(--warm-soft)}
+.wrongline{color:var(--bad);text-decoration:line-through;text-decoration-thickness:1px}
+.rightline{color:var(--good);font-weight:700}
+.q.wrongline{text-decoration:none}
+.rec.small{width:60px;height:60px;margin:6px auto}
+.rec.small svg{width:26px;height:26px}
+.steps{padding-left:20px;margin:8px 0 12px;line-height:1.55}
+.steps li{margin-bottom:4px}
+.chat{display:flex;flex-direction:column;gap:8px;margin:12px 0;min-height:40vh}
+.bub{max-width:86%;padding:10px 13px;border-radius:16px;font-size:16px;line-height:1.45;background:var(--surface2)}
+.bub.ai{align-self:flex-start;border-bottom-left-radius:5px;font-family:var(--serif);font-size:16.5px;cursor:pointer}
+.bub.me{align-self:flex-end;background:var(--accent);color:#fff;border-bottom-right-radius:5px}
+.bub.typing{opacity:.6;font-style:italic}
+.bub.err{background:var(--bad-soft);font-family:inherit;font-size:14px}
+.bub.help{background:var(--warm-soft);font-family:inherit;font-size:15px}
+.chatbar{position:sticky;bottom:calc(70px + var(--safe-bottom));display:flex;gap:8px;align-items:center;background:var(--bg);padding:6px 0}
+.chatbar .rec.small{width:46px;height:46px;margin:0;flex:none}
+.chatbar .rec.small svg{width:22px;height:22px}
+.chatbar .textarea{min-height:46px;height:46px;resize:none;padding:11px 12px;flex:1}
+.aifb .eyebrow{margin:14px 0 6px}
+.fbi{padding:8px 0;border-top:1px solid var(--line)}
+.fbi:first-of-type{border-top:none}
+.seg.dmode{margin-bottom:10px}
+.feedback.meh{background:var(--warm-soft)}

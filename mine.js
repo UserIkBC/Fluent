@@ -53,10 +53,14 @@ function setName(key) {
   if (SETS[key]) return SETS[key].name;
   if (key.startsWith('label:')) { const L = LABELS.find(x => x.id === key.slice(6)); return L ? 'Etiqueta · ' + L.name : 'Etiqueta'; }
   if (key.startsWith('list:')) { const L = LISTS.find(x => x.id === key.slice(5)); return L ? 'Lista · ' + L.name : 'Lista'; }
+  if (key.startsWith('cat:')) return (LIB_CATS[key.slice(4)] || {}).name || 'Categoría';
+  if (key.startsWith('phr:')) return 'Phrasal verbs con ' + key.slice(6);
   return key;
 }
 function setItems(key) {
   if (key === 'mine') return NOTES.slice();
+  if (key.startsWith('cat:')) return LIB.filter(x => x.cat === key.slice(4));
+  if (key.startsWith('phr:')) return typeof phrasalGroup === 'function' ? phrasalGroup(key.slice(4)) : [];
   if (key.startsWith('list:')) { const L = LISTS.find(x => x.id === key.slice(5)); return L ? L.items.map(itemById).filter(Boolean) : []; }
   if (key.startsWith('label:')) { const l = key.slice(6); return Object.keys(MARKS).filter(id => (MARKS[id].labels || []).includes(l)).map(itemById).filter(Boolean); }
   const s = SETS[key]; if (!s) return [];
@@ -240,6 +244,7 @@ function rowClicks(rerender) {
   return e => {
     const mk = e.target.closest('[data-mark]'); if (mk) { openMarkSheet(mk.dataset.mark, rerender); return; }
     if (base(e)) return;
+    const dt = e.target.closest('.note[data-id] .term'); if (dt && typeof openDetail === 'function' && LIB_BY_ID[dt.closest('.note').dataset.id]) { openDetail(dt.closest('.note').dataset.id); return; }
     const o = e.target.closest('[data-open]'); if (o) { const n = NOTES.find(x => x.id === o.dataset.open); if (n) openNoteEditor(n); }
     const es = e.target.closest('.es'); if (es && document.body.classList.contains('hide-es')) es.classList.toggle('show');
   };

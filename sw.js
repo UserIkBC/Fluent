@@ -1,10 +1,12 @@
 /* Service worker: guarda la app para que abra rápido y funcione sin conexión.
    Todo el contenido va incluido en la app. */
-const CACHE = 'fluent-v4.0.2';
+const CACHE = 'fluent-v5.0.0';
 const SHELL = ['./', 'index.html', 'styles.css', 'config.js', 'app.js', 'mine.js', 'sync.js', 'data.js', 'manifest.webmanifest',
   'content/vocab_general.js', 'content/vocab_general2.js', 'content/vocab_general3.js', 'content/vocab_expr.js', 'content/vocab_expr2.js',
   'content/vocab_legal.js', 'content/vocab_legal2.js', 'content/grammar.js', 'content/grammar2.js', 'content/situations.js', 'content/situations2.js',
   'content/readings.js', 'content/readings2.js', 'content/pronunciation.js',
+  'content/phrasal3.js', 'content/chunks.js', 'content/slang.js', 'content/native.js', 'content/story.js', 'content/dialogues.js', 'content/connected.js',
+  'content/roleplays.js', 'content/placement.js', 'content/monthly.js', 'listen.js', 'speak.js', 'extras.js',
   'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png'];
 
 self.addEventListener('install', e => {
