@@ -180,7 +180,7 @@ function showText(t) {
     ${t.sub ? `<p class="art-stand">${esc(t.sub)}</p>` : ''}
     ${t.byline ? `<p class="meta" style="margin:-4px 0 10px">${esc(t.byline)}${t.date ? ' · ' + esc(t.date) : ''}</p>` : ''}
     <div class="kpct"><div class="kbar"><i style="width:${pct}%"></i></div><span id="kpctTxt">Conoces el ${pct}% de las palabras</span></div>
-    <div class="player sticky" id="rPlayer">
+    <div class="player" id="rPlayer">
       <button class="iconbtn" id="pPrev" aria-label="Frase anterior">${IC.prev}</button>
       <button class="iconbtn main" id="pPlay" aria-label="Escuchar">${IC.play}</button>
       <button class="iconbtn" id="pNext" aria-label="Frase siguiente">${IC.next}</button>
@@ -189,7 +189,7 @@ function showText(t) {
     </div>
     <div class="seg rmode" id="rMode"><button data-m="read" class="on">Leer</button><button data-m="sent">Frase a frase</button><button data-m="hide">Sin texto</button></div>
     <div id="sentBar" class="sentbar hidden"></div>
-    <div class="art-body ${S.colorWords === false ? 'nocolor' : ''}" id="artBody">${paras.map((p, i) => p.head ? `<h3 data-pi="${i}">${paraHTML(p, i)}</h3>` : `<p data-pi="${i}">${paraHTML(p, i)}</p>`).join('')}</div>
+    <div class="art-body ${S.colorWords === true ? '' : 'nocolor'}" id="artBody">${paras.map((p, i) => p.head ? `<h3 data-pi="${i}">${paraHTML(p, i)}</h3>` : `<p data-pi="${i}">${paraHTML(p, i)}</p>`).join('')}</div>
     ${t.credit ? `<p class="meta" style="margin-top:14px">${t.credit}</p>` : ''}
     <div class="art-end">
       <button class="btn primary block" id="doneBtn">${prog && prog.done ? '✓ Ya lo has terminado' : 'He terminado ✓'}</button>
@@ -246,8 +246,8 @@ function bindReader() {
     const me = RPLAY;
     TTS.speak(ART.sents[i].s, { onend: () => { if (RPLAY !== me || !me.playing) return; if (cont && mode !== 'sent') setTimeout(() => { if (RPLAY === me && me.playing) playSent(i + 1, true); }, 200); else { me.playing = false; $('#pPlay').innerHTML = IC.play; } } });
   };
-  const stop = () => { if (!RPLAY) return; RPLAY.playing = false; TTS.stop(); $('#pPlay').innerHTML = IC.play; };
-  const start = (i, cont = true) => { RPLAY.playing = true; $('#pPlay').innerHTML = IC.pause; playSent(i, cont); };
+  const stop = () => { if (!RPLAY) return; RPLAY.playing = false; TTS.stop(); $('#pPlay').innerHTML = IC.play; $('#rPlayer').classList.remove('sticky'); };
+  const start = (i, cont = true) => { RPLAY.playing = true; $('#rPlayer').classList.add('sticky'); $('#pPlay').innerHTML = IC.pause; playSent(i, cont); };
   $('#pPlay').onclick = () => { if (RPLAY.playing) stop(); else start(RPLAY.i, mode !== 'sent'); };
   $('#pPrev').onclick = () => { const i = Math.max(0, RPLAY.i - 1); if (RPLAY.playing || mode === 'sent') start(i, mode !== 'sent'); else { RPLAY.i = i; hlSent(i, true); } };
   $('#pNext').onclick = () => { const i = Math.min(ART.sents.length - 1, RPLAY.i + 1); if (RPLAY.playing || mode === 'sent') start(i, mode !== 'sent'); else { RPLAY.i = i; hlSent(i, true); } };

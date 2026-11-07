@@ -123,7 +123,7 @@ function renderSettings() {
     </div>
     <div class="h2">Lectura</div>
     <div class="card set-group">
-      ${sw('sColor', 'Colorear las palabras según las conozcas', S.colorWords !== false)}
+      ${sw('sColor', 'Colorear las palabras según las conozcas y subrayar expresiones (normalmente el texto sale limpio)', S.colorWords === true)}
       ${sw('sAutoK', 'Al terminar un texto, dar por conocidas las palabras azules que no he tocado', S.autoKnown)}
       ${sw('sSentHide', 'En «Frase a frase», ocultar el texto hasta que lo pida', S.sentHide)}
       <label class="lbl">Tamaño de letra de las lecturas · <span id="sSizeV">${S.readSize}</span> px</label><input type="range" id="sSize" min="15" max="28" step="1" value="${S.readSize}" style="width:100%">

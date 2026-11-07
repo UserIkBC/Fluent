@@ -444,3 +444,6 @@ a.btn.primary{color:#fff}
 .rightline{color:var(--good);font-weight:700}
 .seg.mini{width:100%;box-sizing:border-box}
 .plan .seg.mini button{white-space:nowrap}
+.art-body.nocolor .w.ph{text-decoration:none}
+.art-body.nocolor .w{cursor:text}
+.art-body p{margin:0 0 1.05em}
