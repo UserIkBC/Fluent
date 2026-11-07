@@ -4,7 +4,7 @@
    Todo funciona sin cuenta. Con cuenta, el progreso se guarda
    también en internet y se mezcla entre dispositivos.
    ========================================================== */
-const SYNC_KEYS = ['notes', 'learn', 'gprog', 'stats', 'history', 'marks', 'labels', 'lists', 'nb', 'tombs', 'settings', 'texts', 'videos'];
+const SYNC_KEYS = ['notes', 'learn', 'gprog', 'stats', 'history', 'marks', 'labels', 'lists', 'nb', 'tombs', 'settings', 'texts', 'videos', 'words', 'reads', 'pods'];
 const FB_VER = '10.12.2';
 const SYNC = { user: null, ready: false, applying: false, dirty: false, timer: null, lastSync: store.get('lastSync', 0), busy: false, error: '' };
 const cfg = () => (window.FLUENT_CONFIG && window.FLUENT_CONFIG.firebase) || null;
@@ -40,7 +40,7 @@ async function fbInit() {
 
 /* ---------- estado local ---------- */
 function snapshot() {
-  return { notes: NOTES, learn: LEARN, gprog: GPROG, stats: STATS, history: HISTORY, marks: MARKS, labels: LABELS, lists: LISTS, nb: NB, tombs: TOMBS, settings: S, texts: window.TEXTS || [], videos: typeof VIDEOS !== 'undefined' ? VIDEOS : [] };
+  return { notes: NOTES, learn: LEARN, gprog: GPROG, stats: STATS, history: HISTORY, marks: MARKS, labels: LABELS, lists: LISTS, nb: NB, tombs: TOMBS, settings: S, texts: window.TEXTS || [], videos: typeof VIDEOS !== 'undefined' ? VIDEOS : [], words: WORDS, reads: READS, pods: typeof PODS !== 'undefined' ? PODS : [] };
 }
 const ts = o => (o && (o.upd || o.created || o.added)) || 0;
 function mergeArr(a = [], b = [], tombs = {}) {
@@ -63,7 +63,7 @@ function merge(L, R) {
   const hist = mergeArr(L.history, R.history).sort((a, b) => (b.readAt || 0) - (a.readAt || 0));
   const markTomb = Object.assign({ prefix: 'mark:' }, tombs);
   return {
-    notes: mergeArr(L.notes, R.notes, tombs), lists: mergeArr(L.lists, R.lists, tombs), nb: mergeArr(L.nb, R.nb, tombs), labels: mergeArr(L.labels, R.labels, tombs), texts: mergeArr(L.texts, R.texts, tombs), videos: mergeArr(L.videos, R.videos, tombs),
+    notes: mergeArr(L.notes, R.notes, tombs), lists: mergeArr(L.lists, R.lists, tombs), nb: mergeArr(L.nb, R.nb, tombs), labels: mergeArr(L.labels, R.labels, tombs), texts: mergeArr(L.texts, R.texts, tombs), videos: mergeArr(L.videos, R.videos, tombs), pods: mergeArr(L.pods, R.pods, tombs), reads: mergeMap(L.reads, R.reads), words: (() => { const w = Object.assign({}, R.words || {}); for (const k in (L.words || {})) w[k] = w[k] == null ? L.words[k] : Math.max(w[k], L.words[k]); return w; })(),
     learn: mergeMap(L.learn, R.learn), marks: mergeMap(L.marks, R.marks, markTomb), gprog, stats, history: hist, tombs,
     settings: ((R.settings || {})._upd || 0) > ((L.settings || {})._upd || 0) ? Object.assign({}, L.settings, R.settings) : L.settings
   };
@@ -71,11 +71,11 @@ function merge(L, R) {
 function applyState(st) {
   SYNC.applying = true;
   try {
-    NOTES = st.notes; LEARN = st.learn; GPROG = st.gprog; STATS = st.stats; HISTORY = st.history; MARKS = st.marks; LABELS = st.labels; LISTS = st.lists; NB = st.nb; TOMBS = st.tombs; window.TEXTS = st.texts || []; if (typeof VIDEOS !== 'undefined') VIDEOS = st.videos || [];
+    NOTES = st.notes; LEARN = st.learn; GPROG = st.gprog; STATS = st.stats; HISTORY = st.history; MARKS = st.marks; LABELS = st.labels; LISTS = st.lists; NB = st.nb; TOMBS = st.tombs; window.TEXTS = st.texts || []; if (typeof VIDEOS !== 'undefined') VIDEOS = st.videos || []; if (typeof PODS !== 'undefined') PODS = st.pods || []; WORDS = st.words || {}; READS = st.reads || {}; WVER++;
     S = Object.assign({}, DEFAULT_SETTINGS, st.settings || {}); S.mix = Object.assign({}, DEFAULT_SETTINGS.mix, S.mix || {}); S.home = Object.assign({}, DEFAULT_SETTINGS.home, S.home || {});
     LIB.forEach(x => { x.srs = LEARN[x.id] || null; });
     store.set('notes', NOTES); store.set('learn', LEARN); store.set('gprog', GPROG); store.set('stats', STATS); store.set('history', HISTORY);
-    store.set('marks', MARKS); store.set('labels', LABELS); store.set('lists', LISTS); store.set('nb', NB); store.set('tombs', TOMBS); store.set('settings', S); store.set('texts', window.TEXTS); store.set('videos', st.videos || []);
+    store.set('marks', MARKS); store.set('labels', LABELS); store.set('lists', LISTS); store.set('nb', NB); store.set('tombs', TOMBS); store.set('settings', S); store.set('texts', window.TEXTS); store.set('videos', st.videos || []); store.set('pods', st.pods || []); store.set('words', WORDS); store.set('reads', READS);
   } finally { SYNC.applying = false; }
   applyTheme(); buildPool(); updateBadge(); renderStreak();
 }

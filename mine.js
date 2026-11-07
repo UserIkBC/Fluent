@@ -133,7 +133,7 @@ function toggleInList(listId, itemId) {
 }
 
 /* ---------- ficha completa de palabra ---------- */
-function openNoteEditor(n) {
+function openNoteEditor(n, after) {
   const isNew = !n || !n.id || !NOTES.some(x => x.id === n.id);
   n = Object.assign({ term: '', cat: 'word', es: '', def: '', ex: '', exs: '', syn: '', ant: '', pron: '', note: '', src: '' }, n || {});
   const m = n.id ? mark(n.id) : {};
@@ -214,7 +214,7 @@ function openNoteEditor(n) {
       saveNotes();
       setMark(id, { fav: em.fav, st: em.st, hard: em.hard, labels: selLabels });
       LISTS.forEach(L => { const has = L.items.includes(id), want = selLists.includes(L.id); if (has !== want) toggleInList(L.id, id); });
-      closeSheet(); toast(isNew ? 'Guardada en Mío' : 'Ficha actualizada'); refreshMine();
+      closeSheet(); toast(isNew ? 'Guardada en tus palabras' : 'Ficha actualizada'); refreshMine(); if (after) after(); if (typeof PHR_INDEX !== 'undefined') PHR_INDEX = null;
     };
     if (isNew && !n.term) setTimeout(() => $('#nTerm').focus(), 250);
   });
@@ -228,7 +228,7 @@ function deleteNote(id) {
 function refreshMine() {
   const h = location.hash;
   if (h.startsWith('#mine') || h.startsWith('#list') || h.startsWith('#set')) route();
-  else if (h.startsWith('#read/')) markKnown();
+  else if (h.startsWith('#r/') && typeof paintStatuses === 'function') { PHR_INDEX = null; paintStatuses(); paintPhrases(); updatePct(); }
   else if (h.startsWith('#lib') || h.startsWith('#legal')) route();
 }
 
@@ -257,6 +257,7 @@ function renderMine(arg) {
   const t = mineState.tab;
   $('#view').innerHTML = `
     <div class="row"><div class="h1 grow">Mío</div><span class="muted" id="syncMini" style="font-size:12px"></span></div>
+    <div class="row wrap" style="gap:6px;margin:-4px 0 12px"><a class="btn small" href="#progress">${ico('chart', 14)} Progreso</a><a class="btn small" href="#history">Leídos</a><a class="btn small" href="#texts">Mis textos</a><a class="btn small" href="#videos">Mis vídeos</a><a class="btn small" href="#settings">${ico('gear', 14)} Ajustes</a></div>
     <div class="seg">${[['words', 'Palabras'], ['lists', 'Listas'], ['nb', 'Cuaderno'], ['marks', 'Marcas']].map(([k, v]) => `<button class="${t === k ? 'on' : ''}" data-tab="${k}">${v}</button>`).join('')}</div>
     <div id="mineBody"></div>`;
   $$('.seg button').forEach(b => b.onclick = () => { history.replaceState(null, '', '#mine/' + b.dataset.tab); mineState.tab = b.dataset.tab; renderMine(); });
@@ -409,3 +410,9 @@ function renderSet(key) {
     ${items.length ? `<div class="card">${items.map(anyRow).join('')}</div>` : '<div class="empty">Todavía no hay nada aquí.</div>'}`;
   $('#view').onclick = rowClicks(() => renderSet(key));
 }
+
+addRoute('mine', renderMine, 'mine', 'Mío');
+addRoute('notes', renderMine, 'mine', 'Mío');
+addRoute('list', renderList, 'mine', 'Mis listas');
+addRoute('nb', renderNB, 'mine', 'Cuaderno');
+addRoute('set', renderSet, 'mine', 'Marcas');

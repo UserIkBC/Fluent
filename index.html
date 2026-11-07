@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fluent · English</title>
-<meta name="description" content="Vocabulario, gramática, pronunciación e inglés jurídico">
+<meta name="description" content="Lee, escucha y aprende inglés de verdad">
 <meta name="theme-color" content="#f5f2ec" media="(prefers-color-scheme: light)">
 <meta name="theme-color" content="#0e1319" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -37,30 +37,11 @@
 
 <nav class="tabbar">
   <div class="tabbar-inner">
-    <button class="tab" data-tab="home">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1z"/></svg>
-      Hoy
-    </button>
-    <button class="tab" data-tab="learn">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5M19 17H6a2 2 0 00-2 2"/></svg>
-      Aprender
-    </button>
-    <button class="tab" data-tab="listen">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-2a9 9 0 0118 0v2"/><path d="M21 15a2 2 0 01-2 2h-1v-6h1a2 2 0 012 2zM3 15a2 2 0 002 2h1v-6H5a2 2 0 00-2 2z"/></svg>
-      Escuchar
-    </button>
-    <button class="tab" data-tab="speak">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="9" y="3" width="6" height="11" rx="3"/><path d="M5 11a7 7 0 0014 0M12 18v3"/></svg>
-      Hablar
-    </button>
-    <button class="tab" data-tab="practice">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M12 3l2.6 5.6 6 .7-4.5 4.1 1.2 6L12 16.4 6.7 19.4l1.2-6L3.4 9.3l6-.7z"/></svg>
-      <span>Practicar</span><span class="badge hidden" id="dueBadge"></span>
-    </button>
-    <button class="tab" data-tab="mine">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>
-      Mío
-    </button>
+    <button class="tab" data-tab="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7v9a1 1 0 01-1 1h-5v-6h-6v6H4a1 1 0 01-1-1z"/></svg>Hoy</button>
+    <button class="tab" data-tab="read"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5M19 17H6a2 2 0 00-2 2"/></svg>Leer</button>
+    <button class="tab" data-tab="listen"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M3 14v-2a9 9 0 0118 0v2"/><path d="M21 15a2 2 0 01-2 2h-1v-6h1a2 2 0 012 2zM3 15a2 2 0 002 2h1v-6H5a2 2 0 00-2 2z"/></svg>Escuchar</button>
+    <button class="tab" data-tab="words"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 012 2v12"/></svg><span>Palabras</span><span class="badge hidden" id="dueBadge"></span></button>
+    <button class="tab" data-tab="mine"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round"><path d="M6 3h12v18l-6-4-6 4z"/></svg>Mío</button>
   </div>
 </nav>
 
@@ -90,15 +71,23 @@
 <script src="content/story.js"></script>
 <script src="content/dialogues.js"></script>
 <script src="content/connected.js"></script>
-<script src="content/roleplays.js"></script>
-<script src="content/placement.js"></script>
+<script src="content/freq.js"></script>
+<script src="content/books/index.js"></script>
+<script src="content/texts/index.js"></script>
+<script src="content/texts/t01.js"></script>
+<script src="content/texts/t02.js"></script>
+<script src="content/texts/t03.js"></script>
+<script src="content/texts/t04.js"></script>
+<script src="content/texts/t05.js"></script>
 <script src="content/monthly.js"></script>
-<script src="data.js"></script>
-<script src="app.js"></script>
-<script src="mine.js"></script>
+<script src="core.js"></script>
+<script src="reader.js"></script>
+<script src="library.js"></script>
+<script src="exercises.js"></script>
+<script src="vocab.js"></script>
 <script src="listen.js"></script>
-<script src="speak.js"></script>
-<script src="extras.js"></script>
+<script src="home.js"></script>
+<script src="mine.js"></script>
 <script src="sync.js"></script>
 </body>
 </html>
