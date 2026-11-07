@@ -9,15 +9,16 @@ const _route = route;
 /* textos elegidos para hoy (estables durante el día) */
 function todayPicks() {
   const k = 'picks:' + dayKey();
-  let p = store.get('picks', {});
+  let p = store.get('picks2', {});
   if (p.d === dayKey() && p.read && origById(p.read) && origById(p.listen)) return p;
   const all = allTexts().filter(t => t.src === 'orig');
   const unread = all.filter(t => !(READS[t.id] && READS[t.id].done));
   const pool = unread.length > 4 ? unread : all;
-  const reads = recommend(pool.filter(t => wordCount(t.body) >= 250), 3);
+  const longs = pool.filter(t => wordCount(t.body) >= 2500);
+  const reads = recommend(longs.length >= 2 ? longs : pool.filter(t => wordCount(t.body) >= 250), 3);
   const listens = recommend(pool.filter(t => !reads.includes(t) && wordCount(t.body) < 900 && t.kind !== 'Mensajes'), 3);
   p = { d: dayKey(), read: (reads[0] || pool[0] || {}).id, read2: (reads[1] || {}).id, listen: (listens[0] || pool[1] || {}).id };
-  store.set('picks', p);
+  store.set('picks2', p);
   return p;
 }
 function sessionSteps() {
@@ -27,7 +28,7 @@ function sessionSteps() {
   const tr = id => { const x = id && origById(id); return x ? x.title : ''; };
   const steps = [
     { k: 'rev', ic: 'cards', t: 'Repasa tus tarjetas', d: due ? due + ' pendientes · con la frase donde encontraste cada palabra' : 'Al día', href: '#ex/review', done: !due || (t.rev || 0) >= 60, min: Math.min(15, Math.ceil(due / 4)) },
-    { k: 'read', ic: 'book', t: 'Lectura del día', d: tr(p.read), href: '#r/' + p.read, done: rd(p.read), min: 10 },
+    { k: 'read', ic: 'book', t: 'Lectura del día', d: tr(p.read), href: '#r/' + p.read, done: rd(p.read), min: p.read && origById(p.read) ? readMin(origById(p.read).body) : 20 },
     { k: 'listen', ic: 'ear', t: 'Escucha en 3 pasadas', d: tr(p.listen), href: '#r/' + p.listen, mode: 'hide', done: rd(p.listen) || (t.lsec || 0) >= (long ? 900 : 420), min: 10 }
   ];
   if (long) {

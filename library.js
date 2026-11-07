@@ -49,7 +49,7 @@ function textCard(t) {
   const r = READS[t.id];
   const pct = t.body ? cachedPct(t) : null;
   const words = t.body ? wordCount(t.body) : t.words || 0;
-  return `<a class="story" href="#r/${esc(t.id)}"><div class="meta"><span class="tag ${t.topic === 'law' ? 'warm' : ''}">${esc(t.kind || '')}</span>${t.topic && TOPIC_NAMES[t.topic] ? `<span>${esc(TOPIC_NAMES[t.topic])}</span>` : ''}${words ? `<span>${Math.max(1, Math.round(words / 220))} min</span>` : ''}${pct != null ? `<span class="pctchip ${pct >= 95 ? 'hi' : pct >= 88 ? 'mid' : 'lo'}">${pct}%</span>` : ''}${r && r.done ? '<span class="read-badge">✓ Leído</span>' : r && r.pct ? `<span class="read-badge">${r.pct}%</span>` : ''}</div><h3>${esc(t.title)}</h3>${t.sub ? `<p class="trail">${esc(t.sub)}</p>` : ''}</a>`;
+  return `<a class="story" href="#r/${esc(t.id)}"><div class="meta"><span class="tag ${t.topic === 'law' ? 'warm' : ''}">${esc(t.kind || '')}</span>${t.topic && TOPIC_NAMES[t.topic] ? `<span>${esc(TOPIC_NAMES[t.topic])}</span>` : ''}${words ? `<span>${Math.max(1, Math.round(words / 160))} min</span>` : ''}${pct != null ? `<span class="pctchip ${pct >= 95 ? 'hi' : pct >= 88 ? 'mid' : 'lo'}">${pct}%</span>` : ''}${r && r.done ? '<span class="read-badge">✓ Leído</span>' : r && r.pct ? `<span class="read-badge">${r.pct}%</span>` : ''}</div><h3>${esc(t.title)}</h3>${t.sub ? `<p class="trail">${esc(t.sub)}</p>` : ''}</a>`;
 }
 
 /* ==========================================================
@@ -91,14 +91,14 @@ function nextInSeries(t) { if (!t.series) return true; const prev = allTexts().f
 function recommend(list, n) {
   const fav = new Set(S.topics || []);
   list = list.filter(nextInSeries);
-  const scored = list.map(t => { const p = cachedPct(t); let sc = 0; if (p >= 88 && p <= 98) sc += 3; else if (p > 98) sc += 1; if (fav.has(t.topic)) sc += 2; sc += Math.random() * 1.5; return [sc, t]; });
+  const scored = list.map(t => { const p = cachedPct(t); let sc = 0; const wc = wordCount(t.body); if (wc >= 2500) sc += 4; else if (wc >= 1200) sc += 2; if (p >= 88 && p <= 98) sc += 3; else if (p > 98) sc += 1; if (fav.has(t.topic)) sc += 2; sc += Math.random() * 1.5; return [sc, t]; });
   const seen = new Set(); const out = [];
   scored.sort((a, b) => b[0] - a[0]).forEach(([, t]) => { if (out.length < n && !seen.has(t.kind)) { seen.add(t.kind); out.push(t); } });
   return out;
 }
 
 /* lista de textos Fluent con filtros */
-let olState = { sort: 'rec', hideRead: false };
+let olState = { sort: 'long', hideRead: false };
 function renderOrigList(arg) {
   const filt = arg || '';
   let base = allTexts().filter(t => t.src === 'orig');
@@ -151,7 +151,7 @@ async function gFetch(path) {
   const c = { d: dayKey(), n: gCalls() + 1 }; store.set('gcalls', c);
   let r;
   try { r = await fetch(G_API + path + (path.includes('?') ? '&' : '?') + 'api-key=' + encodeURIComponent(S.guardianKey)); }
-  catch (e) { throw new Error('Sin conexión con The Guardian.'); }
+  catch (e) { throw new Error('No he podido conectar con The Guardian. Comprueba la conexión y que la clave de Ajustes esté bien copiada.'); }
   if (r.status === 401 || r.status === 403) throw new Error('La clave del Guardian no es válida. Revísala en Ajustes.');
   if (r.status === 429) throw new Error('Has llegado al límite de 500 artículos de hoy del Guardian. Mañana se renueva; mientras tanto tienes los textos Fluent, Wikipedia y las novelas.');
   if (!r.ok) throw new Error('The Guardian no responde ahora mismo (error ' + r.status + ').');
@@ -193,7 +193,7 @@ async function renderGuardian(arg) {
 function gCard(x) {
   const id = 'g:' + x.id; const r = READS[id]; const f = x.fields || {};
   const kind = /commentisfree/.test(x.id) ? 'Opinión' : x.sectionName;
-  return `<a class="story" href="#r/${esc(id)}"><div class="meta"><span class="tag">${esc(kind)}</span>${f.wordcount ? `<span>${Math.max(1, Math.round(f.wordcount / 220))} min</span>` : ''}<span>${new Date(x.webPublicationDate).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}</span>${r && r.done ? '<span class="read-badge">✓ Leído</span>' : r && r.pct ? `<span class="read-badge">${r.pct}%</span>` : ''}</div><h3>${esc(x.webTitle)}</h3>${f.trailText ? `<p class="trail">${esc(stripTags(f.trailText))}</p>` : ''}</a>`;
+  return `<a class="story" href="#r/${esc(id)}"><div class="meta"><span class="tag">${esc(kind)}</span>${f.wordcount ? `<span>${Math.max(1, Math.round(f.wordcount / 160))} min</span>` : ''}<span>${new Date(x.webPublicationDate).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' })}</span>${r && r.done ? '<span class="read-badge">✓ Leído</span>' : r && r.pct ? `<span class="read-badge">${r.pct}%</span>` : ''}</div><h3>${esc(x.webTitle)}</h3>${f.trailText ? `<p class="trail">${esc(stripTags(f.trailText))}</p>` : ''}</a>`;
 }
 function htmlToParas(html) {
   const doc = new DOMParser().parseFromString('<div>' + html + '</div>', 'text/html');
@@ -262,7 +262,7 @@ async function wikiArticle(title) {
   title = decodeURIComponent(title);
   let c = await BIG.get('w:' + title);
   if (!c) {
-    const j = await wikiJSON(WIKI + '/w/api.php?action=query&prop=extracts|description&explaintext=1&exsectionformat=wikitext&redirects=1&format=json&origin=*&titles=' + encodeURIComponent(title));
+    const j = await wikiJSON(WIKI + '/w/api.php?action=query&prop=extracts|description&explaintext=1&exsectionformat=wiki&redirects=1&format=json&origin=*&titles=' + encodeURIComponent(title));
     const pg = Object.values(j.query.pages)[0];
     if (!pg || pg.missing != null || !pg.extract) throw new Error('No encuentro ese artículo en Wikipedia.');
     c = { title: pg.title, sub: pg.description || '', text: pg.extract };
@@ -308,7 +308,7 @@ async function renderBook(bid) {
   try {
     const b = await getBook(bid);
     $('#view').innerHTML = `<div class="eyebrow">${esc(meta.author)} · ${meta.year}</div><div class="h1">${esc(meta.title)}</div><p class="sub">${esc(meta.desc)}</p>
-      <div class="card list-card">${b.chapters.map((c, i) => { const r = READS['b:' + bid + ':' + i]; return `<a class="story" href="#r/b:${bid}:${i}"><div class="meta"><span>${i + 1}</span><span>${Math.max(1, Math.round(c.w / 220))} min</span>${r && r.done ? '<span class="read-badge">✓ Leído</span>' : r && r.pct ? `<span class="read-badge">${r.pct}%</span>` : ''}</div><h3>${esc(c.title)}</h3></a>`; }).join('')}</div>`;
+      <div class="card list-card">${b.chapters.map((c, i) => { const r = READS['b:' + bid + ':' + i]; return `<a class="story" href="#r/b:${bid}:${i}"><div class="meta"><span>${i + 1}</span><span>${Math.max(1, Math.round(c.w / 160))} min</span>${r && r.done ? '<span class="read-badge">✓ Leído</span>' : r && r.pct ? `<span class="read-badge">${r.pct}%</span>` : ''}</div><h3>${esc(c.title)}</h3></a>`; }).join('')}</div>`;
   } catch (e) { $('#view').innerHTML = `<div class="card pad empty">${esc(e.message)}</div>`; }
 }
 async function bookChapter(key) {

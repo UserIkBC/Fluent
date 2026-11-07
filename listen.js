@@ -59,7 +59,24 @@ function bindAudio(onEnd) {
 
 /* ---------- podcasts ---------- */
 const G_PODS = [['news/series/todayinfocus', 'Today in Focus', 'La gran historia del día, contada a fondo (The Guardian)'], ['news/series/the-audio-long-read', 'The Audio Long Read', 'Los reportajes largos del Guardian, leídos en voz alta'], ['politics/series/politicsweekly', 'Politics Weekly', 'Política británica explicada'], ['football/series/footballweekly', 'Football Weekly', 'Fútbol con mucho humor británico'], ['science/series/science', 'Science Weekly', 'Ciencia de actualidad'], ['books/series/books', 'Books', 'Libros y autores']];
-const SUGGESTED_FEEDS = [['https://feeds.npr.org/510318/podcast.xml', 'Up First (NPR)', 'Las noticias del día en 15 minutos (inglés americano)'], ['https://feeds.npr.org/510289/podcast.xml', 'Planet Money (NPR)', 'Economía contada con historias'], ['https://feeds.megaphone.fm/GLT5336643697', 'The Rest Is Politics', 'Alastair Campbell y Rory Stewart hablando de política']];
+const SUGGESTED_FEEDS = [
+  ['https://podcasts.files.bbci.co.uk/p02nq0gn.rss', 'Global News Podcast (BBC)', 'Las noticias del mundo, dos veces al día'],
+  ['https://podcasts.files.bbci.co.uk/p05299nl.rss', 'Newscast (BBC)', 'Actualidad británica comentada, con mucho inglés coloquial'],
+  ['https://podcasts.files.bbci.co.uk/p02nrtvg.rss', 'Best of Today (BBC Radio 4)', 'Las mejores entrevistas del programa de radio más influyente del Reino Unido'],
+  ['https://podcasts.files.bbci.co.uk/b006tgy1.rss', 'The Law Show (BBC Radio 4)', 'Derecho explicado con casos reales'],
+  ['https://podcasts.files.bbci.co.uk/b006sz6t.rss', 'The Bottom Line (BBC)', 'Directivos y empresas por dentro'],
+  ['https://podcasts.files.bbci.co.uk/p02tb8vq.rss', 'World Business Report (BBC)', 'Economía y negocios internacionales'],
+  ['https://podcasts.files.bbci.co.uk/b006qshd.rss', 'More or Less (BBC)', 'Los números detrás de las noticias'],
+  ['https://podcasts.files.bbci.co.uk/b006qykl.rss', 'In Our Time (BBC Radio 4)', 'Historia, ciencia y filosofía con expertos'],
+  ['https://podcasts.files.bbci.co.uk/p004t1hd.rss', 'Witness History (BBC)', 'La historia contada por quienes la vivieron'],
+  ['https://podcasts.files.bbci.co.uk/b006qnmr.rss', 'Desert Island Discs (BBC)', 'Grandes entrevistas a personajes famosos'],
+  ['https://podcasts.files.bbci.co.uk/p02pc9pj.rss', 'Friday Night Comedy (BBC Radio 4)', 'Humor británico de actualidad'],
+  ['https://podcasts.files.bbci.co.uk/p02nrsln.rss', 'Football Daily (BBC)', 'Fútbol cada día'],
+  ['https://podcasts.files.bbci.co.uk/p02nrsjn.rss', 'F1: Chequered Flag (BBC)', 'Fórmula 1'],
+  ['https://feeds.megaphone.fm/GLT5336643697', 'The Rest Is Politics', 'Alastair Campbell y Rory Stewart hablando de política'],
+  ['https://feeds.megaphone.fm/GLT4787413333', 'The Rest Is History', 'Historia contada con mucha gracia'],
+  ['https://feeds.simplecast.com/54nAGcIl', 'The Daily (New York Times)', 'Una noticia a fondo cada día (inglés americano)']
+];
 async function fetchFeed(url) {
   const tries = [url, 'https://api.allorigins.win/raw?url=' + encodeURIComponent(url), 'https://corsproxy.io/?url=' + encodeURIComponent(url)];
   for (const u of tries) { try { const r = await fetch(u); if (r.ok) { const t = await r.text(); if (/<rss|<feed/i.test(t)) return t; } } catch (e) {} }

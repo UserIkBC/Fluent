@@ -67,7 +67,7 @@ function knownPct(body) {
   return tot ? Math.round(kn / tot * 100) : 100;
 }
 const wordCount = body => body.reduce((a, p) => a + (p.match(WORD_RE) || []).length, 0);
-const readMin = body => Math.max(1, Math.round(wordCount(body) / 220));
+const readMin = body => Math.max(1, Math.round(wordCount(body) / 160));
 
 /* ---------- traducción y diccionario ---------- */
 const TRC = store.get('trc', {});
