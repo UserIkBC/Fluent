@@ -8,8 +8,8 @@ window.ORIG = window.ORIG || [];
 window.TEXTS = store.get('texts', []);
 function saveTexts() { store.set('texts', window.TEXTS); POOL = []; }
 
-const KINDS = ['Opinión', 'Noticia explicada', 'Reportaje', 'Entrevista', 'Reseña', 'Perfil', 'Relato', 'Historia por capítulos', 'Despacho', 'Email', 'Mensajes', 'Foro', 'Carta', 'Guía', 'Diario', 'Discurso', 'Lectura'];
-const TOPIC_NAMES = { news: 'Actualidad', politics: 'Política', law: 'Derecho', business: 'Empresa y economía', sport: 'Deporte', culture: 'Cultura y ocio', science: 'Ciencia y tecnología', society: 'Sociedad', life: 'Vida diaria', history: 'Historia', travel: 'Viajes', food: 'Comida', work: 'Trabajo' };
+const KINDS = ['Ensayo', 'Opinión', 'Noticia explicada', 'Reportaje', 'Entrevista', 'Reseña', 'Perfil', 'Relato', 'Historia por capítulos', 'Despacho', 'Email', 'Mensajes', 'Foro', 'Carta', 'Guía', 'Diario', 'Discurso', 'Lectura'];
+const TOPIC_NAMES = { news: 'Actualidad', myth: 'Mitos y leyendas', ideas: 'Ideas y filosofía', mind: 'Mente y psicología', tech: 'Tecnología', nature: 'Naturaleza', mystery: 'Crímenes y misterios', politics: 'Política', law: 'Derecho', business: 'Empresa y economía', sport: 'Deporte', culture: 'Cultura y ocio', science: 'Ciencia y tecnología', society: 'Sociedad', life: 'Vida diaria', history: 'Historia', travel: 'Viajes', food: 'Comida', work: 'Trabajo' };
 
 /* textos Fluent normalizados */
 let _ALLT = null;
