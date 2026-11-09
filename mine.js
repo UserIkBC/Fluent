@@ -148,6 +148,7 @@ function openNoteEditor(n, after) {
     <select class="select" id="nCat">${Object.entries(NOTE_CATS).map(([k, v]) => `<option value="${k}" ${k === n.cat ? 'selected' : ''}>${v}</option>`).join('')}</select>
     <label class="lbl">Traducción al español</label>
     <div class="row"><input class="input grow" id="nEs" value="${esc(n.es)}" placeholder="descartar"><button class="btn small" id="nAutoTr" type="button">Traducir</button></div>
+    <div id="nSmart"></div>
     <label class="lbl">Definición en inglés</label>
     <div class="row"><input class="input grow" id="nDef" value="${esc(n.def)}" placeholder="to decide that something is not possible"><button class="btn small" id="nAutoDef" type="button">Buscar</button></div>
     <label class="lbl">Ejemplo principal</label>
@@ -190,7 +191,39 @@ function openNoteEditor(n, after) {
     };
     paintChips();
     $('#nSay').onclick = () => { const t = $('#nTerm').value.trim(); if (t) TTS.speak(t, { rate: 0.9 }); };
-    $('#nAutoTr').onclick = async () => { const t = $('#nTerm').value.trim(); if (!t) return; $('#nEs').value = 'Traduciendo…'; $('#nEs').value = await translate(t) || ''; if (!$('#nEs').value) toast('Sin conexión con el traductor'); };
+    /* ficha automática: traducción según el ejemplo, otros significados, definición y ejemplos reales */
+    let autoFor = '';
+    const autoFill = async force => {
+      const t = $('#nTerm').value.trim(); if (!t || (!force && autoFor === norm(t))) return; autoFor = norm(t);
+      const lib = LIB.find(x => norm(x.term) === norm(t));
+      if (!force && lib) { if (!$('#nEs').value) $('#nEs').value = lib.es; if (!$('#nDef').value) $('#nDef').value = lib.def; if (!$('#nEx').value) $('#nEx').value = lib.ex; }
+      const ctx = $('#nEx').value.trim();
+      const keepEs = !force && $('#nEs').value.trim();
+      if (!keepEs) $('#nEs').value = 'Traduciendo…';
+      $('#nSmart').innerHTML = '<div class="meta" style="margin-top:6px">Buscando la traducción más natural' + (ctx ? ' para tu ejemplo' : '') + '…</div>';
+      let r = null; try { r = await smartLookup(t, ctx); } catch (e) { r = null; }
+      if (norm($('#nTerm').value) !== norm(t)) return;
+      if (!r || !r.best) { if (!keepEs) $('#nEs').value = ''; $('#nSmart').innerHTML = ''; toast('Sin conexión con el traductor'); return; }
+      if (!keepEs) $('#nEs').value = r.best;
+      $('#nSmart').innerHTML = smartBoxHTML(r, $('#nEs').value);
+      $('#nSmart').onclick = e => { const c = e.target.closest('[data-tr]'); if (c) { $('#nEs').value = c.dataset.tr; $$('.trchip', $('#nSmart')).forEach(x => x.classList.toggle('on', x === c)); } };
+      if (!$('#nDef').value && r.def) $('#nDef').value = r.def;
+      if (!$('#nNote').value && r.note) $('#nNote').value = r.note;
+      const real = poolExamples(t, 3);
+      if (!$('#nEx').value) $('#nEx').value = r.ex || real.shift() || '';
+      else if (r.ex && !$('#nExs').value) $('#nExs').value = r.ex;
+      if (!$('#nExs').value && real.length) $('#nExs').value = real.filter(x => norm(x) !== norm($('#nEx').value)).slice(0, 2).join('\n');
+      if (!$('#nDef').value || !$('#nEx').value) {
+        const d = await lookupDef(termWords(t).length === 1 ? t : t.replace(/^to /, ''));
+        const df = d && d.meanings && d.meanings[0] && d.meanings[0].definitions[0];
+        if (df && !$('#nDef').value) $('#nDef').value = df.definition;
+        const dex = d && (d.meanings || []).flatMap(m => m.definitions || []).map(x => x.example).find(Boolean);
+        if (dex && !$('#nEx').value) $('#nEx').value = dex;
+      }
+    };
+    $('#nAutoTr').onclick = () => autoFill(true);
+    $('#nTerm').addEventListener('change', () => autoFill(false));
+    if (isNew && n.term) autoFill(false);
     $('#nAutoDef').onclick = async () => {
       const t = $('#nTerm').value.trim(); if (!t) return;
       const lib = LIB.find(x => norm(x.term) === norm(t)); if (lib) { $('#nDef').value = lib.def; if (!$('#nEx').value) $('#nEx').value = lib.ex; if (!$('#nEs').value) $('#nEs').value = lib.es; return; }

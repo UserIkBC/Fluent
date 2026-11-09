@@ -302,12 +302,13 @@ function finishText() {
 }
 
 /* ---------- panel de palabra ---------- */
-let WSEL = null;
+let WSEL = null, WSMART = null;
 function openWord(pi, ti) { WSEL = { p: pi, a: ti, b: ti }; paintWordSheet(true); }
 function selText() { const p = ART.paras[WSEL.p]; return p.text.slice(p.tokens[WSEL.a].s, p.tokens[WSEL.b].e); }
 function sentenceAt(pi, ti) { const pos = ART.paras[pi].tokens[ti].s; return ART.sents.find(s => s.p === pi && pos >= s.a && pos < s.b) || { s: ART.paras[pi].text }; }
 const ST_LABEL = { 0: 'Nueva', 1: 'Aprendiendo 1', 2: 'Aprendiendo 2', 3: 'Aprendiendo 3', 4: 'Casi la sé', 5: 'La sé', '-1': 'Ignorada' };
 function paintWordSheet(first) {
+  WSMART = null;
   const p = ART.paras[WSEL.p];
   const term = selText(); const single = WSEL.a === WSEL.b;
   const sent = sentenceAt(WSEL.p, WSEL.a);
@@ -328,7 +329,7 @@ function paintWordSheet(first) {
     </div>
     ${phr.length ? phr.map(x => `<div class="box phbox" data-phid="${esc(x.id)}"><div class="muted" style="font-size:12px;font-weight:700">EXPRESIÓN EN ESTA FRASE</div><div style="font-size:17px;font-weight:700">${esc(x.term)}</div><div>${esc(x.es || '')}</div>${x.def ? `<div class="muted" style="font-size:14px">${esc(x.def)}</div>` : ''}</div>`).join('') : ''}
     ${lib ? `<div class="box" style="background:var(--warm-soft)"><div style="font-weight:700">${esc(lib.es)}</div><div class="muted" style="font-size:14px">${esc(lib.def)}</div></div>` : ''}
-    <div class="box"><div class="muted" style="font-size:12px;font-weight:700;margin-bottom:3px">EN ESPAÑOL</div><div id="wTr" style="font-size:18px;font-weight:600">…</div></div>
+    <div class="box"><div class="muted" style="font-size:12px;font-weight:700;margin-bottom:3px">EN ESPAÑOL · según la frase</div><div id="wTr" style="font-size:18px;font-weight:600">…</div><div id="wSmart"></div></div>
     <div id="wDef"></div>
     ${single ? `<div class="stbar" id="wSt">${[0, 1, 2, 3, 4, 5, -1].map(v => `<button class="${v === st ? 'on' : ''} st${v === -1 ? 'i' : v}" data-st="${v}">${v === 0 ? 'Nueva' : v === 5 ? '✓ La sé' : v === -1 ? 'Ignorar' : v}</button>`).join('')}</div>` : ''}
     <label class="lbl">En contexto</label>
@@ -348,9 +349,18 @@ function paintWordSheet(first) {
     if ($('#wShrink', b)) $('#wShrink', b).onclick = () => { WSEL.b = Math.max(WSEL.a, WSEL.b - 1); paintWordSheet(); };
     if ($('#wSt', b)) $('#wSt', b).onclick = e => { const x = e.target.closest('[data-st]'); if (!x) return; setWord(term, +x.dataset.st); paintStatuses(); updatePct(); paintWordSheet(); };
     $$('.phbox', b).forEach(el => el.onclick = () => { const x = LIB_BY_ID[el.dataset.phid] || NOTES.find(n => n.id === el.dataset.phid); if (x && typeof openDetail === 'function' && x.lib) openDetail(x.id); });
-    if ($('#wSave', b)) $('#wSave', b).onclick = () => openNoteEditor({ term: single ? term.toLowerCase() : term, cat: guessCat(term), es: (lib && lib.es) || $('#wTr').dataset.tr || '', def: (lib && lib.def) || $('#wDef').dataset.def || '', ex: sent.s, src: ART.t.title, srcId: ART.t.id }, () => { if (single && wstatus(term) === 0) setWord(term, 1); paintStatuses(); updatePct(); });
+    if ($('#wSave', b)) $('#wSave', b).onclick = () => openNoteEditor({ term: single ? term.toLowerCase() : term, cat: guessCat(term), es: $('#wTr').dataset.tr || (lib && lib.es) || '', def: (lib && lib.def) || $('#wDef').dataset.def || (WSMART && WSMART.def) || '', ex: sent.s, exs: (WSMART && WSMART.ex) || '', note: (WSMART && WSMART.note) || '', src: ART.t.title, srcId: ART.t.id }, () => { if (single && wstatus(term) === 0) setWord(term, 1); paintStatuses(); updatePct(); });
     if ($('#wEdit', b)) $('#wEdit', b).onclick = () => openNoteEditor(existing);
-    translate(term).then(tr => { const el = $('#wTr'); if (!el || norm($('#wTerm').textContent) !== norm(term)) return; el.textContent = tr || 'Sin conexión con el traductor'; el.dataset.tr = tr || ''; });
+    const para = ART.paras[WSEL.p]; let marked = '';
+    if (sent.a != null) { const t0 = para.tokens[WSEL.a].s, t1 = para.tokens[WSEL.b].e; marked = para.text.slice(sent.a, t0).trimStart() + '[' + para.text.slice(t0, t1) + ']' + para.text.slice(t1, sent.b).trimEnd(); }
+    const stale = () => !$('#wTr') || norm($('#wTerm').textContent) !== norm(term);
+    const paintTr = (r, chosen) => { const el = $('#wTr'); el.textContent = chosen || 'Sin conexión con el traductor'; el.dataset.tr = chosen || ''; $('#wSmart').innerHTML = smartBoxHTML(r, chosen); };
+    (typeof smartLookup === 'function' ? smartLookup(term, sent.s, marked) : translate(term).then(t => ({ best: t, alts: [] }))).then(r => {
+      if (stale()) return; if (!r || !r.best) { paintTr(null, ''); return; }
+      WSMART = r; paintTr(r, r.best);
+      if (r.def && $('#wDef') && !$('#wDef').dataset.def) $('#wDef').dataset.def = r.def;
+      $('#wSmart').onclick = e => { const c = e.target.closest('[data-tr]'); if (!c) return; paintTr(r, c.dataset.tr); };
+    }).catch(() => { if (!stale()) paintTr(null, ''); });
     if (single) lookupDef(term).then(d => {
       const el = $('#wDef'); if (!el || norm($('#wTerm').textContent) !== norm(term) || !d) return;
       const phon = d.phonetic || (d.phonetics || []).map(x => x.text).find(Boolean) || '';

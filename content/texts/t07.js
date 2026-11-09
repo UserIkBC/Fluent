@@ -1,6 +1,6 @@
 /* Textos Fluent · lote 7 · mitos y relatos con mensaje (lecturas largas) */
 window.ORIG.push(
-{ id: 'lr-004', kind: 'Relato', topic: 'myth', title: 'The Man Who Stole Fire', sub: 'The myth of Prometheus, retold at length: a story about defiance, punishment and the price of giving people what they need.',
+{ id: "lr-004", kind: "Relato", topic: "myth", title: "The Man Who Stole Fire (1/2)", sub: "The myth of Prometheus, retold at length: a story about defiance, punishment and the price of giving people what they need.", series: "lr-004", chapter: 1, parts: 2,
 body: `Long before there were cities, before there were ploughs or ships or written words, the gods of Olympus looked down on the world and were mostly bored by it.
 
 The war that had put them on their thrones was over. Zeus, the youngest son of Cronus, had overthrown his father and the other Titans after ten long years of fighting, and he had divided the universe with his brothers as calmly as a farmer dividing a field. Poseidon took the sea, with its storms and its horses and its endless grey restlessness. Hades took the underworld, a kingdom no one envied him. Zeus kept the sky for himself, and with it the right to rule over everything else.
@@ -47,9 +47,9 @@ But it began with fire. And as he watched the humans gather around that first sm
 
 Zeus noticed the next evening.
 
-He was looking down from Olympus, as he often did at dusk, and instead of the familiar darkness spread across the land he saw small points of light, dozens of them, scattered across the hills and valleys like stars that had fallen to the ground. He knew at once what they were, and he knew at once who had done it, because there was only one god foolish enough or clever enough to try.
-
-He did not shout. That was what made the other gods afraid. He sent for Prometheus and asked him, very calmly, whether he had anything to say.
+He was looking down from Olympus, as he often did at dusk, and instead of the familiar darkness spread across the land he saw small points of light, dozens of them, scattered across the hills and valleys like stars that had fallen to the ground. He knew at once what they were, and he knew at once who had done it, because there was only one god foolish enough or clever enough to try.` },
+{ id: "lr-004-p2", kind: "Relato", topic: "myth", title: "The Man Who Stole Fire (2/2)", sub: "Parte 2 de 2. The myth of Prometheus, retold at length: a story about defiance, punishment and the price of giving people what they need.", series: "lr-004", chapter: 2, parts: 2,
+body: `He did not shout. That was what made the other gods afraid. He sent for Prometheus and asked him, very calmly, whether he had anything to say.
 
 "I gave them what they needed," said Prometheus. "Nothing more."
 
@@ -94,8 +94,7 @@ The story of Prometheus has never stopped being retold, because it seems to say 
 And perhaps that is why the myth still matters. We live in an age of extraordinary new fires: technologies that can cure diseases or destroy cities, machines that can write and calculate and learn, tools that connect the whole world and also fill it with noise. Every one of them raises the same questions that the old story asks. Who decides what knowledge should be shared? What is the price of giving people power, and what is the price of keeping it from them? Is hope a blessing that keeps us going, or an illusion that keeps us from facing the truth?
 
 The ancient Greeks did not answer those questions. They told the story instead, and trusted the people who heard it to keep thinking about it. That is, in the end, the oldest gift of all: not fire itself, but the habit of sitting around it at night, telling stories, and wondering what they mean.` },
-
-{ id: 'lr-005', kind: 'Relato', topic: 'life', title: 'The Clockmaker of Hollin Street', sub: 'A lonely craftsman, a stubborn boy and a broken watch that nobody else could fix. A long story about time, patience and what we owe to the people who teach us.',
+{ id: "lr-005", kind: "Relato", topic: "life", title: "The Clockmaker of Hollin Street (1/2)", sub: "A lonely craftsman, a stubborn boy and a broken watch that nobody else could fix. A long story about time, patience and what we owe to the people who teach us.", series: "lr-005", chapter: 1, parts: 2,
 body: `There was a clockmaker on Hollin Street for fifty-one years, and for the last twenty of them almost nobody went in.
 
 The shop was narrow, squeezed between a launderette and a place that sold phone cases, and its window was so crowded with clocks that it was hard to see inside. There were mantel clocks with brass feet and grandfather clocks with painted moons on their faces, cuckoo clocks from the Black Forest and railway clocks from stations that no longer existed, carriage clocks and alarm clocks and wristwatches laid out in velvet trays. Every one of them showed the correct time. That was the first thing people noticed, if they noticed anything at all. In a world where almost every clock in a shop window is either stopped or wrong, Arthur Pell's were always, perfectly, right.
@@ -162,9 +161,9 @@ Sami came back the following Saturday, and the one after that. Then he started c
 
 "He used to wind it every morning," Sami said one Wednesday, not looking up from the movement he was practising on. "Even though it's automatic. He said it was a habit from when he was young. He'd wind it and then he'd say, 'Right, let's see what today's got for us.' Every single day."
 
-Arthur said nothing for a while. Then he said, "That's a good thing to say to a watch."
-
-Over the weeks, he let Sami do more. First he let him clean parts in the little bath of solution, then oil the jewels with a tiny pin, then take apart the practice movement on his own and put it back together. The first time, it took Sami three hours, and when he had finished there were two screws left over. The second time, there was one. The fifth time, there were none, and the movement ran, and Sami stared at the balance wheel swinging back and forth as if he had personally invented time.
+Arthur said nothing for a while. Then he said, "That's a good thing to say to a watch."` },
+{ id: "lr-005-p2", kind: "Relato", topic: "life", title: "The Clockmaker of Hollin Street (2/2)", sub: "Parte 2 de 2. A lonely craftsman, a stubborn boy and a broken watch that nobody else could fix. A long story about time, patience and what we owe to the people who teach us.", series: "lr-005", chapter: 2, parts: 2,
+body: `Over the weeks, he let Sami do more. First he let him clean parts in the little bath of solution, then oil the jewels with a tiny pin, then take apart the practice movement on his own and put it back together. The first time, it took Sami three hours, and when he had finished there were two screws left over. The second time, there was one. The fifth time, there were none, and the movement ran, and Sami stared at the balance wheel swinging back and forth as if he had personally invented time.
 
 "Not bad," said Arthur, which from him was a great deal.
 

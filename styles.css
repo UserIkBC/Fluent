@@ -447,3 +447,15 @@ a.btn.primary{color:#fff}
 .art-body.nocolor .w.ph{text-decoration:none}
 .art-body.nocolor .w{cursor:text}
 .art-body p{margin:0 0 1.05em}
+
+/* Aprender a fondo y traducción con contexto */
+.ladder{display:flex;gap:5px;margin:8px 0 2px}
+.ladder span{flex:1;height:5px;border-radius:3px;background:var(--line)}
+.ladder span.ok{background:var(--good)}
+.ladder span.cur{background:var(--accent)}
+.trow{display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-top:6px}
+.trow .pos{font-size:12px;color:var(--muted);min-width:70px}
+.trchip{padding:5px 11px;font-size:14px}
+.trchip.on{background:var(--accent);border-color:var(--accent);color:#fff}
+.typebox{margin-top:12px}
+.grades .btn.sugg{outline:2.5px solid currentColor;outline-offset:1px}

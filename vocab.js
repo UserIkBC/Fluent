@@ -99,6 +99,7 @@ const MODES = [
   { id: 'cloze', ic: 'pen', name: 'Palabra que falta', desc: 'Escríbela tú (preposiciones, conectores…)' },
   { id: 'particle', ic: 'link', name: 'Phrasal verbs', desc: '¿Qué partícula va? Up, out, off…' },
   { id: 'prod', ic: 'cards', name: 'Dilo tú en inglés', desc: 'Del español al inglés, escribiendo' },
+  { id: 'own', ic: 'pen', name: 'Tu propia frase', desc: 'Usa tus palabras en frases sobre tu vida' },
   { id: 'trans', ic: 'pen', name: 'Tradúcela tú', desc: 'Frases enteras del español al inglés' },
   { id: 'order', ic: 'order', name: 'Ordena la frase', desc: 'Construye frases correctas' },
   { id: 'gram', ic: 'pen', name: 'Gramática', desc: 'Preguntas de todas las lecciones' },
@@ -113,6 +114,8 @@ function renderWords() {
     <div class="stats3"><div><b>${fmtNum(knownCount())}</b><span>palabras conocidas</span></div><div><b>${fmtNum(NOTES.length + LIB.filter(x => x.srs).length)}</b><span>en tus repasos</span></div><div><b>${due}</b><span>pendientes hoy</span></div></div>
     ${due ? `<a class="card pad cta" href="#ex/review" style="border-color:var(--warm)"><div class="grow"><b>Repasar ${due} ${due === 1 ? 'tarjeta' : 'tarjetas'}</b><div class="muted" style="font-size:14px">Con la frase donde encontraste cada palabra</div></div><span class="btn warm small">Empezar</span></a>` : `<a class="card pad cta" href="#ex/review"><div class="grow"><b>Sin repasos pendientes</b><div class="muted" style="font-size:14px">Puedes hacer un repaso extra</div></div><span class="btn small">Repasar</span></a>`}
     <a class="card pad cta" href="#new"><div class="grow"><b>${left ? 'Aprender ' + left + ' palabras nuevas' : 'Aprender 5 más'}</b><div class="muted" style="font-size:14px">De la biblioteca, mezclando ${Object.keys(S.mix).filter(k => S.mix[k]).length} categorías</div></div><span class="btn primary small">Empezar</span></a>
+    <div class="card pad learnbox"><b>Aprender a fondo</b><div class="muted" style="font-size:14px;margin:2px 0 10px">Cada palabra pasa por 5 pasos: verla en contexto, reconocerla, encajarla en una frase, oírla y escribirla tú de memoria. Así se queda.</div>
+      <div class="row wrap" style="gap:8px"><a class="btn primary grow" href="#learn/new">Nuevas</a><a class="btn grow" href="#learn/mine">Mis palabras</a><a class="btn grow" href="#learn/hard">Difíciles</a></div></div>
     <a class="card pad cta" href="#freq"><div class="grow"><b>Las 25.000 palabras más usadas</b><div class="muted" style="font-size:14px">Descubre las frecuentes que aún no conoces</div></div><span class="muted">›</span></a>
     <div class="h2">Biblioteca</div>
     <div class="modes">${['word', 'phrasal', 'idiom', 'collocs'].map(c => c === 'collocs' ? '' : '').join('')}${Object.keys(LIB_CATS).map(c => hubTile('#lib/' + c, LIB_CATS[c].ic, LIB_CATS[c].name, LIB_CATS[c].desc, prog(c))).join('')}
@@ -195,7 +198,7 @@ function renderNewWords(arg) {
   const show = () => {
     if (i >= batch.length) {
       $('#view').innerHTML = `<div class="card pad" style="text-align:center;padding:28px"><div style="font-size:42px">🎉</div><b>${learned} ${learned === 1 ? 'entrada nueva' : 'entradas nuevas'} en tus repasos</b><p class="muted">Ahora un test rápido para fijarlas. Mañana te las volveré a preguntar.</p>
-        <a class="btn primary block" href="#ex/vocab/today">Test rápido</a><a class="btn ghost block" href="${HOME_SESSION ? '#home' : '#words'}" style="margin-top:8px">Más tarde</a></div>`;
+        <a class="btn primary block" href="#learn/today">Fijarlas a fondo (5 pasos)</a><a class="btn block" href="#ex/vocab/today" style="margin-top:8px">Solo un test rápido</a><a class="btn ghost block" href="${HOME_SESSION ? '#home' : '#words'}" style="margin-top:8px">Más tarde</a></div>`;
       if (typeof sessionStepDone === 'function') sessionStepDone('new');
       return;
     }

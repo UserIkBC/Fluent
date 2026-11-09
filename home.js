@@ -14,8 +14,10 @@ function todayPicks() {
   const all = allTexts().filter(t => t.src === 'orig');
   const unread = all.filter(t => !(READS[t.id] && READS[t.id].done));
   const pool = unread.length > 4 ? unread : all;
-  const longs = pool.filter(t => wordCount(t.body) >= 2500);
-  const reads = recommend(longs.length >= 2 ? longs : pool.filter(t => wordCount(t.body) >= 250), 3);
+  /* lecturas de 5-10 min: si dejaste una a medias por partes, primero la parte siguiente */
+  const partDone = t => { const prev = t.chapter > 1 ? allTexts().find(x => x.series === t.series && x.chapter === t.chapter - 1) : null; return !prev || (READS[prev.id] && READS[prev.id].done); };
+  const nextParts = unread.filter(t => t.chapter > 1 && partDone(t));
+  const reads = nextParts.slice(0, 1).concat(recommend(pool.filter(t => (t.chapter || 1) === 1 && wordCount(t.body) >= 250), 3)).slice(0, 3);
   const listens = recommend(pool.filter(t => !reads.includes(t) && wordCount(t.body) < 900 && t.kind !== 'Mensajes'), 3);
   p = { d: dayKey(), read: (reads[0] || pool[0] || {}).id, read2: (reads[1] || {}).id, listen: (listens[0] || pool[1] || {}).id };
   store.set('picks2', p);
@@ -32,7 +34,7 @@ function sessionSteps() {
     { k: 'listen', ic: 'ear', t: 'Escucha en 3 pasadas', d: tr(p.listen), href: '#r/' + p.listen, mode: 'hide', done: rd(p.listen) || (t.lsec || 0) >= (long ? 900 : 420), min: 10 }
   ];
   if (long) {
-    steps.push({ k: 'new', ic: 'spark', t: 'Palabras nuevas', d: S.newPerDay + ' de la biblioteca (phrasal verbs, expresiones, vocabulario…)', href: '#new', done: (t.newLib || 0) >= S.newPerDay, min: 8 });
+    steps.push({ k: 'new', ic: 'spark', t: 'Palabras nuevas, a fondo', d: 'De la biblioteca, en 5 pasos hasta que las escribas de memoria', href: '#learn/new', done: (t.newLib || 0) >= S.newPerDay, min: 8 });
     steps.push(S.guardianKey ? { k: 'real', ic: 'news', t: 'Un artículo real del Guardian', d: 'Opinión o reportaje de hoy, de tus temas', href: '#guardian/' + dailyPick(['opinion', 'longread', 'features', 'law', 'world', 'business', 'culture', 'sport', 'science'], 'gs'), done: Object.keys(READS).some(k => k.startsWith('g:') && READS[k].done && READS[k].upd > new Date().setHours(0, 0, 0, 0)), min: 15 }
       : { k: 'real', ic: 'book', t: 'Segunda lectura', d: tr(p.read2) || 'Un capítulo de novela o un artículo de Wikipedia', href: p.read2 ? '#r/' + p.read2 : '#books', done: rd(p.read2) || (t.art || 0) >= 3, min: 15 });
     steps.push({ k: 'pod', ic: 'podcast', t: 'Un podcast de nativos', d: 'Sin texto, para entrenar el oído de verdad', href: '#podcasts', done: (t.lsec || 0) >= 1800, min: 15 });
@@ -118,6 +120,7 @@ function renderSettings() {
     <div class="card set-group">
       <label class="lbl">Clave de The Guardian</label><div class="row"><input class="input grow" id="sGK" value="${esc(S.guardianKey || '')}" placeholder="Pega aquí tu clave gratuita" autocomplete="off" autocapitalize="off" spellcheck="false"><button class="btn" id="sGKt">Probar</button></div>
       <p class="meta" style="margin-top:6px">Se saca gratis en open-platform.theguardian.com (Register for a developer key).</p>
+      ${typeof aiSettingsHTML === 'function' ? aiSettingsHTML() : ''}
       <label class="lbl">Tus temas preferidos</label>
       <div class="chips wrapchips" id="sTop">${Object.entries(TOPIC_NAMES).map(([k, n]) => `<button class="chip ${(S.topics || []).includes(k) ? 'active' : ''}" data-tp="${k}">${esc(n)}</button>`).join('')}</div>
     </div>
@@ -147,6 +150,7 @@ function renderSettings() {
       <label class="lbl">Tarjetas guardadas por ti que entran nuevas cada día</label><input class="input" type="number" min="1" max="300" id="gN" value="${S.newNotesPerDay}">
       <label class="lbl">Tarjetas: qué ves primero</label><select class="select" id="sFront"><option value="en">Inglés (y piensas el significado)</option><option value="es">Español (y piensas cómo se dice)</option><option value="mix">Mezclado</option></select>
       ${sw('sCloze', 'A veces, mostrar la tarjeta como frase con hueco', S.clozeCards !== false)}
+      ${sw('sActive', 'Repaso activo: cuando ya la has acertado dos veces, escribirla de memoria en vez de solo darle la vuelta', S.activeRev !== false)}
       <label class="lbl">Preguntas por ronda de ejercicios</label><select class="select" id="sExLen"><option>5</option><option>10</option><option>15</option><option>20</option><option>30</option></select>
       ${sw('sShowEs', 'Mostrar la traducción en las listas (tocando se ve)', S.showEs)}
     </div>
@@ -182,7 +186,7 @@ function renderSettings() {
   bind('#sNew', v => { S.newPerDay = +v; $('#nV').textContent = v; }, 'input');
   $$('[data-mix]').forEach(c => c.addEventListener('change', () => { S.mix[c.dataset.mix] = c.checked; if (!Object.values(S.mix).some(Boolean)) { S.mix.word = true; $('[data-mix="word"]').checked = true; } saveSettings(); }));
   bind('#gN', v => { S.newNotesPerDay = Math.max(1, +v || 20); updateBadge(); });
-  bind('#sFront', v => { S.cardFront = v; }); bind('#sCloze', v => { S.clozeCards = v; });
+  bind('#sFront', v => { S.cardFront = v; }); bind('#sCloze', v => { S.clozeCards = v; }); bind('#sActive', v => { S.activeRev = v; }); if (typeof bindAISettings === 'function') bindAISettings();
   bind('#sExLen', v => { S.exLen = +v || 10; });
   bind('#sShowEs', v => { S.showEs = v; applyTheme(); });
   bind('#sAuto', v => { S.autoplay = v; }); bind('#sVoice', v => { S.voice = v; });

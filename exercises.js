@@ -228,11 +228,18 @@ function startReview(arg) {
     let front = S.cardFront === 'mix' ? (Math.random() < 0.5 ? 'es' : 'en') : (S.cardFront === 'es' && n.es ? 'es' : 'en');
     const clozeOk = n.ex && S.clozeCards !== false && termWords(n.term).length <= 4 && new RegExp('\\b' + n.term.split('/')[0].trim().replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i').test(n.ex);
     if (clozeOk && (n.srs && n.srs.reps >= 1) && Math.random() < 0.5) front = 'cloze';
+    /* repaso activo: a partir del 2.º acierto, la escribes tú (de memoria se fija mucho más que dándole la vuelta) */
+    const typeOk = S.activeRev !== false && n.es && n.srs && (n.srs.reps || 0) >= 2 && termWords(n.term).length <= 6 && typeof checkTyped === 'function';
+    if (typeOk && Math.random() < 0.7) front = clozeOk && Math.random() < 0.5 ? 'clozeType' : 'type';
+    const own = (n.srs && n.srs.own) || [];
+    const leech = n.srs && (n.srs.lapses || 0) >= 4;
+    const tStart = Date.now();
     v.innerHTML = `<div class="row" style="margin-bottom:8px"><b class="grow">${setMode ? esc(setName(arg.replace(/^set:/, ''))) : 'Repaso' + (extra ? ' extra' : '')}</b><span class="muted">${done + 1}/${total}</span></div><div class="progressbar"><i style="width:${done / total * 100}%"></i></div>
       ${extra && done === 0 ? '<div class="notice" style="margin-top:12px">No tienes repasos pendientes hoy. Aquí van unas cuantas tarjetas extra.</div>' : ''}
-      <div class="card flash" style="margin-top:14px" id="card"><div class="row" style="width:100%;justify-content:center;gap:6px"><span class="tag">${esc(CATS[n.cat] || '')}</span>${markBadges(n.id)}</div>${front === 'cloze' ? `<div class="ctx" style="margin-top:12px;font-size:20px;line-height:1.5">${esc(n.ex).replace(new RegExp('\\b' + esc(n.term.split('/')[0].trim()).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i'), '<span class="gap">?</span>')}</div><div class="muted" style="font-size:13px;margin-top:8px">${esc(n.es || '')} · ¿qué falta?</div>` : front === 'es' ? `<div class="term" style="margin-top:10px;font-size:24px">${esc(n.es || n.term)}</div><div class="muted" style="font-size:13px;margin-top:6px">¿Cómo se dice en inglés?</div>` : `<div class="term" style="margin-top:10px">${esc(n.term)}</div><button class="mini" id="cSay" style="margin-top:10px">${IC.speak}</button>`}
-      <div id="back" class="back hidden">${front !== 'en' ? `<div class="term" style="font-size:24px">${esc(n.term)}</div><button class="mini" id="cSay2" style="margin:6px auto">${IC.speak}</button>` : `<div style="font-size:19px;font-weight:600">${esc(n.es || '—')}</div>`}${n.def ? `<div class="muted" style="margin-top:6px;font-size:15px">${esc(n.def)}</div>` : ''}${n.ex ? `<div class="ctx muted" style="margin-top:8px;font-style:italic">${esc(n.ex)}</div>` : ''}${n.note ? `<div class="muted" style="margin-top:6px;font-size:14px">📝 ${esc(n.note)}</div>` : ''}</div></div>
-      <button class="btn primary block" id="reveal" style="margin-top:14px">Mostrar respuesta</button>
+      <div class="card flash" style="margin-top:14px" id="card"><div class="row" style="width:100%;justify-content:center;gap:6px"><span class="tag">${esc(CATS[n.cat] || '')}</span>${markBadges(n.id)}</div>${front === 'type' || front === 'clozeType' ? `${front === 'clozeType' ? `<div class="ctx" style="margin-top:12px;font-size:19px;line-height:1.5">${(blankIn(n.ex, n.term) || { html: esc(n.ex) }).html}</div>` : ''}<div class="term" style="margin-top:10px;font-size:${front === 'clozeType' ? 18 : 24}px">${esc(n.es)}</div><div class="muted" style="font-size:13px;margin-top:6px">Escríbelo en inglés</div>` : front === 'cloze' ? `<div class="ctx" style="margin-top:12px;font-size:20px;line-height:1.5">${esc(n.ex).replace(new RegExp('\\b' + esc(n.term.split('/')[0].trim()).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i'), '<span class="gap">?</span>')}</div><div class="muted" style="font-size:13px;margin-top:8px">${esc(n.es || '')} · ¿qué falta?</div>` : front === 'es' ? `<div class="term" style="margin-top:10px;font-size:24px">${esc(n.es || n.term)}</div><div class="muted" style="font-size:13px;margin-top:6px">¿Cómo se dice en inglés?</div>` : `<div class="term" style="margin-top:10px">${esc(n.term)}</div><button class="mini" id="cSay" style="margin-top:10px">${IC.speak}</button>`}
+      <div id="back" class="back hidden">${front !== 'en' ? `<div class="term" style="font-size:24px">${esc(n.term)}</div><button class="mini" id="cSay2" style="margin:6px auto">${IC.speak}</button>` : `<div style="font-size:19px;font-weight:600">${esc(n.es || '—')}</div>`}${n.def ? `<div class="muted" style="margin-top:6px;font-size:15px">${esc(n.def)}</div>` : ''}${n.ex ? `<div class="ctx muted" style="margin-top:8px;font-style:italic">${esc(n.ex)}</div>` : ''}${n.note ? `<div class="muted" style="margin-top:6px;font-size:14px">📝 ${esc(n.note)}</div>` : ''}${own.length ? `<div style="margin-top:8px;font-size:14.5px">✍️ ${esc(own[own.length - 1])}</div>` : ''}<div id="typeRes"></div>${leech ? `<div class="notice" style="margin-top:10px;text-align:left">Esta se te resiste (${n.srs.lapses} fallos). Lo que mejor funciona: <a href="#" id="cOwn">escribir una frase tuya con ella</a> o aprenderla de nuevo paso a paso en «Aprender a fondo».</div>` : ''}</div></div>
+      ${front === 'type' || front === 'clozeType' ? `<form class="row typebox" id="tyF"><input class="input grow" id="tyIn" placeholder="En inglés…" autocapitalize="off" autocomplete="off" spellcheck="false"><button class="btn primary">OK</button></form><button class="btn ghost small" id="tyGive" style="margin-top:6px">No me acuerdo</button>` : ''}
+      <button class="btn primary block ${front === 'type' || front === 'clozeType' ? 'hidden' : ''}" id="reveal" style="margin-top:14px">Mostrar respuesta</button>
       <div class="row" style="justify-content:center;margin-top:10px;gap:8px"><button class="btn small" id="cFav">★</button><button class="btn small" id="cMark">${IC.flag.replace('<svg', '<svg width="14" height="14"')} Marcar</button></div>
       <div class="grades hidden" id="grades">
         <button class="btn" data-g="0" style="color:var(--bad)">Otra vez<small>10 min</small></button>
@@ -246,7 +253,24 @@ function startReview(arg) {
     $('#cFav').onclick = () => { setMark(n.id, { fav: !mark(n.id).fav }); toast(mark(n.id).fav ? 'Añadida a favoritas' : 'Quitada de favoritas'); };
     $('#cMark').onclick = () => openMarkSheet(n.id);
     const rev = () => { if ($('#grades').classList.contains('hidden') === false) return; $('#back').classList.remove('hidden'); $('#reveal').classList.add('hidden'); $('#grades').classList.remove('hidden'); if (front === 'cloze' && $('.gap')) $('.gap').textContent = n.term; if (front !== 'en' && S.autoplay) TTS.speak(front === 'cloze' ? n.ex : n.term, { rate: 0.95 }); };
-    $('#reveal').onclick = rev; $('#card').onclick = rev;
+    $('#reveal').onclick = rev;
+    if (front === 'type' || front === 'clozeType') {
+      setTimeout(() => $('#tyIn') && $('#tyIn').focus(), 80);
+      const fin = said => {
+        if (!$('#grades').classList.contains('hidden')) return;
+        const r = checkTyped(said, n.term); const secs = (Date.now() - tStart) / 1000;
+        const g = r === 'ok' ? (secs < 8 ? 3 : 2) : r === 'typo' ? 1 : 0;
+        $('#tyF').classList.add('hidden'); $('#tyGive').classList.add('hidden');
+        $('#typeRes').innerHTML = `<div class="feedback ${r === 'ok' ? 'ok' : r === 'typo' ? 'meh' : 'ko'}" style="text-align:left"><b>${r === 'ok' ? '¡Correcto!' : r === 'typo' ? 'Casi: revisa cómo se escribe' : said ? 'No es correcto' : 'Aquí la tienes'}</b>${said ? `<div>Has escrito · «${esc(said)}»</div>` : ''}<div class="muted" style="font-size:13px">Te sugiero «${['Otra vez', 'Difícil', 'Bien', 'Fácil'][g]}», pero puedes elegir otra.</div></div>`;
+        if (front === 'clozeType' && $('.gap')) $('.gap').textContent = n.term;
+        $('#back').classList.remove('hidden'); $('#grades').classList.remove('hidden');
+        const sb = $(`#grades [data-g="${g}"]`); if (sb) sb.classList.add('sugg');
+        TTS.speak(n.term, { rate: 0.9 });
+      };
+      $('#tyF').onsubmit = e => { e.preventDefault(); const v = $('#tyIn').value.trim(); if (v) fin(v); };
+      $('#tyGive').onclick = () => fin('');
+    } else $('#card').onclick = rev;
+    if ($('#cOwn')) $('#cOwn').onclick = e => { e.preventDefault(); e.stopPropagation(); OWN_QUEUE = [n.id]; go('#ex/own'); };
     $('#grades').onclick = e => {
       const b = e.target.closest('[data-g]'); if (!b) return;
       const g = +b.dataset.g; grade(n, g); bump('rev'); queue.shift();

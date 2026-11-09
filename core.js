@@ -3,7 +3,7 @@
    Fluent 6 · núcleo: utilidades, estado, tema, voz, biblioteca,
    repetición espaciada (FSRS), estadísticas y navegación
    ========================================================== */
-const VERSION = '6.0.0';
+const VERSION = '6.1.0';
 
 /* ---------- utilidades ---------- */
 const $ = (s, el = document) => el.querySelector(s);

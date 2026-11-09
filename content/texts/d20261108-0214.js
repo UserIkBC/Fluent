@@ -1,6 +1,6 @@
 /* Textos Fluent · lote del 20261108 · relato jurídico, mito nórdico, actualidad, Sócrates, psicología y guía de contratos */
 window.ORIG.push(
-{ id: 'd20261108-0214-1', kind: 'Relato', topic: 'law', title: "Word for Word", sub: "A Spanish court interpreter in Bristol hears a young man’s words turned into a confession, and has to decide whether to step out of the shadows. A legal drama about truth, courage and the mistakes we cannot take back.",
+{ id: "d20261108-0214-1", kind: "Relato", topic: "law", title: "Word for Word (1/3)", sub: "A Spanish court interpreter in Bristol hears a young man’s words turned into a confession, and has to decide whether to step out of the shadows. A legal drama about truth, courage and the mistakes we cannot take back.", series: "d20261108-0214-1", chapter: 1, parts: 3,
 body: `Pilar Ochoa had been interpreting in English courts for twenty-two years, and in that time she had learnt to make herself disappear.
 
 It was a skill, like any other. You stood slightly behind the person you were interpreting for, never in front. You kept your voice low and level, so that it carried to one ear and no further. You did not frown when a witness lied, or smile when a barrister made a joke, or flinch when the photographs were passed round. You said "I" when the defendant said "I", because you were not telling the court what he had said; you were saying it for him, in a language he did not have. A good interpreter, her first tutor had told her, was like a pane of glass. Nobody notices the glass unless it is dirty.
@@ -47,9 +47,9 @@ He had said "le pegué un toque". It was the most ordinary phrase in the world. 
 
 "I gave him a ring, that's all. So he'd leave my cousin alone."
 
-It was not an admission. It was very nearly the opposite.
-
-She drank some of the water.
+It was not an admission. It was very nearly the opposite.` },
+{ id: "d20261108-0214-1-p2", kind: "Relato", topic: "law", title: "Word for Word (2/3)", sub: "Parte 2 de 3. A Spanish court interpreter in Bristol hears a young man’s words turned into a confession, and has to decide whether to step out of the shadows. A legal drama about truth, courage and the mistakes we cannot take back.", series: "d20261108-0214-1", chapter: 2, parts: 3,
+body: `She drank some of the water.
 
 There were rules about this, and she knew them well, because she had helped to write a version of them for a training course in 2011. An interpreter was impartial. An interpreter did not give evidence, did not advise, did not take sides. An interpreter who made an error in her own interpretation had a duty to correct it, at once, openly, through the judge. But what an interpreter was supposed to do when she believed that somebody else had made an error, months earlier, in a document that both sides had agreed, was far less clear. It was the sort of situation the rules described in the passive voice. The matter should be drawn to the attention of the court. By whom was not specified.
 
@@ -101,9 +101,9 @@ She had not intended to speak. The judge raised one eyebrow by perhaps a millime
 
 "Miss Hollis?"
 
-Miss Hollis stood. She had gone quite pink. "Your Honour, I, I'm grateful to the interpreter. I confess I hadn't, I wasn't aware. I would ask for time to take instructions and, if necessary, to listen to the recording."
-
-The judge took off his glasses and pressed his thumb and forefinger into the bridge of his nose. Pilar had seen him do this before. It usually meant that he was about to say something that would make somebody's afternoon considerably longer.
+Miss Hollis stood. She had gone quite pink. "Your Honour, I, I'm grateful to the interpreter. I confess I hadn't, I wasn't aware. I would ask for time to take instructions and, if necessary, to listen to the recording."` },
+{ id: "d20261108-0214-1-p3", kind: "Relato", topic: "law", title: "Word for Word (3/3)", sub: "Parte 3 de 3. A Spanish court interpreter in Bristol hears a young man’s words turned into a confession, and has to decide whether to step out of the shadows. A legal drama about truth, courage and the mistakes we cannot take back.", series: "d20261108-0214-1", chapter: 3, parts: 3,
+body: `The judge took off his glasses and pressed his thumb and forefinger into the bridge of his nose. Pilar had seen him do this before. It usually meant that he was about to say something that would make somebody's afternoon considerably longer.
 
 "Mr Gethin," he said, "I take your point about the proper role of the interpreter, and I'm sure Mrs Ochoa takes it too. But I have been doing this job for some time, and I have never yet found that a jury was assisted by a translation that might be wrong. If the recording exists, I imagine it can be found. Let's find it. And let's have another interpreter listen to it, independently. Not Mrs Ochoa, with the greatest respect to her. Somebody who has had nothing to do with this case." He put his glasses back on. "We'll adjourn until two."
 
@@ -154,7 +154,7 @@ What you could not do, she thought, was choose which mistake you got to put righ
 The kettle reached the boil and clicked off. Pilar got up, took off her coat at last and hung it on the back of the door. On Monday she would be in Swindon, standing slightly behind a man accused of moving a great deal of money that was not his, keeping her voice low and level, saying "I" when he said "I".
 
 She would be glass again. But she thought, as she poured the water, that she would not mind so much any more if, now and then, somebody noticed it was there.` },
-{ id: 'd20261108-0214-2', kind: 'Relato', topic: 'myth', title: "Thor in the Hall of the Giant King", sub: "The Norse thunder god travels into the land of the giants, loses every contest he is set and discovers that nothing was what it seemed. The old Icelandic tale retold at length, and what it says about failure, illusion and old age.",
+{ id: "d20261108-0214-2", kind: "Relato", topic: "myth", title: "Thor in the Hall of the Giant King (1/3)", sub: "The Norse thunder god travels into the land of the giants, loses every contest he is set and discovers that nothing was what it seemed. The old Icelandic tale retold at length, and what it says about failure, illusion and old age.", series: "d20261108-0214-2", chapter: 1, parts: 3,
 body: `Of all the gods of the North, Thor was the one people liked best, and it is not hard to see why. Odin, his father, was wise, but his wisdom had a cold edge to it; he had given an eye for it, and he watched the world with the one that remained as a hawk watches a field. Loki was clever, but nobody ever quite knew whose side he was on, and that probably included Loki. Thor was different. Thor was enormous, red-bearded and hot-tempered. He ate like three men and drank like ten. He travelled in a chariot pulled by two goats, and when it thundered, people said it was the sound of his wheels. And he carried Mjöllnir, the short-handled hammer that could flatten a mountain and always came back to his hand when he threw it, and with it he kept the giants out of the world of gods and men.
 
 He was not, it has to be said, a subtle god. If you had a problem, Thor's solution was usually to hit it. Most of the time, that worked.
@@ -215,9 +215,9 @@ Skrýmir opened one eye. "Did a leaf fall on me?" he asked sleepily. "Have you h
 
 Thor said they were just going to bed, and they lay down under another oak, though none of them slept much. At midnight, hearing Skrýmir snoring so loudly that the forest rang with it, Thor got up again, crept over to him, swung the hammer high and drove it down on the very crown of his head. He felt the head of the hammer sink deep in.
 
-Skrýmir woke. "What's that now? Did an acorn fall on my head? What are you doing, Thor?"
-
-Thor stepped back quickly and said he had just woken up, that it was the middle of the night and there was still plenty of time to sleep.
+Skrýmir woke. "What's that now? Did an acorn fall on my head? What are you doing, Thor?"` },
+{ id: "d20261108-0214-2-p2", kind: "Relato", topic: "myth", title: "Thor in the Hall of the Giant King (2/3)", sub: "Parte 2 de 3. The Norse thunder god travels into the land of the giants, loses every contest he is set and discovers that nothing was what it seemed. The old Icelandic tale retold at length, and what it says about failure, illusion and old age.", series: "d20261108-0214-2", chapter: 2, parts: 3,
+body: `Thor stepped back quickly and said he had just woken up, that it was the middle of the night and there was still plenty of time to sleep.
 
 He lay awake until just before dawn, thinking. Then, deciding that a third blow would settle the matter for good, he rose, ran at the sleeping giant, and smashed the hammer down on his temple with all the strength he had. It sank in up to the handle.
 
@@ -273,9 +273,9 @@ Utgard-Loki looked along the benches. "I don't see anyone here who wouldn't thin
 
 An old woman came hobbling into the hall. The harder Thor gripped her, the firmer she stood. Then she began to try her own holds, and Thor lost his footing, and there was a hard struggle, and before long Thor went down on one knee. Utgard-Loki stepped forward and told them to stop. There was no need, he said, for Thor to wrestle with anyone else in his hall.
 
-By then it was getting late. The king showed them to their places, and they were given a splendid welcome and the best of everything, and they slept.
-
-The Truth
+By then it was getting late. The king showed them to their places, and they were given a splendid welcome and the best of everything, and they slept.` },
+{ id: "d20261108-0214-2-p3", kind: "Relato", topic: "myth", title: "Thor in the Hall of the Giant King (3/3)", sub: "Parte 3 de 3. The Norse thunder god travels into the land of the giants, loses every contest he is set and discovers that nothing was what it seemed. The old Icelandic tale retold at length, and what it says about failure, illusion and old age.", series: "d20261108-0214-2", chapter: 3, parts: 3,
+body: `The Truth
 
 At first light Thor and his companions got up and dressed and prepared to leave. Utgard-Loki came out and had a table set for them, with plenty of food and drink. When they had eaten, he walked out with them beyond the walls of the fortress. At the parting he turned to Thor and asked how he thought the visit had gone, and whether he had ever met a mightier man than himself.
 
@@ -314,7 +314,7 @@ There is also a lesson in it about the limits of force. Thor's answer to every p
 Finally, there is Elli. Of all the opponents, she is the only one who is not, in the end, defeated in any sense. The others were all, in their way, beaten; Thor drank part of the sea and lifted part of the serpent. But nobody beats old age. Utgard-Loki says so plainly, and the line has the ring of a proverb: everyone who lives long enough will be brought down by her. The most powerful god in the Norse world goes down on one knee before a frail old woman, and the story asks us to see that as an achievement rather than a disgrace.
 
 It is a strangely tender ending for a tale about a thunder god. Thor goes home without his revenge. The fortress has disappeared, the giant has got away with it, and nothing has been settled. But he has learnt, or we have, that the world is larger than our strength, that our failures may be greater than they look, and that even the gods grow old.` },
-{ id: 'd20261108-0214-3', kind: 'Noticia explicada', topic: 'business', title: "Too much of a good thing: why Spain is locking away its olive oil", sub: "After years of drought and record prices, a bumper harvest has sent olive oil prices tumbling. Madrid has ordered mills to keep 12% of their oil off the market for a year. How the scheme works, who backs it and who is fighting it.",
+{ id: "d20261108-0214-3", kind: "Noticia explicada", topic: "business", title: "Too much of a good thing: why Spain is locking away its olive oil", sub: "After years of drought and record prices, a bumper harvest has sent olive oil prices tumbling. Madrid has ordered mills to keep 12% of their oil off the market for a year. How the scheme works, who backs it and who is fighting it.",
 body: `For most of the last four years, the problem with Spanish olive oil was that there was not enough of it. This autumn the problem is the opposite. Faced with a bumper harvest and falling prices, the Spanish government has done something it has never done before: it has ordered every olive mill in the country to lock away part of what it produces and keep it off the market for almost a year.
 
 The decision was published in the Boletín Oficial del Estado, Spain's official gazette, on Friday 6 November, in a resolution issued by the Ministry of Agriculture's directorate for agricultural markets. From this month, mills must set aside 12% of the oil they declare each month and store it until 30 September 2027. The ministry estimates that this will take about 188,000 tonnes of oil out of circulation during the 2026/27 season.
@@ -360,7 +360,7 @@ Much now depends on the weather and the harvest. The picking season runs into th
 Whatever the outcome, the episode is a small, revealing case study in the politics of food. Governments everywhere say they want stable, affordable prices for consumers and a decent living for farmers. In a good year, those two aims can pull in opposite directions, and someone has to decide which matters more. This autumn, in the olive groves of Andalusia, Spain has made its choice. Whether it was the right one will be clearer by next September, when the tanks are opened again.
 
 Sources: Europa Press (as published by Demócrata), AFP, El País, IndexBox, Estrella Digital, Vozpópuli, Libre Mercado, El Plural and 101TV Sevilla.` },
-{ id: 'd20261108-0214-4', kind: 'Ensayo', topic: 'ideas', title: "The gadfly of Athens: the life and death of Socrates", sub: "He wrote nothing, claimed to know nothing and was put to death by his own city. Who Socrates was, how his questions worked, why Athens killed him, and why he chose to die rather than escape.",
+{ id: "d20261108-0214-4", kind: "Ensayo", topic: "ideas", title: "The gadfly of Athens: the life and death of Socrates (1/3)", sub: "He wrote nothing, claimed to know nothing and was put to death by his own city. Who Socrates was, how his questions worked, why Athens killed him, and why he chose to die rather than escape.", series: "d20261108-0214-4", chapter: 1, parts: 3,
 body: `In the spring of 399 BC, a seventy-year-old man stood before a jury of about five hundred of his fellow citizens in Athens and argued for his life. He was not a politician or a general or a rich man. He had never held any significant office, never written a book, never charged a fee for teaching anyone anything. He was famous, if that is the word, for standing around in the marketplace asking people questions. He was found guilty, sentenced to death and, about a month later, given a cup of poison, which he drank calmly, in the company of his friends, after a long conversation about whether the soul survives the body.
 
 His name was Socrates, and almost everything about the way we think in the West, from the seminar room to the courtroom, carries some trace of him. He is the founding figure of philosophy as we understand it, so much so that everyone who came before him is still lumped together as "the Presocratics", as though they had been waiting for him to arrive. And yet he is also one of the most puzzling figures in history: a man who claimed to know nothing, who left no writings, and whose ideas reach us entirely through other people, some of whom admired him and one of whom made fun of him.
@@ -397,9 +397,9 @@ It sounds like a quibble. It is not. If something is good simply because the god
 
 Socrates held a few strong convictions of his own, and they are strange. He seems to have believed that virtue is a kind of knowledge, and that nobody does wrong willingly: if you truly understood what was good, you would do it, so wrongdoing is always a form of ignorance. He also believed, and argued in Plato's Gorgias with a ferocious young aristocrat called Callicles, that it is better to suffer injustice than to commit it. Callicles thinks this is ridiculous, the morality of slaves and weaklings; the natural thing, he says, is for the strong to take what they can. Socrates insists, against all common sense, that the person who does wrong harms himself far more than he harms his victim, because he damages the most precious thing he has, his own soul.
 
-Whether he was right is a question to which we will return. What matters here is that Socrates lived as though he believed it.
-
-Two refusals
+Whether he was right is a question to which we will return. What matters here is that Socrates lived as though he believed it.` },
+{ id: "d20261108-0214-4-p2", kind: "Ensayo", topic: "ideas", title: "The gadfly of Athens: the life and death of Socrates (2/3)", sub: "Parte 2 de 3. He wrote nothing, claimed to know nothing and was put to death by his own city. Who Socrates was, how his questions worked, why Athens killed him, and why he chose to die rather than escape.", series: "d20261108-0214-4", chapter: 2, parts: 3,
+body: `Two refusals
 
 Twice in his life, Socrates was ordered by the authorities to do something he thought was wrong, and twice he refused.
 
@@ -427,9 +427,9 @@ Socrates does not weep, or bring his children into court to soften the jury, as 
 
 The jury found him guilty, by a relatively narrow margin; Plato has Socrates remark that if only thirty votes had gone the other way, he would have been acquitted. Under Athenian procedure, the prosecution proposed a penalty, death, and the defendant proposed an alternative, and the jury chose between them. Socrates' first suggestion was that, given his services to the city, he should be rewarded with free meals for life in the Prytaneum, an honour reserved for Olympic victors and public benefactors. Then, at the urging of his friends, he offered a fine, guaranteed by Plato and others. But the damage was done. The jury voted for death, and, according to later tradition, by a larger margin than had voted to convict him.
 
-It was in this part of the speech that Socrates said the words for which he is best remembered: the unexamined life is not worth living for a human being.
-
-The prison
+It was in this part of the speech that Socrates said the words for which he is best remembered: the unexamined life is not worth living for a human being.` },
+{ id: "d20261108-0214-4-p3", kind: "Ensayo", topic: "ideas", title: "The gadfly of Athens: the life and death of Socrates (3/3)", sub: "Parte 3 de 3. He wrote nothing, claimed to know nothing and was put to death by his own city. Who Socrates was, how his questions worked, why Athens killed him, and why he chose to die rather than escape.", series: "d20261108-0214-4", chapter: 3, parts: 3,
+body: `The prison
 
 Normally an Athenian death sentence was carried out quickly. But the trial had taken place the day after a sacred ship had set sail for the island of Delos, on an annual religious mission commemorating Theseus, and no executions were allowed until it returned. Contrary winds delayed it for about a month. Socrates spent that time in prison, talking with his friends.
 
@@ -470,7 +470,7 @@ Every law student who has been asked by a lecturer, "But why should that be the 
 But perhaps his deepest legacy is an attitude rather than an argument. Socrates was not, in the end, a man with a system. He was a man with a habit: the habit of asking what words mean, of noticing when he did not know something, and of refusing to pretend otherwise. That habit is far rarer than it should be. Most of us go through life on borrowed certainties, opinions we absorbed from our families, our friends, our feeds, without ever stopping to ask whether we could defend them. Socrates' claim that the unexamined life is not worth living is probably too harsh; plenty of good, kind people have lived full lives without ever examining very much. But the gentler version of it is hard to argue with. A life in which you sometimes stop and ask, "Do I actually know this? Why do I believe it? What would change my mind?" is a richer life, and a safer one, both for you and for the people around you.
 
 The Athenians thought they could silence the gadfly. Two and a half thousand years later, it is still buzzing.` },
-{ id: 'd20261108-0214-5', kind: 'Reportaje', topic: 'mind', title: "The prison in the basement: what really happened at Stanford in 1971", sub: "For fifty years, the Stanford Prison Experiment taught that ordinary people turn cruel when given power. Then researchers listened to the tapes. The story behind psychology’s most famous study.",
+{ id: "d20261108-0214-5", kind: "Reportaje", topic: "mind", title: "The prison in the basement: what really happened at Stanford in 1971 (1/2)", sub: "For fifty years, the Stanford Prison Experiment taught that ordinary people turn cruel when given power. Then researchers listened to the tapes. The story behind psychology’s most famous study.", series: "d20261108-0214-5", chapter: 1, parts: 2,
 body: `On a Sunday morning in August 1971, police cars pulled up outside a number of houses in Palo Alto, California. Young men were arrested, searched, handcuffed and driven away while their neighbours watched. At the station they were booked, fingerprinted and blindfolded. Then they were taken somewhere rather unusual for a prison: the basement of the psychology department at Stanford University.
 
 None of them had committed a crime. They were college students who had answered a newspaper advertisement offering fifteen dollars a day to take part in "a psychological study of prison life". Twenty-four of them, chosen as the most ordinary and psychologically stable of the applicants, had been divided at random, by the flip of a coin, into prisoners and guards. The study was meant to last two weeks. It was stopped after six days.
@@ -499,9 +499,9 @@ Zimbardo drew a powerful conclusion. Ordinary, healthy young men, chosen precise
 
 The timing could hardly have been better: the bloody uprising at Attica prison in New York came a few weeks later, and Zimbardo was soon testifying before Congress. The study also fitted beautifully with Stanley Milgram's experiments a decade earlier, in which volunteers had been willing to give what they believed were dangerous electric shocks to a stranger on the instructions of a man in a lab coat. Together, the two studies seemed to show that human beings will do terrible things when the situation pushes them, and that we are all, potentially, the people we like to think we could never become.
 
-When photographs of American soldiers abusing Iraqi detainees at Abu Ghraib emerged in 2004, Zimbardo argued, as an expert witness and later in his book The Lucifer Effect, that the same forces he had seen in the basement were at work in Iraq. The Stanford Prison Experiment had become one of the central parables of the age.
-
-The cracks
+When photographs of American soldiers abusing Iraqi detainees at Abu Ghraib emerged in 2004, Zimbardo argued, as an expert witness and later in his book The Lucifer Effect, that the same forces he had seen in the basement were at work in Iraq. The Stanford Prison Experiment had become one of the central parables of the age.` },
+{ id: "d20261108-0214-5-p2", kind: "Reportaje", topic: "mind", title: "The prison in the basement: what really happened at Stanford in 1971 (2/2)", sub: "Parte 2 de 2. For fifty years, the Stanford Prison Experiment taught that ordinary people turn cruel when given power. Then researchers listened to the tapes. The story behind psychology’s most famous study.", series: "d20261108-0214-5", chapter: 2, parts: 2,
+body: `The cracks
 
 Doubts had always existed. As early as 1975, two researchers showed that students who were simply told about the set-up could easily guess what the experimenters expected to happen, which raised the possibility that the participants had been playing the parts they thought they were supposed to play, a problem psychologists call demand characteristics. The study was also never really an experiment in the strict sense, since there was no control group and the conditions were shaped by the researchers as they went along.
 
@@ -526,7 +526,7 @@ Seen in that light, the Stanford basement looks less like proof that situations 
 That is a different lesson, and in many ways a more useful one. It suggests that the question to ask about any abuse, in a prison, an army, a company or a school, is not only "What was the situation?" but "Who was leading, and what did they say they wanted?" It suggests that individuals are not helpless puppets of their circumstances, and cannot hide behind them. And it is a warning about how stories in science take on a life of their own. The Stanford Prison Experiment became famous because it told a dramatic and memorable story that the world was ready to hear, and for decades very few people went back to the tapes to check whether the story was true.
 
 Perhaps that is the most human lesson of all. We are not only shaped by situations. We are also shaped by the stories we tell ourselves about them.` },
-{ id: 'd20261108-0214-6', kind: 'Guía', topic: 'law', title: "Offer, acceptance and a smoke ball: how a contract is made in English law", sub: "Offer and invitation to treat, the mirror image rule, the postal rule, consideration and the intention to create legal relations, explained through the cases every English lawyer knows by heart.",
+{ id: "d20261108-0214-6", kind: "Guía", topic: "law", title: "Offer, acceptance and a smoke ball: how a contract is made in English law (1/2)", sub: "Offer and invitation to treat, the mirror image rule, the postal rule, consideration and the intention to create legal relations, explained through the cases every English lawyer knows by heart.", series: "d20261108-0214-6", chapter: 1, parts: 2,
 body: `Most people make several contracts before breakfast without noticing. Buying a coffee, tapping in at a ticket barrier, clicking "I agree" on an app update: each is, in the eyes of English law, a legally binding agreement. Yet if you ask a first-year law student exactly when and how a contract comes into existence, you will usually see a flicker of panic, followed by the name of a Victorian patent medicine company.
 
 This guide sets out the basic building blocks of contract formation in English law, the elements that every contract must have, and the handful of famous cases that every lawyer in England and Wales can recite in their sleep. It is aimed at readers who already know something about law, perhaps from a civil law system such as Spain's, and want to understand how the common law approaches the same problem.
@@ -553,9 +553,9 @@ In 1891, the Carbolic Smoke Ball Company placed advertisements in London newspap
 
 In Carlill v Carbolic Smoke Ball Co (1893), the Court of Appeal found in her favour. The company argued, among other things, that an advertisement could not be an offer, that you cannot make an offer to the whole world, and that Mrs Carlill had never told them she was accepting. The court rejected each argument. The deposit at the bank showed that the promise was meant seriously. An offer can be made to the world at large, to be accepted by anyone who performs the conditions. And in this type of contract, known as a unilateral contract, the offeror is taken to have waived the need for notification of acceptance: performing the conditions is the acceptance.
 
-The case is still cited constantly, not least in disputes about online rewards, competitions and promotional promises.
-
-Acceptance
+The case is still cited constantly, not least in disputes about online rewards, competitions and promotional promises.` },
+{ id: "d20261108-0214-6-p2", kind: "Guía", topic: "law", title: "Offer, acceptance and a smoke ball: how a contract is made in English law (2/2)", sub: "Parte 2 de 2. Offer and invitation to treat, the mirror image rule, the postal rule, consideration and the intention to create legal relations, explained through the cases every English lawyer knows by heart.", series: "d20261108-0214-6", chapter: 2, parts: 2,
+body: `Acceptance
 
 Acceptance must be a final and unqualified agreement to the terms of the offer. This is often called the mirror image rule. If the reply changes the terms, it is not an acceptance but a counter-offer, which has the effect of killing the original offer. In Hyde v Wrench (1840), Wrench offered to sell his farm for £1,000. Hyde replied offering £950. When Wrench declined, Hyde tried to accept the original £1,000 offer, and the court held that he could not. His counter-offer had destroyed it.
 

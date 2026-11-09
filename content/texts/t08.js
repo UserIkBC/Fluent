@@ -1,6 +1,6 @@
 /* Textos Fluent · lote 8 · lecturas de unos 5-7 minutos */
 window.ORIG.push(
-{ id: 'md-001', kind: 'Ensayo', topic: 'ideas', title: 'What the Stoics knew about a bad day', sub: 'Two thousand years ago, a slave and an emperor worked out how to stay calm when everything goes wrong. Their advice still holds up.',
+{ id: "md-001", kind: "Ensayo", topic: "ideas", title: "What the Stoics knew about a bad day", sub: "Two thousand years ago, a slave and an emperor worked out how to stay calm when everything goes wrong. Their advice still holds up.",
 body: `Imagine your morning has gone badly. The train was cancelled, a client has sent an email that begins "With respect", and somebody has eaten the lunch you left in the office fridge. By ten o'clock you are seething, and the day has barely started.
 
 Now imagine that, instead of a phone full of notifications, you had a slave's chains, or an empire on the brink of war. That was roughly the situation of two of the most famous Stoic philosophers. Epictetus was born a slave in the first century AD and walked with a limp for the rest of his life. Marcus Aurelius was Emperor of Rome, spent years on military campaigns along the Danube, and watched a devastating plague sweep through his empire. Both of them, in very different circumstances, came to the same conclusion about how to live: you cannot control what happens to you, but you can control how you respond to it.
@@ -22,8 +22,7 @@ Another favourite Stoic exercise was to imagine, in advance, the things that mig
 So what would a Stoic do with your terrible morning? First, separate the facts from the judgements. The train was cancelled; you will be late; the client is unhappy. Second, sort them into what you can and cannot control. You cannot uncancel the train. You can send a short message explaining that you will be late. You cannot control the client's tone. You can control whether your reply is calm and useful. Third, and this is the hardest part, let the rest go.
 
 None of this will make the lunch thief any less irritating. But it might stop them from ruining the next eight hours. And that, the Stoics would say, is the whole point: not to live a life without difficulties, which is impossible, but to make sure the difficulties do not get to decide who you are.` },
-
-{ id: 'md-002', kind: 'Relato', topic: 'myth', title: 'Icarus and the Sun', sub: 'A father, a son, a pair of wings made of feathers and wax, and the oldest warning about ambition.',
+{ id: "md-002", kind: "Relato", topic: "myth", title: "Icarus and the Sun", sub: "A father, a son, a pair of wings made of feathers and wax, and the oldest warning about ambition.",
 body: `Daedalus was the cleverest craftsman in the ancient world, and that, in the end, was his misfortune.
 
 He had built wonders for kings: statues so lifelike that people said they had to be tied down to stop them walking away, tools that no one had imagined before, buildings of astonishing ingenuity. For King Minos of Crete he had designed his most famous creation of all, the Labyrinth, a maze so complex that whoever entered it could never find the way out. At its centre lived the Minotaur, a monster with the body of a man and the head of a bull, and every few years young men and women were sent in to be devoured.
@@ -55,8 +54,7 @@ He found his son's body washed up on the shore of a small island and buried him 
 The myth is usually told as a warning against pride: the young man who ignored his father, overreached and was destroyed. That reading is certainly there. But it is worth noticing that there are two warnings in Daedalus's advice, not one. Fly too high and you burn; fly too low and you drown. The story is not simply against ambition. It is about balance, about the difficult art of aiming high enough to escape your prison without forgetting what holds your wings together.
 
 It is also, quietly, a story about a father. Daedalus was the one who built the wings. He gave his son freedom, and with it the power to destroy himself. Every parent, every teacher, every person who has ever handed someone a dangerous gift knows something of what he felt, watching from the sky as the feathers drifted down.` },
-
-{ id: 'md-003', kind: 'Reportaje', topic: 'history', title: 'The summer Strasbourg could not stop dancing', sub: 'In 1518, people in a city on the Rhine began to dance in the streets and could not stop. Historians are still arguing about why.',
+{ id: "md-003", kind: "Reportaje", topic: "history", title: "The summer Strasbourg could not stop dancing", sub: "In 1518, people in a city on the Rhine began to dance in the streets and could not stop. Historians are still arguing about why.",
 body: `In July 1518, in the city of Strasbourg, then part of the Holy Roman Empire and today in France, a woman stepped out into the street and began to dance.
 
 According to the accounts that survive, her name was Frau Troffea, and there was no music, no festival and no obvious reason. She simply danced, alone, for hours, and then for days. Within a week, others had joined her. Within a month, the city chronicles speak of dozens and eventually perhaps hundreds of people dancing in the streets, unable or unwilling to stop, some of them apparently until they collapsed from exhaustion.
@@ -78,8 +76,7 @@ It is also worth remembering how little the dancers themselves left behind. We k
 Strasbourg was not unique. Similar outbreaks were reported in other parts of Europe in the medieval period, particularly along the Rhine, although the 1518 episode is the best recorded. And while there is nothing quite like it today, the basic phenomenon of stress-related symptoms spreading through a group, in schools, factories or small communities, has been observed many times in the modern world.
 
 What makes the story so haunting is not just its strangeness. It is the reminder that the human mind and body are bound together more tightly than we like to think, and that fear, belief and suffering can express themselves in ways that no one, including the sufferers themselves, can fully control. The people of Strasbourg did not dance because they wanted to. They danced, in all likelihood, because their world had become unbearable, and their bodies found a way of saying so.` },
-
-{ id: 'md-004', kind: 'Despacho', topic: 'law', title: 'The snail in the bottle: the case that changed the law of negligence', sub: 'A café in Paisley, a bottle of ginger beer and a question that reached the House of Lords. Donoghue v Stevenson, explained.',
+{ id: "md-004", kind: "Despacho", topic: "law", title: "The snail in the bottle: the case that changed the law of negligence", sub: "A café in Paisley, a bottle of ginger beer and a question that reached the House of Lords. Donoghue v Stevenson, explained.",
 body: `On a summer evening in 1928, a woman called May Donoghue went to a café in Paisley, near Glasgow, with a friend. The friend ordered her a drink: a ginger beer float, made with ice cream and ginger beer poured from a dark, opaque bottle. Mrs Donoghue drank some of it. When her friend poured the rest of the bottle into the glass, out came what she later described as the decomposed remains of a snail.
 
 She said she suffered shock and a serious stomach illness as a result. And she wanted compensation.
@@ -101,8 +98,7 @@ The dissenting judges were not foolish, either. They worried that if manufacture
 The law has developed considerably since then. Courts have been careful not to let the neighbour principle expand without limit, especially where the loss is purely financial or where imposing a duty would be unfair or impractical. Later cases introduced further tests, and there have been many arguments about how far the principle should reach. But the basic insight of Donoghue v Stevenson has survived: that people who carry on activities which may harm others owe those others a duty to take reasonable care.
 
 For law students, the case has an almost mythical status. It is taught in the first weeks of a law degree, debated at dinner parties and commemorated with a plaque in Paisley. For practising lawyers, it is a useful reminder of something easy to forget: that some of the most important principles in the law began with an ordinary person, an ordinary evening and a very unpleasant surprise.` },
-
-{ id: 'md-005', kind: 'Relato', topic: 'life', title: 'The Two Shops', sub: 'Two bakers, one street and a rivalry that lasted thirty years. A short fable about pride.',
+{ id: "md-005", kind: "Relato", topic: "life", title: "The Two Shops", sub: "Two bakers, one street and a rivalry that lasted thirty years. A short fable about pride.",
 body: `In a small town in the north, on a street so narrow that the delivery vans had to reverse out of it, there were two bakeries directly opposite each other.
 
 The one on the left belonged to a man called Walter. The one on the right belonged to a woman called Bridget. They had opened in the same month, more than thirty years earlier, and they had not spoken a single word to each other since the second week.
@@ -144,8 +140,7 @@ There was a long pause. Then Walter put a paper bag on the counter. Inside was a
 They looked at each other for a moment. Then, for the first time anyone could remember, they both laughed.
 
 The two shops are still there, opposite each other on the narrow street. The rivalry continues, and the bread and cakes are as good as ever. But on Sunday evenings, when both bakeries are closed, people walking past sometimes see two old bakers sitting together at a table in one window or the other, drinking tea and arguing, quite happily, about salt.` },
-
-{ id: 'md-006', kind: 'Reportaje', topic: 'mystery', title: 'The ship with no one on board', sub: 'In 1872 a ship was found drifting in the Atlantic, in good condition, with plenty of food and not a single person on board. What happened to the Mary Celeste?',
+{ id: "md-006", kind: "Reportaje", topic: "mystery", title: "The ship with no one on board", sub: "In 1872 a ship was found drifting in the Atlantic, in good condition, with plenty of food and not a single person on board. What happened to the Mary Celeste?",
 body: `On 4 December 1872, the crew of a British ship called the Dei Gratia spotted another vessel sailing erratically in the Atlantic, somewhere between the Azores and the coast of Portugal. Its sails were partly set, but it was moving in an odd, unsteady way, as though nobody was at the wheel. The captain of the Dei Gratia, David Morehouse, recognised it. It was the Mary Celeste, an American merchant ship that had left New York about a month earlier, bound for Genoa with a cargo of alcohol.
 
 Morehouse sent some of his men across in a small boat. What they found has fascinated people ever since.
@@ -167,8 +162,7 @@ Over the years, investigators and enthusiasts have tried to test some of these t
 What happened to the Mary Celeste afterwards is a sadder and less romantic story. The ship changed hands several times and gained a reputation for bad luck. In 1885, its final captain deliberately ran it aground on a reef off Haiti in an attempt to commit insurance fraud. The plan failed, the fraud was discovered, and the most famous ghost ship in the world ended its days as a wreck abandoned on the rocks.
 
 None of these explanations can be proved. The lifeboat was never found, and nobody from the Mary Celeste was ever seen again. That, perhaps, is the real reason the story endures. It is a mystery not of monsters or the supernatural, but of an ordinary decision taken by ordinary people in a moment of fear, a decision that made perfect sense at the time and that nobody survived to explain.` },
-
-{ id: 'md-007', kind: 'Ensayo', topic: 'food', title: 'How a duchess’s hunger gave Britain afternoon tea', sub: 'Scones, tiny sandwiches and a pot of tea at four o’clock. The surprisingly recent history of a very British habit.',
+{ id: "md-007", kind: "Ensayo", topic: "food", title: "How a duchess’s hunger gave Britain afternoon tea", sub: "Scones, tiny sandwiches and a pot of tea at four o’clock. The surprisingly recent history of a very British habit.",
 body: `Few things seem more timelessly British than afternoon tea: a three-tiered stand of finger sandwiches, scones with clotted cream and jam, small cakes, and a pot of tea poured into delicate china. Tourists queue for it in London's grand hotels. Grandmothers serve it in country cottages. It feels as though it must have been around for ever.
 
 In fact, it is a nineteenth-century invention, and according to the most popular version of the story, it began with a hungry duchess.
@@ -192,8 +186,7 @@ Tea itself, of course, has a darker history that is worth remembering alongside 
 Today, a full afternoon tea is mostly a treat for special occasions rather than a daily routine. Most British people would not dream of eating cucumber sandwiches at four o'clock on a Tuesday. But the habit lives on in smaller ways: the mid-afternoon cup of tea in the office, the packet of biscuits passed round a meeting, the instinct, in any moment of crisis, to put the kettle on.
 
 That instinct may be the real legacy of the Duchess of Bedford's sinking feeling. Afternoon tea was never really about the food. It was about pausing in the middle of the day, sitting down with other people and making a small ceremony out of something ordinary. In a world that rarely stops, that is perhaps worth keeping, whichever way round you put the jam.` },
-
-{ id: 'md-008', kind: 'Opinión', topic: 'tech', title: 'Your attention is the product. Act like it.', sub: 'The apps on your phone are free because you are paying with something more valuable than money.',
+{ id: "md-008", kind: "Opinión", topic: "tech", title: "Your attention is the product. Act like it.", sub: "The apps on your phone are free because you are paying with something more valuable than money.",
 body: `There is an old saying in the technology industry that has become something of a cliché: if you are not paying for the product, you are the product. Like most clichés, it is slightly wrong. You are not the product. Your attention is.
 
 Think about how many of the services you use every day cost you nothing. Social media, video platforms, news apps, search engines, games. They are built by some of the most talented engineers in the world, run on enormous data centres and employ thousands of people. They are not charities. They make money, often staggering amounts of it, mainly by selling advertising. And advertising is only valuable if people are looking at it.

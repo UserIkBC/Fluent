@@ -1,6 +1,6 @@
 /* Textos Fluent · lote 9 · lecturas largas */
 window.ORIG.push(
-{ id: 'lr-006', kind: 'Ensayo', topic: 'ideas', title: 'Are we really free? The oldest argument in philosophy', sub: 'If every choice you make has a cause, in what sense is it yours? A long essay on free will, and why the answer matters for how we live and how we punish.',
+{ id: "lr-006", kind: "Ensayo", topic: "ideas", title: "Are we really free? The oldest argument in philosophy (1/2)", sub: "If every choice you make has a cause, in what sense is it yours? A long essay on free will, and why the answer matters for how we live and how we punish.", series: "lr-006", chapter: 1, parts: 2,
 body: `Think about the last decision you made. Perhaps it was trivial: whether to have coffee or tea, whether to open this text or another one. Perhaps it was something bigger. Either way, it almost certainly felt like a choice. You considered the options, you weighed them up, and then you chose. You could, it seems obvious, have chosen differently.
 
 But could you?
@@ -39,9 +39,9 @@ On this view, freedom is not the absence of causation but the presence of a part
 
 Modern compatibilists have refined this picture in many ways. Some emphasise our ability to reflect on our own desires: you may want a cigarette, but you may also want not to want it, and freedom consists in being able to act on that higher-level preference. Others emphasise our capacity to respond to reasons: a free person is one who would change their behaviour if presented with good reasons to do so.
 
-Critics remain unconvinced. If the compatibilist is right, they say, then freedom is simply a matter of being determined by the right kind of internal causes. But you did not choose those internal causes either. You did not choose your character, your temperament or the reasons that seem persuasive to you. They were shaped by things outside your control. To say that you are free because you act on your own desires, when you never chose those desires, can feel like a clever redefinition rather than a solution. The philosopher Immanuel Kant, who was no compatibilist, dismissed this kind of view as a "wretched subterfuge".
-
-What the brain tells us
+Critics remain unconvinced. If the compatibilist is right, they say, then freedom is simply a matter of being determined by the right kind of internal causes. But you did not choose those internal causes either. You did not choose your character, your temperament or the reasons that seem persuasive to you. They were shaped by things outside your control. To say that you are free because you act on your own desires, when you never chose those desires, can feel like a clever redefinition rather than a solution. The philosopher Immanuel Kant, who was no compatibilist, dismissed this kind of view as a "wretched subterfuge".` },
+{ id: "lr-006-p2", kind: "Ensayo", topic: "ideas", title: "Are we really free? The oldest argument in philosophy (2/2)", sub: "Parte 2 de 2. If every choice you make has a cause, in what sense is it yours? A long essay on free will, and why the answer matters for how we live and how we punish.", series: "lr-006", chapter: 2, parts: 2,
+body: `What the brain tells us
 
 In recent decades, the debate has acquired a scientific dimension. In the 1980s, the American neuroscientist Benjamin Libet conducted a famous set of experiments in which participants were asked to make a simple movement, such as flexing a wrist, whenever they felt like it, and to note the moment at which they became aware of deciding to move. Meanwhile, electrodes recorded the electrical activity in their brains.
 

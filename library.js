@@ -34,7 +34,7 @@ async function loadText(id) {
   if (pre === 'o' || pre === 'm') {
     const t = origById(id); if (!t) throw new Error('No encuentro este texto.');
     const o = Object.assign({ srcName: pre === 'm' ? 'Mi texto' : 'Fluent' }, t);
-    if (t.series) { const nx = allTexts().find(x => x.series === t.series && x.chapter === t.chapter + 1); if (nx) o.next = { href: '#r/' + nx.id, label: 'Siguiente capítulo' }; }
+    if (t.series) { const nx = allTexts().find(x => x.series === t.series && x.chapter === t.chapter + 1); if (nx) o.next = { href: '#r/' + nx.id, label: t.parts ? 'Seguir con la parte ' + nx.chapter + ' de ' + t.parts : 'Siguiente capítulo' }; }
     else { const sim = allTexts().filter(x => x.src === 'orig' && x.id !== id && (x.topic === t.topic || x.kind === t.kind) && !(READS[x.id] && READS[x.id].done)).slice(0, 4); if (sim.length) o.more = `<div class="card list-card">${sim.map(textCard).join('')}</div>`; }
     return o;
   }

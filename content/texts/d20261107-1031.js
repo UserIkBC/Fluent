@@ -1,6 +1,6 @@
 /* Textos Fluent · lote del 20261107 · relato, mito, actualidad, filosofía, historia y emails jurídicos */
 window.ORIG.push(
-{ id: 'd20261107-1031-1', kind: 'Relato', topic: 'life', title: 'The Ledger in the Wardrobe', sub: 'A house clearer in east London finds nine notebooks in a dead man’s flat, and a debt of twenty pounds that has gone unpaid for thirty-six years. A story about kindness, pride and the things we never quite manage to say.',
+{ id: "d20261107-1031-1", kind: "Relato", topic: "life", title: "The Ledger in the Wardrobe (1/2)", sub: "A house clearer in east London finds nine notebooks in a dead man’s flat, and a debt of twenty pounds that has gone unpaid for thirty-six years. A story about kindness, pride and the things we never quite manage to say.", series: "d20261107-1031-1", chapter: 1, parts: 2,
 body: `The flat was on the fourth floor of a block in Walthamstow that had been built in the sixties by people who clearly believed the future would be bright, uncomplicated and painted mustard yellow. The lift had been broken since August. Nell Achterberg carried the first stack of flattened boxes up the stairs with a roll of bin bags hooked over her wrist like a bracelet, and by the third landing she had stopped pretending she wasn't out of breath.
 
 Dev was already inside, standing in the middle of the sitting room with his hands on his hips, the way he always stood at the start of a job. He said it helped him see the place as a set of problems rather than as somebody's life.
@@ -89,9 +89,9 @@ She was halfway through the sitting room when the doorbell went. It was the kind
 
 "I was coming up anyway," he said, too quickly. "To drop off the second set of keys. I didn't need to. I could have posted them." He looked past her into the flat and his jaw tightened. "God, it still smells the same. Pilchards."
 
-"He had eleven tins," she said, and to her surprise he almost laughed.
-
-She made him a coffee with the last of Arthur's instant, in the only two mugs she had not yet packed, and they stood in the kitchen because all the chairs were already in the van. He did not ask about the notebooks. She did not mention them. They talked about the traffic on the M25 and the lift and the housing association, and it was like watching two people walk around the edge of a hole in the floor.
+"He had eleven tins," she said, and to her surprise he almost laughed.` },
+{ id: "d20261107-1031-1-p2", kind: "Relato", topic: "life", title: "The Ledger in the Wardrobe (2/2)", sub: "Parte 2 de 2. A house clearer in east London finds nine notebooks in a dead man’s flat, and a debt of twenty pounds that has gone unpaid for thirty-six years. A story about kindness, pride and the things we never quite manage to say.", series: "d20261107-1031-1", chapter: 2, parts: 2,
+body: `She made him a coffee with the last of Arthur's instant, in the only two mugs she had not yet packed, and they stood in the kitchen because all the chairs were already in the van. He did not ask about the notebooks. She did not mention them. They talked about the traffic on the M25 and the lift and the housing association, and it was like watching two people walk around the edge of a hole in the floor.
 
 In the end it was Martin who broke.
 
@@ -198,7 +198,7 @@ Nell kept a notebook after that. Not a ledger exactly, and not every day, but wh
 Beside each one she wrote what she thought she owed. And she tried, as Arthur Penrose had tried, to settle each debt while the person was still there to receive it. She did not always manage. But she found that the trying changed her more than the paying ever could, and that most of the time, when she finally said the thing she had been meaning to say, the other person looked at her in surprise and told her she owed them nothing at all.
 
 She never quite believed them. She was not sure she was supposed to.` },
-{ id: 'd20261107-1031-2', kind: 'Relato', topic: 'myth', title: 'Gilgamesh and the Plant of Youth', sub: 'The oldest great story in the world, retold at length: a tyrant king, a wild man made of clay, a friendship, a death, and a journey to the edge of the world in search of a cure for mortality.',
+{ id: "d20261107-1031-2", kind: "Relato", topic: "myth", title: "Gilgamesh and the Plant of Youth (1/4)", sub: "The oldest great story in the world, retold at length: a tyrant king, a wild man made of clay, a friendship, a death, and a journey to the edge of the world in search of a cure for mortality.", series: "d20261107-1031-2", chapter: 1, parts: 4,
 body: `In the land between the two rivers, where the Tigris and the Euphrates run down to the sea through mud and reeds and blinding light, there was once a city called Uruk, and in Uruk there was a king who could not sleep.
 
 His name was Gilgamesh. The poets who sang about him said he was two-thirds god and one-third man. His mother was the wise goddess Ninsun, his father a king of old, and the gods had given him everything a body could hold: beauty, strength, a voice that carried across the marketplace, a mind that missed nothing. He had built the walls of Uruk himself, or so he liked to say, great walls of baked brick that ran for miles around the city, gleaming like copper in the evening sun. Nobody in the world was his equal, and that was precisely the problem.
@@ -235,9 +235,9 @@ Enkidu spoke first. "Your mother bore you to be unique," he said. "Enlil himself
 
 And Gilgamesh, who had never in his life been spoken to as an equal, embraced him. They kissed each other. They became friends.
 
-The gods had sent Enkidu to defeat Gilgamesh, and in a sense he did, not by beating him but by giving him something he had never had: somebody to love who was not afraid of him. The king's terrible energy had found somewhere else to go.
-
-The forest of cedars
+The gods had sent Enkidu to defeat Gilgamesh, and in a sense he did, not by beating him but by giving him something he had never had: somebody to love who was not afraid of him. The king's terrible energy had found somewhere else to go.` },
+{ id: "d20261107-1031-2-p2", kind: "Relato", topic: "myth", title: "Gilgamesh and the Plant of Youth (2/4)", sub: "Parte 2 de 4. The oldest great story in the world, retold at length: a tyrant king, a wild man made of clay, a friendship, a death, and a journey to the edge of the world in search of a cure for mortality.", series: "d20261107-1031-2", chapter: 2, parts: 4,
+body: `The forest of cedars
 
 Unfortunately, it went straight into the next adventure.
 
@@ -297,9 +297,9 @@ Then the sun god Shamash spoke to him from the sky. "Why do you curse Shamhat, E
 
 Enkidu was quiet for a long time. Then he took back his curse, and he blessed Shamhat instead: may kings and princes love her, may men untie their purses for her, may she never lack for anything.
 
-It is a small moment, but it may be the wisest in the whole poem. A dying man, furious at the life that is killing him, is reminded of what that life gave him, and chooses gratitude.
-
-Before the end, Enkidu dreamt of the underworld. He saw himself seized and dragged down to the house of dust, where those who enter never leave, where the dead sit in darkness wearing feathers like birds, where dust is their food and clay their bread. Kings who had ruled the earth sat there as servants. There was no light. There was no return.
+It is a small moment, but it may be the wisest in the whole poem. A dying man, furious at the life that is killing him, is reminded of what that life gave him, and chooses gratitude.` },
+{ id: "d20261107-1031-2-p3", kind: "Relato", topic: "myth", title: "Gilgamesh and the Plant of Youth (3/4)", sub: "Parte 3 de 4. The oldest great story in the world, retold at length: a tyrant king, a wild man made of clay, a friendship, a death, and a journey to the edge of the world in search of a cure for mortality.", series: "d20261107-1031-2", chapter: 3, parts: 4,
+body: `Before the end, Enkidu dreamt of the underworld. He saw himself seized and dragged down to the house of dust, where those who enter never leave, where the dead sit in darkness wearing feathers like birds, where dust is their food and clay their bread. Kings who had ruled the earth sat there as servants. There was no light. There was no return.
 
 On the twelfth day, he died.
 
@@ -347,9 +347,9 @@ The boat ran aground on a mountain called Nimush. After seven days he released a
 
 So Utnapishtim made an offering on the mountaintop, and the gods smelt the sweet savour and gathered round the sacrifice like flies. Enlil, who had sent the flood, was furious that anyone had survived. But Ea rebuked him for punishing the whole of humankind instead of only the guilty, and in the end Enlil touched the foreheads of Utnapishtim and his wife and declared that they should be like gods, and live far away, at the mouth of the rivers.
 
-"That is how I came to live for ever," the old man said. "But who will call the gods together for you? Who will grant you the life you seek?"
-
-Sleep, the little brother of death
+"That is how I came to live for ever," the old man said. "But who will call the gods together for you? Who will grant you the life you seek?"` },
+{ id: "d20261107-1031-2-p4", kind: "Relato", topic: "myth", title: "Gilgamesh and the Plant of Youth (4/4)", sub: "Parte 4 de 4. The oldest great story in the world, retold at length: a tyrant king, a wild man made of clay, a friendship, a death, and a journey to the edge of the world in search of a cure for mortality.", series: "d20261107-1031-2", chapter: 4, parts: 4,
+body: `Sleep, the little brother of death
 
 Then he offered Gilgamesh a test. "If you want to conquer death," he said, "first conquer sleep. Stay awake for six days and seven nights."
 
@@ -398,7 +398,7 @@ And yet the poem is not hopeless. Its two great pieces of advice are both quietl
 Every age has found its own reflection in this story: the first great tale of friendship, the first account of grief, the first quarrel between nature and civilisation, embodied in Enkidu, who gained a mind and lost the gazelles. In our own time, when the very rich spend fortunes on the dream of living for ever, it reads almost as satire.
 
 Perhaps that is why it still matters. Four thousand years ago, someone in the land between the rivers looked death in the face and wrote down, on wet clay, the same questions we still ask in hospital corridors and at three in the morning. What is the point of all this, if it ends? And the answer they reached was not a trick or a magic plant. It was a wall, a meal, a hand to hold, and a friend worth weeping for.` },
-{ id: 'd20261107-1031-3', kind: 'Noticia explicada', topic: 'politics', title: 'America’s midterm earthquake: what the Democrats’ victory means', sub: 'Democrats have taken both the House and the Senate halfway through Donald Trump’s second term. What happened on 3 November, why voters turned, and what a divided Washington will look like.',
+{ id: "d20261107-1031-3", kind: "Noticia explicada", topic: "politics", title: "America’s midterm earthquake: what the Democrats’ victory means", sub: "Democrats have taken both the House and the Senate halfway through Donald Trump’s second term. What happened on 3 November, why voters turned, and what a divided Washington will look like.",
 body: `On Tuesday 3 November, Americans went to the polls in the midterm elections, the contests held halfway through a presidential term, and by the following morning the political map of Washington had been redrawn. The Democratic Party won control of the House of Representatives, which it had lost in 2022, and, more surprisingly, of the Senate, where Republicans had held a 53-47 majority. For the last two years of Donald Trump's second term, the president will face a Congress run by his opponents.
 
 What happened
@@ -450,7 +450,7 @@ For the rest of the world, the result matters because American foreign and trade
 The election also sets the stage for 2028, when Mr Trump, barred by the Constitution from seeking a third term, will leave office. Democrats will go into that contest with momentum and a crop of new senators and governors from states they had not won in years. Republicans will go into it arguing over what went wrong and who should lead them. Midterm results are not always a reliable guide to the next presidential election: Barack Obama's party was routed in 2010, and he was comfortably re-elected two years later. But this one, by any measure, was a political earthquake, and its aftershocks will be felt for the next two years.
 
 Sources: CBS News, the Associated Press (via MPR News), The Hill, Northeastern Global News.` },
-{ id: 'd20261107-1031-4', kind: 'Ensayo', topic: 'ideas', title: 'Is an unjust law still law? Hart, Fuller and the grudge informer', sub: 'A woman denounced her husband under a Nazi statute. Was she obeying the law? The famous debate between an Oxford positivist and a Harvard natural lawyer, and why it still matters to every lawyer.',
+{ id: "d20261107-1031-4", kind: "Ensayo", topic: "ideas", title: "Is an unjust law still law? Hart, Fuller and the grudge informer (1/3)", sub: "A woman denounced her husband under a Nazi statute. Was she obeying the law? The famous debate between an Oxford positivist and a Harvard natural lawyer, and why it still matters to every lawyer.", series: "d20261107-1031-4", chapter: 1, parts: 3,
 body: `In 1944, in a small German town, a woman wanted to be rid of her husband. He was a soldier, home on leave, and in private conversation with her he had said some disparaging things about Hitler and the conduct of the war. She reported him. Under the laws then in force, making such remarks was a crime, and so was failing to report them. The husband was arrested, tried by a military court and sentenced to death. In the event the sentence was not carried out, and he was sent to the Eastern Front instead. He survived the war.
 
 In 1949 it was the wife's turn to stand in the dock. She was prosecuted under the old German Criminal Code of 1871 for unlawfully depriving her husband of his liberty. Her defence was simple, and in its own terms difficult to answer. She had done nothing illegal. She had informed on him under a statute that was valid at the time, and the court that sentenced him had applied that statute correctly. How could she be guilty of a crime for obeying the law?
@@ -473,9 +473,9 @@ In the spring of 1957 an English philosopher called Herbert Hart crossed the Atl
 
 His lecture, published the following year in the Harvard Law Review as "Positivism and the Separation of Law and Morals", was a defence of the positivist tradition against its critics. In the same issue, the editors printed a reply by a Harvard professor called Lon Fuller. Fuller was a contract lawyer by training, the author of a famous article on reliance damages, and also something rarer: an American law professor who took philosophy seriously and believed that his colleagues' habit of treating law as a mere set of commands had something deeply wrong with it. The exchange between the two of them, which carried on in books and reviews for more than a decade, is still known simply as the Hart-Fuller debate. It remains one of the best introductions to the subject ever written, partly because both men were brilliant and partly because, unusually for academics, each understood exactly what the other was saying.
 
-The grudge informer was at the centre of it.
-
-What the court did, and what Hart thought it did
+The grudge informer was at the centre of it.` },
+{ id: "d20261107-1031-4-p2", kind: "Ensayo", topic: "ideas", title: "Is an unjust law still law? Hart, Fuller and the grudge informer (2/3)", sub: "Parte 2 de 3. A woman denounced her husband under a Nazi statute. Was she obeying the law? The famous debate between an Oxford positivist and a Harvard natural lawyer, and why it still matters to every lawyer.", series: "d20261107-1031-4", chapter: 2, parts: 3,
+body: `What the court did, and what Hart thought it did
 
 The account that Hart had read, in a short note published in the Harvard Law Review in 1951, reported that the German appeal court had convicted the wife on the ground that the Nazi statutes she relied on were contrary to the sound conscience and sense of justice of all decent human beings. In other words, the court had applied something like natural law: the statutes were so wicked that they had never really been law, and she could not shelter behind them.
 
@@ -509,9 +509,9 @@ Hart was not convinced. In a review of The Morality of Law, he agreed that Fulle
 
 More seriously, Hart insisted that the principles of legality were compatible with very great iniquity. History seems to bear him out. Slavery in the American South and apartheid in South Africa were maintained, to a large extent, through clear, public, general and prospective rules, applied with dreary consistency by professional judges. If anything, their legality made them more efficient. A legal system could be scrupulously formal and utterly wicked at the same time, and that, Hart thought, was exactly why it was so important not to confuse legal validity with moral worth.
 
-Fuller had an answer to that too, or at least the beginning of one. He did not claim that observing the principles of legality guaranteed justice, only that it made certain kinds of injustice harder, and that a legal system which respects people enough to tell them in advance what is expected of them is already treating them as responsible agents rather than as objects to be managed. There is a kind of moral respect built into the very idea of governing by rules. You can argue about how much that respect is worth, but it is not nothing.
-
-The vehicle in the park
+Fuller had an answer to that too, or at least the beginning of one. He did not claim that observing the principles of legality guaranteed justice, only that it made certain kinds of injustice harder, and that a legal system which respects people enough to tell them in advance what is expected of them is already treating them as responsible agents rather than as objects to be managed. There is a kind of moral respect built into the very idea of governing by rules. You can argue about how much that respect is worth, but it is not nothing.` },
+{ id: "d20261107-1031-4-p3", kind: "Ensayo", topic: "ideas", title: "Is an unjust law still law? Hart, Fuller and the grudge informer (3/3)", sub: "Parte 3 de 3. A woman denounced her husband under a Nazi statute. Was she obeying the law? The famous debate between an Oxford positivist and a Harvard natural lawyer, and why it still matters to every lawyer.", series: "d20261107-1031-4", chapter: 3, parts: 3,
+body: `The vehicle in the park
 
 The debate had a second front, less dramatic but closer to what lawyers actually do every day. Hart had argued that the words of a legal rule have a core of settled meaning and a penumbra of doubt. His example has become one of the most famous in legal philosophy. Suppose a rule says: no vehicles in the park. A car is clearly a vehicle; that is the core. But what about a bicycle, a roller skate or a toy electric car? These lie in the penumbra, and here, Hart said, the judge must exercise discretion. In easy cases, the judge simply applies the rule. In hard cases, he must in a sense legislate, filling the gap by asking what the rule is for.
 
@@ -538,7 +538,7 @@ The same question arises, in less dramatic forms, every time a lawyer argues tha
 Perhaps the most useful lesson is that Hart and Fuller were less far apart than their admirers sometimes suggest. Both were liberals. Both had been appalled by what had happened in Germany. Both wanted lawyers and citizens to think harder about the moral claims of law, not less. They disagreed about where to locate the moral question: Hart wanted it outside the concept of law, as a separate question we must always ask; Fuller wanted it inside, as part of what makes law what it is. But both of them were trying to make sure that nobody could ever again say, as so many officials said after 1945, that they had simply been following the law.
 
 That is perhaps the best reason for a young lawyer to read them. Sooner or later, in a small way or a large one, everyone who practises law is asked to apply a rule that seems wrong. It helps to have thought in advance about what you will say, and to understand that "it is the law" is the beginning of the argument, not the end of it.` },
-{ id: 'd20261107-1031-5', kind: 'Reportaje', topic: 'history', title: 'The carpenter who solved the longitude problem', sub: 'Ships were sinking because sailors could not tell how far east or west they were. Parliament offered a fortune for the answer, and a self-taught clockmaker from Lincolnshire spent forty years finding it.',
+{ id: "d20261107-1031-5", kind: "Reportaje", topic: "history", title: "The carpenter who solved the longitude problem (1/2)", sub: "Ships were sinking because sailors could not tell how far east or west they were. Parliament offered a fortune for the answer, and a self-taught clockmaker from Lincolnshire spent forty years finding it.", series: "d20261107-1031-5", chapter: 1, parts: 2,
 body: `On the night of 22 October 1707, a British fleet returning from the Mediterranean ran onto the rocks of the Isles of Scilly, off the south-western tip of England. Four warships were lost, among them the flagship, HMS Association, and with them somewhere between 1,400 and 2,000 men, including the commander of the fleet, Admiral Sir Cloudesley Shovell. It was one of the worst disasters in the history of the Royal Navy, and it happened not in battle, nor in a hurricane, but because a group of highly experienced officers did not know where they were.
 
 They were not careless. They were simply up against a problem that had defeated the finest minds in Europe for two hundred years. A sailor at sea could work out his latitude, how far north or south he was, with reasonable accuracy by measuring the height of the sun at noon or of the Pole Star at night. But there was no reliable way to work out his longitude, how far east or west. For that, navigators relied on dead reckoning: an educated guess based on speed, direction and time elapsed, which might be out by dozens or even hundreds of miles. Ships ran aground on coasts they believed were far away. They missed islands where they had planned to take on water, and crews died of scurvy while their captains searched.
@@ -563,9 +563,9 @@ In the late 1720s he heard about the longitude prize, and he set out to build a 
 
 Forty years
 
-The first, now known as H1, was finished in 1735. It was a strange and beautiful object, a cluster of brass wheels and balances weighing over thirty kilograms, with no pendulum at all. Instead, two linked bars swung against each other, so that the motion of a ship would affect them equally and the errors would cancel out. It was tested on a voyage to Lisbon and back in 1736, and on the return journey Harrison's reckoning correctly showed that the ship was further west than the master believed.
-
-The Board of Longitude was impressed enough to give him money to continue. Harrison, a perfectionist who seems to have been incapable of being satisfied with anything he had made, decided that H1 was not good enough, and did not even ask for a full trial. He built H2, which was bigger and heavier, and then abandoned it too. He spent the next nineteen years on H3, and in the course of it invented two devices still in use today: the bimetallic strip, which compensates for changes in temperature, and the caged roller bearing, the ancestor of the ball bearings in almost every machine on earth.
+The first, now known as H1, was finished in 1735. It was a strange and beautiful object, a cluster of brass wheels and balances weighing over thirty kilograms, with no pendulum at all. Instead, two linked bars swung against each other, so that the motion of a ship would affect them equally and the errors would cancel out. It was tested on a voyage to Lisbon and back in 1736, and on the return journey Harrison's reckoning correctly showed that the ship was further west than the master believed.` },
+{ id: "d20261107-1031-5-p2", kind: "Reportaje", topic: "history", title: "The carpenter who solved the longitude problem (2/2)", sub: "Parte 2 de 2. Ships were sinking because sailors could not tell how far east or west they were. Parliament offered a fortune for the answer, and a self-taught clockmaker from Lincolnshire spent forty years finding it.", series: "d20261107-1031-5", chapter: 2, parts: 2,
+body: `The Board of Longitude was impressed enough to give him money to continue. Harrison, a perfectionist who seems to have been incapable of being satisfied with anything he had made, decided that H1 was not good enough, and did not even ask for a full trial. He built H2, which was bigger and heavier, and then abandoned it too. He spent the next nineteen years on H3, and in the course of it invented two devices still in use today: the bimetallic strip, which compensates for changes in temperature, and the caged roller bearing, the ancestor of the ball bearings in almost every machine on earth.
 
 Then, in the 1750s, he changed direction completely. He had been working on a pocket watch for his own use, and he came to realise that a small, fast-beating balance might be more stable than any large mechanism. The result was H4: a silver watch about thirteen centimetres across, a fraction of the size of his earlier machines, finished in 1759 when Harrison was sixty-six years old.
 
@@ -590,7 +590,7 @@ Harrison's clocks lay neglected for well over a century until, in the 1920s, a r
 There is a lesson in the story, and it is not the obvious one about a lone genius triumphing over the establishment. Harrison was a genius, and the establishment did treat him shabbily. But he was also stubborn, secretive and slow, and his own perfectionism cost him decades. Maskelyne was not simply a villain; he believed, sincerely, in a method that worked and that did not depend on expensive instruments that very few ships could afford. Great problems are rarely solved in a single flash of inspiration. They are solved by people who spend forty years filing brass in a workshop, and by the patient, unglamorous testing that finally tells you whether something works.
 
 Every time your phone tells you exactly where you are, it does so by measuring time: the GPS satellites overhead carry atomic clocks, and your position is calculated from the tiny differences in when their signals arrive. Three centuries after the wreck on the Scilly rocks, finding your way in the world is still a question of knowing what time it is.` },
-{ id: 'd20261107-1031-6', kind: 'Email', topic: 'law', title: 'Order HF-2291: a late delivery, a strike and a force majeure clause', sub: 'A Bristol distributor, a Toledo olive oil producer and their London solicitors trade emails over three delayed containers. Liquidated damages, notice clauses and a settlement, written as lawyers write.',
+{ id: "d20261107-1031-6", kind: "Email", topic: "law", title: "Order HF-2291: a late delivery, a strike and a force majeure clause (1/2)", sub: "A Bristol distributor, a Toledo olive oil producer and their London solicitors trade emails over three delayed containers. Liquidated damages, notice clauses and a settlement, written as lawyers write.", series: "d20261107-1031-6", chapter: 1, parts: 2,
 body: `From: Rachel Hartley, Commercial Director, Hartley & Finch Provisions Ltd (Bristol)
 To: Javier Montoro, Export Manager, Olivares del Alberche S.L. (Toledo)
 Subject: Order HF-2291: late delivery
@@ -657,9 +657,9 @@ Dear Mr Okoro,
 
 We have been instructed by Olivares del Alberche S.L. and write in response to your email of 7 November.
 
-Our client maintains that clause 14 applies. The strike was announced on 17 September, but it was widely reported at the time that negotiations were continuing and that a settlement was expected. A threatened strike does not deprive a party of the protection of a clause that expressly covers industrial action. As for alternative routes, our client did investigate road freight; we enclose quotations showing that it would have more than doubled the cost of carriage, and that no hauliers were available at short notice in any case, because every exporter in Valencia was trying to do the same thing. Clause 14.4 requires reasonable endeavours, not the impossible.
-
-On notice, we accept that the email of 5 November was the first written notice. However, our client's sales team spoke to your client's buying department by telephone on 2 October and explained that the port was closed. Clause 14.3 does not require notice to be given in writing. Whether that conversation satisfied the clause is, at the very least, arguable.
+Our client maintains that clause 14 applies. The strike was announced on 17 September, but it was widely reported at the time that negotiations were continuing and that a settlement was expected. A threatened strike does not deprive a party of the protection of a clause that expressly covers industrial action. As for alternative routes, our client did investigate road freight; we enclose quotations showing that it would have more than doubled the cost of carriage, and that no hauliers were available at short notice in any case, because every exporter in Valencia was trying to do the same thing. Clause 14.4 requires reasonable endeavours, not the impossible.` },
+{ id: "d20261107-1031-6-p2", kind: "Email", topic: "law", title: "Order HF-2291: a late delivery, a strike and a force majeure clause (2/2)", sub: "Parte 2 de 2. A Bristol distributor, a Toledo olive oil producer and their London solicitors trade emails over three delayed containers. Liquidated damages, notice clauses and a settlement, written as lawyers write.", series: "d20261107-1031-6", chapter: 2, parts: 2,
+body: `On notice, we accept that the email of 5 November was the first written notice. However, our client's sales team spoke to your client's buying department by telephone on 2 October and explained that the port was closed. Clause 14.3 does not require notice to be given in writing. Whether that conversation satisfied the clause is, at the very least, arguable.
 
 We also note your reference to your client's "wider losses". Clause 9.3 states that the liquidated damages payable under clause 9 "shall be the Buyer's sole and exclusive remedy for delay in delivery". Your client agreed to that allocation of risk. It cannot now claim general damages for the same delay. Even if our client were not entitled to rely on clause 14, therefore, your client's maximum recovery would be capped at the figure produced by clause 9, which our client calculates at £4,860.
 

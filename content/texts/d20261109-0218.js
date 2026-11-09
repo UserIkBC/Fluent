@@ -1,6 +1,6 @@
 /* Textos Fluent · lote del 20261109 · relato del faro, los hijos de Lir, accidente de Urda, la máquina de experiencias, las anguilas y diario de un trainee */
 window.ORIG.push(
-{ id: 'd20261109-0218-1', kind: 'Relato', topic: 'work', title: "The Last Watch on Hallan Skerry", sub: "Orkney, 1971. An engineer from Edinburgh comes out to a lonely lighthouse to plan the end of the keepers' jobs, and a storm keeps him there. A story about progress, duty and the things that are worth saying before they disappear.",
+{ id: "d20261109-0218-1", kind: "Relato", topic: "work", title: "The Last Watch on Hallan Skerry (1/2)", sub: "Orkney, 1971. An engineer from Edinburgh comes out to a lonely lighthouse to plan the end of the keepers' jobs, and a storm keeps him there. A story about progress, duty and the things that are worth saying before they disappear.", series: "d20261109-0218-1", chapter: 1, parts: 2,
 body: `The man from Edinburgh came out on the relief boat on a Tuesday in October 1971, and he was sick twice before they had cleared the harbour wall.
 
 Angus Tait watched him from the landing stage as the boat came in under the rock, rising and falling on a swell that would have looked like nothing at all from the mainland. He was a tall, narrow man in a good tweed coat that was already ruined, and he was holding a leather briefcase against his chest the way some people hold a baby, as though the sea might take it from him if he loosened his grip for a moment.
@@ -103,9 +103,9 @@ By four o'clock it was almost dark. By six the wind had risen to a scream. The s
 
 "No," said Davie. "Sometimes it's bad."
 
-At half past nine the generator failed.
-
-There was a sound like a cough from the engine house, and then a silence that was not silence at all but simply the absence of one familiar noise among a hundred terrible ones. The electric lights in the dwelling flickered and died. In the dark, Pryor heard Angus get up from his chair, unhurried, and strike a match.
+At half past nine the generator failed.` },
+{ id: "d20261109-0218-1-p2", kind: "Relato", topic: "work", title: "The Last Watch on Hallan Skerry (2/2)", sub: "Parte 2 de 2. Orkney, 1971. An engineer from Edinburgh comes out to a lonely lighthouse to plan the end of the keepers' jobs, and a storm keeps him there. A story about progress, duty and the things that are worth saying before they disappear.", series: "d20261109-0218-1", chapter: 2, parts: 2,
+body: `There was a sound like a cough from the engine house, and then a silence that was not silence at all but simply the absence of one familiar noise among a hundred terrible ones. The electric lights in the dwelling flickered and died. In the dark, Pryor heard Angus get up from his chair, unhurried, and strike a match.
 
 "Davie," Angus said. "The engine."
 
@@ -190,7 +190,7 @@ Two years later, on a bright, still afternoon in late summer, Angus Tait climbed
 It said: Light handed over in good order. Look after it.
 
 Then he went down the steps and got into the boat and did not look back, and that night, for the first time since 1854, the light on Hallan Skerry came on with nobody there to see it, and swept the dark water every thirty seconds, exactly as it always had, and was every bit as bright.` },
-{ id: 'd20261109-0218-2', kind: 'Relato', topic: 'myth', title: "The Children of Lir", sub: "The saddest of the Irish legends, retold at length: a jealous stepmother, four children turned into swans, nine hundred years on lakes and freezing seas, and the bell that finally sets them free.",
+{ id: "d20261109-0218-2", kind: "Relato", topic: "myth", title: "The Children of Lir (1/3)", sub: "The saddest of the Irish legends, retold at length: a jealous stepmother, four children turned into swans, nine hundred years on lakes and freezing seas, and the bell that finally sets them free.", series: "d20261109-0218-2", chapter: 1, parts: 3,
 body: `Long ago, before the coming of the saints and their bells, Ireland belonged to a people called the Tuatha Dé Danann. They were tall and fair and skilled in every art, in poetry and smithcraft and healing and magic, and for a long time they ruled the island from end to end. Then a new people came over the sea from the south, the sons of Míl, and fought them, and beat them. And the Tuatha Dé Danann did not leave Ireland. Instead they went into it. They withdrew into the hills and the green mounds, the old raths and the hollow places under the earth, and there they made themselves palaces that ordinary eyes could not see, and they lived on, unchanged and unageing, alongside the people who had taken their land.
 
 But a defeated people must still have a king, and so the chiefs of the Tuatha Dé Danann gathered to choose one. There were five who wanted it. The strongest claims belonged to two of them: Bodb Dearg, son of the Dagda, a wise and steady man; and Lir, lord of the Hill of the White Field, who was proud and well loved and certain that the honour should be his.
@@ -243,11 +243,9 @@ The servants stared at her.
 
 Aoife took up a sword herself then. But when she stood over the children with the blade in her hand, something in her rose up against it, and she could not strike. So they drove on, as far as the shore of Lough Derravaragh, in the middle of Ireland, and there she told the children to go into the water and bathe after the long journey.
 
-They went in, laughing, because it was a fine day and the water was cool. And as they swam, Aoife struck each of them with a druid's wand, and spoke a spell over them, and the four children of Lir became four white swans.
-
-*
-
-For a moment there was nothing on the lake but four swans, beating the water with their wings in confusion. Then the eldest of them, Fionnuala, turned towards the shore, and she spoke. Her voice was still a girl's voice.
+They went in, laughing, because it was a fine day and the water was cool. And as they swam, Aoife struck each of them with a druid's wand, and spoke a spell over them, and the four children of Lir became four white swans.` },
+{ id: "d20261109-0218-2-p2", kind: "Relato", topic: "myth", title: "The Children of Lir (2/3)", sub: "Parte 2 de 3. The saddest of the Irish legends, retold at length: a jealous stepmother, four children turned into swans, nine hundred years on lakes and freezing seas, and the bell that finally sets them free.", series: "d20261109-0218-2", chapter: 2, parts: 3,
+body: `For a moment there was nothing on the lake but four swans, beating the water with their wings in confusion. Then the eldest of them, Fionnuala, turned towards the shore, and she spoke. Her voice was still a girl's voice.
 
 "What have you done to us?"
 
@@ -315,11 +313,9 @@ When that last time was over, Fionnuala said to her brothers, "Let us go home. L
 
 They flew east across Ireland. And when they came to the Hill of the White Field, they found nothing. There was no hall and no fire and no father. There were only green mounds overgrown with nettles, and the wind blowing through them. Nine hundred years had passed in the world, and the house of Lir was gone.
 
-They sat on the empty hill all night and sang the saddest music they had ever made. And then, because there was nothing else to do, they flew back to the west.
-
-*
-
-It was there, on the Isle of Glora, that they heard the bell.
+They sat on the empty hill all night and sang the saddest music they had ever made. And then, because there was nothing else to do, they flew back to the west.` },
+{ id: "d20261109-0218-2-p3", kind: "Relato", topic: "myth", title: "The Children of Lir (3/3)", sub: "Parte 3 de 3. The saddest of the Irish legends, retold at length: a jealous stepmother, four children turned into swans, nine hundred years on lakes and freezing seas, and the bell that finally sets them free.", series: "d20261109-0218-2", chapter: 3, parts: 3,
+body: `It was there, on the Isle of Glora, that they heard the bell.
 
 It was a small bell and a thin one, ringing from a little church that a holy man had built on the island. His name was Mochaomhóg, and he had come there as one of the followers of Patrick, who had brought the new faith to Ireland. The swans were frightened when they first heard it, because they had never heard such a sound. And then Fionnuala understood.
 
@@ -354,7 +350,7 @@ And against all that, there is Fionnuala. The story could have made the children
 The tale still lives in Ireland in very ordinary ways. Swans there have long been treated with a kind of affectionate respect, and there is an old belief, still repeated, that it is unlucky to harm one. In 1971, the sculptor Oisín Kelly's great bronze of the children of Lir, four human figures falling and turning into swans as they rise, was installed in the Garden of Remembrance in Dublin, a park dedicated to all those who gave their lives for Irish freedom. It was a striking choice, and a deliberate one. A story about people who endure a long exile and come home transformed had become a way for a whole nation to talk about itself.
 
 Perhaps that is why the story has lasted so long. Most of us will never be turned into swans. But nearly everyone, sooner or later, comes back to a place they loved and finds that time has been there before them. Nearly everyone has to decide, at some point, whether to let a resentment grow or to let it go. And nearly everyone knows someone like Fionnuala, or hopes to be someone like her: the person who, when the storm drives everybody apart, goes to the rock they agreed on and waits.` },
-{ id: 'd20261109-0218-3', kind: 'Noticia explicada', topic: 'news', title: "After Urda: a rail disaster, a resignation and a country going to the polls", sub: "Sixty-nine people died when two high-speed trains collided on the Madrid–Seville line. Six days later the transport minister, Óscar Puente, resigned. What happened, what is known about the causes, and why it matters four weeks before Spain votes.",
+{ id: "d20261109-0218-3", kind: "Noticia explicada", topic: "news", title: "After Urda: a rail disaster, a resignation and a country going to the polls", sub: "Sixty-nine people died when two high-speed trains collided on the Madrid–Seville line. Six days later the transport minister, Óscar Puente, resigned. What happened, what is known about the causes, and why it matters four weeks before Spain votes.",
 body: `Six days after the worst railway accident Spain has suffered this year, the man in charge of the country's railways walked out of a parliamentary hearing and into political retirement. On Tuesday 3 November, at the end of an appearance before Congress lasting several hours, Óscar Puente, the transport minister, announced that he was resigning and that he would not be a candidate in the general election on 29 November. A day later, Pedro Sánchez handed the transport ministry to Carlos Cuerpo, his first deputy prime minister, who will run it alongside his own brief until the election.
 
 The resignation was the political consequence of a crash that has shaken Spaniards' confidence in a high-speed network they have long regarded as one of the country's great modern achievements. It also came at the worst possible moment for the government, four weeks before voters go to the polls.
@@ -398,7 +394,7 @@ What happens next
 In the short term, Carlos Cuerpo will run the ministry on an interim basis until a new government is formed after the election. The judicial investigation will continue in secret for now, and families of the victims will be waiting for its findings and for the technical report, which in past Spanish rail accidents has taken many months. Spanish media have reported that the government is preparing measures for travellers while the line remains affected, including limits on the price of alternative transport, together with a safety plan. And whoever wins the election will inherit a railway system that remains one of the best in the world on paper, but whose users will need persuading, after this autumn, that it is also one of the safest.
 
 Sources: the Associated Press (as published by Proceso and Yahoo Noticias), elDiario.es, Infobae, Hispanidad, Qué! and Reuters, with background from Wikipedia's summaries of Spanish press reporting.` },
-{ id: 'd20261109-0218-4', kind: 'Ensayo', topic: 'ideas', title: "Would you plug in? Nozick's experience machine and the good life", sub: "A machine could give you a lifetime of perfect happiness in a tank. Almost everyone says no, and it is surprisingly hard to explain why. A long essay on hedonism, its rivals and what we really want from our lives.",
+{ id: "d20261109-0218-4", kind: "Ensayo", topic: "ideas", title: "Would you plug in? Nozick's experience machine and the good life (1/2)", sub: "A machine could give you a lifetime of perfect happiness in a tank. Almost everyone says no, and it is surprisingly hard to explain why. A long essay on hedonism, its rivals and what we really want from our lives.", series: "d20261109-0218-4", chapter: 1, parts: 2,
 body: `In 1974, the American philosopher Robert Nozick published a book called Anarchy, State, and Utopia. It was mostly about politics: a long, brilliant and still controversial argument that the only state that can be justified is a minimal one, which protects people from force, theft and fraud and does very little else. But tucked away in the early chapters, almost as an aside, is a passage of just a few pages that has probably been discussed more than everything else in the book put together. It asks a question that sounds like science fiction, and turns out to be one of the most searching questions anyone can ask about their own life.
 
 "Suppose there were an experience machine," Nozick wrote, "that would give you any experience you desired." Neuroscientists of extraordinary skill could stimulate your brain so that you would think and feel you were writing a great novel, or making a friend, or reading an interesting book. All the time, you would be floating in a tank, with electrodes attached to your head. You could choose your experiences in advance, from a vast library of possible lives. Every couple of years you could come out briefly to choose the next lot. While you were inside, you would not know you were in a machine. It would all feel completely real.
@@ -441,9 +437,9 @@ The second is the desire-satisfaction theory. What is good for you is getting wh
 
 The third family is the objective list theory. On this view, certain things are good for a human being whether or not he enjoys them or wants them: knowledge, friendship, achievement, love, the exercise of one's rational and creative powers, perhaps the appreciation of beauty. A life rich in these things goes well; a life without them goes less well, however it feels. This theory explains the experience machine most directly, since the machine offers none of the things on the list, only simulations of them. But it faces the obvious charge of paternalism. Who decides what goes on the list? And can it really be good for me to have something I neither want nor enjoy, like a friendship I find a burden, simply because philosophers think friendship is valuable?
 
-The great virtue of Nozick's machine is that it forces you to find out which of these you actually believe. It is one thing to say, in the abstract, that only happiness matters. It is another to be offered a lifetime of perfect happiness in a tank and to feel your whole being recoil.
-
-The strongest case for plugging in
+The great virtue of Nozick's machine is that it forces you to find out which of these you actually believe. It is one thing to say, in the abstract, that only happiness matters. It is another to be offered a lifetime of perfect happiness in a tank and to feel your whole being recoil.` },
+{ id: "d20261109-0218-4-p2", kind: "Ensayo", topic: "ideas", title: "Would you plug in? Nozick's experience machine and the good life (2/2)", sub: "Parte 2 de 2. A machine could give you a lifetime of perfect happiness in a tank. Almost everyone says no, and it is surprisingly hard to explain why. A long essay on hedonism, its rivals and what we really want from our lives.", series: "d20261109-0218-4", chapter: 2, parts: 2,
+body: `The strongest case for plugging in
 
 It would be too quick, though, to treat the machine as a knockdown argument. Hedonism has able defenders, and they have several replies.
 
@@ -482,7 +478,7 @@ A life outside the machine contains failure. You may write a novel and find that
 That is, perhaps, the deepest thing Nozick's little story reveals. What we want is not only to feel that our lives are going well, but for them actually to be going well: for the friends to be real, the work to be ours, the world we love to exist. We want, in short, to be in contact with the truth, even when the truth hurts. It is a strange thing to want, if you think about it, and hedonists may be right that we would be happier without it. But it seems to be part of who we are, and a theory of the good life that leaves it out has left out something close to the centre.
 
 The next time you find yourself wondering whether to stay in, scrolling, or go out into the cold to meet a friend who might be late, or might be boring, or might say something that changes your mind, you will be facing a small version of Nozick's question. It is worth knowing that philosophers have been arguing about it for fifty years and have not settled it. It is also worth noticing which way you go.` },
-{ id: 'd20261109-0218-5', kind: 'Reportaje', topic: 'nature', title: "The fish that kept its secret for two thousand years", sub: "Aristotle thought eels were born from mud. Freud dissected four hundred of them and gave up. The long hunt for the birthplace of the European eel, and why angulas have become so rare.",
+{ id: "d20261109-0218-5", kind: "Reportaje", topic: "nature", title: "The fish that kept its secret for two thousand years (1/2)", sub: "Aristotle thought eels were born from mud. Freud dissected four hundred of them and gave up. The long hunt for the birthplace of the European eel, and why angulas have become so rare.", series: "d20261109-0218-5", chapter: 1, parts: 2,
 body: `In the spring of 1876, a nineteen-year-old medical student from Vienna arrived at a marine research station in Trieste with a very specific job to do. He was to find the testicles of the eel.
 
 It sounds like a joke, but it was one of the oldest unsolved problems in natural history. For weeks he sat at a bench by the window, cutting open eels brought in from the fishing boats, peering through his microscope, making notes. He dissected around four hundred of them. In his letters to a friend back home, the scientific reports were mixed with a good deal of grumbling about the heat, the work and the town. At the end of it, he wrote up his findings for a scientific journal. They were inconclusive. He had found an organ that might be male, but he could not prove it.
@@ -513,9 +509,9 @@ That was the task taken on by a Danish biologist named Johannes Schmidt. In 1904
 
 His method was brutally simple. He persuaded the captains of commercial ships crossing the Atlantic to tow fine-meshed nets behind them at intervals and keep whatever they caught, organised expeditions of his own and measured every larva that came back. Year after year, he plotted the sizes on a chart. The larvae got smaller, and smaller, the further south-west he went, out past the Azores, until in the early 1920s he found the very smallest of all, only a few millimetres long, in a region of the ocean that had been famous since Columbus: the Sargasso Sea.
 
-The Sargasso is a strange place, a sea without coasts, bounded only by ocean currents, a vast slowly turning lens of warm, clear, deep-blue water south of Bermuda, scattered with floating mats of golden seaweed. And it was there, Schmidt concluded, five or six thousand kilometres from the rivers of Europe, that every European eel was born.
-
-The longest journey
+The Sargasso is a strange place, a sea without coasts, bounded only by ocean currents, a vast slowly turning lens of warm, clear, deep-blue water south of Bermuda, scattered with floating mats of golden seaweed. And it was there, Schmidt concluded, five or six thousand kilometres from the rivers of Europe, that every European eel was born.` },
+{ id: "d20261109-0218-5-p2", kind: "Reportaje", topic: "nature", title: "The fish that kept its secret for two thousand years (2/2)", sub: "Parte 2 de 2. Aristotle thought eels were born from mud. Freud dissected four hundred of them and gave up. The long hunt for the birthplace of the European eel, and why angulas have become so rare.", series: "d20261109-0218-5", chapter: 2, parts: 2,
+body: `The longest journey
 
 The life story that Schmidt's work revealed is one of the strangest in nature.
 
@@ -540,7 +536,7 @@ It is tempting to treat the eel as a curiosity. It may be more useful to treat i
 For more than two thousand years, some of the most brilliant observers in history looked at an ordinary, abundant, edible fish, and could not work out where it came from. When the answer finally arrived, it was stranger than any of the myths: a creature born in the middle of the ocean, which crosses it twice in a lifetime, changes shape and colour several times, lives for decades in a muddy ditch, and then starves itself to death on a journey of thousands of kilometres to reproduce exactly once, in a place we have still not seen it reach in any numbers.
 
 We tend to assume that the familiar is understood, and that the great mysteries of nature are in distant places: deep space, the bottom of the ocean, the inside of the atom. The eel suggests otherwise. Some of the deepest mysteries are in the river at the bottom of the garden, and in the dish of angulas on the Christmas table. The question is whether we will solve the last of this one before the eels themselves are gone.` },
-{ id: 'd20261109-0218-6', kind: 'Diario', topic: 'work', title: "First seat: the diary of a Spanish trainee in the City", sub: "Two months in the litigation department of a London law firm: bundles, six-minute units, a wrong attachment, a very awkward email and a supervisor who explains what the English really mean. A fictional diary.",
+{ id: "d20261109-0218-6", kind: "Diario", topic: "work", title: "First seat: the diary of a Spanish trainee in the City", sub: "Two months in the litigation department of a London law firm: bundles, six-minute units, a wrong attachment, a very awkward email and a supervisor who explains what the English really mean. A fictional diary.",
 body: `Monday 7 September
 
 First day. Alarm at six, which was unnecessary, because I had been awake since four going through everything that could go wrong. The Victoria line was so packed at Walthamstow that I let two trains go before I worked out that this is simply what it is like, and that the trick is to stand by the doors and look as if you have done it all your life.
