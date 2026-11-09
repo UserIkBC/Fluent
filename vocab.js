@@ -125,6 +125,7 @@ function renderWords() {
       ${hubTile('#packs', 'spark', 'Lo que dicen los nativos', 'Frases para el pub, la oficina, el fútbol…')}
       ${hubTile('#natural', 'spark', 'Inglés natural', (window.NATIVE || []).length + ' frases que delatan a un español')}</div>
     <div class="h2">Ejercicios</div>
+    <a class="card pad cta" href="#practice" style="border-color:var(--accent)"><div class="grow"><b>Practica lo que quieras</b><div class="muted" style="font-size:14px">Elige qué (phrasal verbs, collocations, tus palabras…), filtra (que empiecen por «get», con «up», por tema…) y elige el ejercicio</div></div><span class="btn primary small">Elegir</span></a>
     <div class="modes">${MODES.map(m => `<a class="mode" href="#ex/${m.id}"><div class="ico">${IC[m.ic]}</div><b>${m.name}</b><span>${m.desc}</span></a>`).join('')}</div>
     <div class="h2">Lo tuyo</div>
     <div class="mysets">${[['set:mine', '✎', 'Mis palabras', NOTES.length], ['fav', '★', 'Favoritas', setItems('fav').length], ['unknown', '✗', 'No me la sé', setItems('unknown').length], ['hard', '!', 'Difíciles', setItems('hard').length]].concat(LISTS.map(L => ['list:' + L.id, '▤', L.name, L.items.length])).concat(LABELS.map(L => ['label:' + L.id, '●', L.name, setItems('label:' + L.id).length])).map(([k, ic, n, c]) => `<div class="myset ${c < 2 ? 'off' : ''}"><span class="mkbig">${ic}</span><div class="grow"><b>${esc(n)}</b><div class="muted" style="font-size:13px">${c} ${c === 1 ? 'entrada' : 'entradas'}</div></div>${c >= 2 ? `<a class="btn small" href="#ex/vocab/${k}">Test</a><a class="btn small" href="#ex/review/${k}">Tarjetas</a>` : ''}</div>`).join('')}</div>
@@ -165,7 +166,7 @@ function renderVocabCat(cat) {
   $('#view').innerHTML = `
     <div class="h1">${esc(LIB_CATS[cat].name)}</div>
     <p class="sub">${esc(LIB_CATS[cat].desc)} · ${items.length} entradas · ${items.filter(x => x.srs).length} en tus repasos</p>
-    <div class="row wrap" style="margin:0 0 12px"><a class="btn small primary" href="#ex/vocab/cat:${cat}">Test</a><a class="btn small" href="#ex/prod/cat:${cat}">Dilo tú</a>${cat === 'phrasal' ? '<a class="btn small" href="#phrasal">Por partícula</a><a class="btn small" href="#ex/particle">¿Qué partícula?</a>' : ''}</div>
+    <div class="row wrap" style="margin:0 0 12px"><a class="btn small primary" href="#ex/vocab/cat:${cat}">Test</a><a class="btn small" href="#ex/prod/cat:${cat}">Dilo tú</a><a class="btn small" href="#practice/cat:${cat}">Más ejercicios y filtros</a>${cat === 'phrasal' ? '<a class="btn small" href="#phrasal">Por partícula</a><a class="btn small" href="#ex/particle">¿Qué partícula?</a>' : ''}</div>
     ${tops.length > 1 ? `<div class="chips" id="topChips"><button class="chip ${libState.top === 'all' ? 'active' : ''}" data-t="all">Todas</button>${tops.map(t => `<button class="chip ${libState.top === t ? 'active' : ''}" data-t="${t}">${esc(TOPICS[t])}</button>`).join('')}</div>` : ''}
     <div class="row wrap" style="margin-bottom:10px"><select class="select" id="libFilter" style="width:auto;padding:8px 10px;font-size:14px"><option value="all">Todas</option><option value="new">Sin aprender</option><option value="learning">Aprendiendo</option><option value="done">Dominadas</option><option value="fav">★ Favoritas</option><option value="unknown">✗ No me la sé</option><option value="hard">! Difíciles</option><option value="known">✓ Me la sé</option>${LABELS.map(L => `<option value="label:${L.id}">${esc(L.name)}</option>`).join('')}</select><span class="grow"></span><button class="btn small" id="learnAll">Añadir a repasos</button></div>
     <div id="libList"></div><button class="btn block hidden" id="libMore" style="margin-top:10px">Ver más</button>`;
@@ -282,7 +283,7 @@ function renderPhrasal(arg) {
     const info = k === 'p' && window.PARTICLE_INFO ? PARTICLE_INFO[v] : null;
     $('#view').innerHTML = `<div class="eyebrow">Phrasal verbs ${k === 'p' ? 'con la partícula' : 'con el verbo'}</div><div class="h1">${esc(v)}</div>
       ${info ? `<div class="card pad" style="margin-bottom:12px"><b>${esc(info.es)}</b><div class="muted" style="margin-top:4px;font-size:14px">${esc(info.ex)}</div></div>` : `<p class="sub">${items.length} phrasal verbs</p>`}
-      <div class="row wrap" style="margin-bottom:12px"><a class="btn primary grow" href="#ex/vocab/phr:${esc(arg)}">Test</a><a class="btn grow" href="#ex/prod/phr:${esc(arg)}">Dilos tú</a><button class="btn grow" id="phAll">Añadir a repasos</button></div>
+      <div class="row wrap" style="margin-bottom:12px"><a class="btn primary grow" href="#ex/vocab/phr:${esc(arg)}">Test</a><a class="btn grow" href="#ex/prod/phr:${esc(arg)}">Dilos tú</a><a class="btn grow" href="#practice/${esc(arg)}">Más ejercicios</a><button class="btn grow" id="phAll">Añadir a repasos</button></div>
       <div class="card">${items.map(x => libRow(x)).join('')}</div>`;
     const paint = () => renderPhrasal(arg);
     $('#phAll').onclick = () => { const l = items.filter(x => !x.srs); l.forEach(x => startLearning(x)); saveLearn(); toast(l.length ? l.length + ' añadidos a tus repasos' : 'Ya están todos en tus repasos'); paint(); };

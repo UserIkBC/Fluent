@@ -5,21 +5,21 @@ window.MONTHLY = window.MONTHLY || [];
 
 /* ===== 9 de noviembre de 2026 ===== */
 addVocab('phrasal', [
-["to stave off","politics","to prevent something bad from happening, or delay it","evitar, conjurar, aplazar (algo malo)","The government cut interest rates to stave off a recession."],
-["to hold out for","work","to refuse to accept less than what you want","no conformarse hasta conseguir, aguantar hasta obtener","The union is holding out for a five per cent pay rise."],
-["to fob someone off","people","to try to stop someone complaining by giving them an excuse or something inferior","quitarse a alguien de encima con excusas","I asked for a refund and they tried to fob me off with a voucher."],
-["to tide someone over","money","to help someone through a short period when they lack something, especially money","sacar del apuro (temporalmente)","Could you lend me fifty quid to tide me over till payday?"],
-["to weigh up","opinion","to consider the advantages and disadvantages of something carefully","sopesar","She weighed up the two offers for a week before deciding."],
-["to square up to","people","to prepare to fight or confront someone or something","plantar cara a, encararse con","The two players squared up to each other after the tackle."],
-["to pare back","money","to reduce something, especially costs or plans, to a smaller amount","recortar, reducir","The council has pared back its plans for the new library."],
-["to fork out","money","to pay for something, especially unwillingly","soltar (dinero), apoquinar","We had to fork out two hundred pounds to get the boiler fixed."],
-["to mull over","opinion","to think carefully about something for a period of time","darle vueltas a, rumiar","Mull it over and let me know on Monday."],
-["to shore up","politics","to support or strengthen something that is weak or likely to fail","apuntalar, reforzar","The bank needed fresh capital to shore up its balance sheet."],
-["to stumble upon","daily","to find something by chance","toparse con, dar por casualidad con","I stumbled upon a lovely little bookshop near the cathedral."],
-["to rattle off","verbs","to say or list something quickly and from memory","soltar de carrerilla","He rattled off the names of every Spanish king since 1700."],
-["to hive off","corporate","to separate part of a business and sell it or make it independent","escindir, segregar (parte de una empresa)","The group plans to hive off its insurance arm next year."],
-["to bed in","work","to become established and work properly after a period of adjustment","asentarse, rodarse","The new software took a few months to bed in."],
-["to scrape by","money","to manage to live with very little money","ir tirando, apañárselas con poco","As a student he scraped by on part-time bar work."]
+["stave off","politics","to prevent something bad from happening, or delay it","evitar, conjurar, aplazar (algo malo)","The government cut interest rates to stave off a recession."],
+["hold out for","work","to refuse to accept less than what you want","no conformarse hasta conseguir, aguantar hasta obtener","The union is holding out for a five per cent pay rise."],
+["fob someone off","people","to try to stop someone complaining by giving them an excuse or something inferior","quitarse a alguien de encima con excusas","I asked for a refund and they tried to fob me off with a voucher."],
+["tide someone over","money","to help someone through a short period when they lack something, especially money","sacar del apuro (temporalmente)","Could you lend me fifty quid to tide me over till payday?"],
+["weigh up","opinion","to consider the advantages and disadvantages of something carefully","sopesar","She weighed up the two offers for a week before deciding."],
+["square up to","people","to prepare to fight or confront someone or something","plantar cara a, encararse con","The two players squared up to each other after the tackle."],
+["pare back","money","to reduce something, especially costs or plans, to a smaller amount","recortar, reducir","The council has pared back its plans for the new library."],
+["fork out","money","to pay for something, especially unwillingly","soltar (dinero), apoquinar","We had to fork out two hundred pounds to get the boiler fixed."],
+["mull over","opinion","to think carefully about something for a period of time","darle vueltas a, rumiar","Mull it over and let me know on Monday."],
+["shore up","politics","to support or strengthen something that is weak or likely to fail","apuntalar, reforzar","The bank needed fresh capital to shore up its balance sheet."],
+["stumble upon","daily","to find something by chance","toparse con, dar por casualidad con","I stumbled upon a lovely little bookshop near the cathedral."],
+["rattle off","verbs","to say or list something quickly and from memory","soltar de carrerilla","He rattled off the names of every Spanish king since 1700."],
+["hive off","corporate","to separate part of a business and sell it or make it independent","escindir, segregar (parte de una empresa)","The group plans to hive off its insurance arm next year."],
+["bed in","work","to become established and work properly after a period of adjustment","asentarse, rodarse","The new software took a few months to bed in."],
+["scrape by","money","to manage to live with very little money","ir tirando, apañárselas con poco","As a student he scraped by on part-time bar work."]
 ]);
 addVocab('idiom', [
 ["to bite the bullet","feelings","to force yourself to do something unpleasant that you have been avoiding","hacer de tripas corazón, coger el toro por los cuernos","I finally bit the bullet and booked the dentist."],

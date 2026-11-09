@@ -459,3 +459,6 @@ a.btn.primary{color:#fff}
 .trchip.on{background:var(--accent);border-color:var(--accent);color:#fff}
 .typebox{margin-top:12px}
 .grades .btn.sugg{outline:2.5px solid currentColor;outline-offset:1px}
+button.mode{font:inherit;color:inherit;min-height:auto;cursor:pointer}
+.mode.on{border-color:var(--accent);background:var(--accent-soft);box-shadow:0 0 0 1.5px var(--accent) inset}
+#prDir button{font-size:13px}

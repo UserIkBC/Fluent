@@ -419,12 +419,13 @@ function renderPairQ(q) {
 
 const PART_WORDS = new Set(['up', 'out', 'off', 'down', 'in', 'on', 'over', 'away', 'back', 'through', 'into', 'about', 'around', 'across', 'along', 'forward', 'apart', 'aside', 'with', 'for', 'after', 'by', 'of', 'to']);
 function phrasalParts(term) {
-  const w = termWords(term.split('/')[0].replace(/\(.*?\)/g, ''));
+  const w = termWords(term.split('/')[0].replace(/\(.*?\)/g, '').replace(/^\s*to\s+/i, ''));
   const parts = w.slice(1).filter(x => PART_WORDS.has(x));
   return parts.length === w.length - 1 && parts.length ? parts : null;
 }
-function genParticle() {
-  const items = shuffle(LIB.filter(x => x.cat === 'phrasal' && phrasalParts(x.term)));
+function genParticle(arg) {
+  const fromSet = isSetKey(arg) ? setFromArg(arg).filter(x => x.ex && phrasalParts(x.term)) : [];
+  const items = shuffle(fromSet.length ? fromSet : LIB.filter(x => x.cat === 'phrasal' && phrasalParts(x.term)));
   const allParts = Array.from(new Set(LIB.filter(x => x.cat === 'phrasal').map(x => phrasalParts(x.term)).filter(Boolean).map(p => p.join(' '))));
   for (const x of items) {
     const parts = phrasalParts(x.term);
