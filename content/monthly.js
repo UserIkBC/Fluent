@@ -64,3 +64,65 @@ addVocab('legal', [
 ["vicarious liability","employment","the legal responsibility of one person, usually an employer, for the wrongs of another","responsabilidad civil por hecho ajeno","The hospital was held vicariously liable for the nurse's negligence."],
 ["a material adverse change clause","finance-law","a contract term letting a party withdraw if the target's business deteriorates significantly before completion","cláusula de cambio material adverso (MAC)","The buyer tried to invoke the material adverse change clause after profits collapsed."]
 ]);
+
+/* ===== 13 de noviembre de 2026 ===== */
+addVocab('phrasal', [
+["come away with","opinion","to leave a place or experience with a particular feeling, idea or impression","salir con, quedarse con (una impresión)","Most reporters expected a monster, but she came away with a very different impression."],
+["turn against","people","to stop supporting or liking someone and become hostile to them","volverse en contra de, ponerse en contra de","His outrageous claims turned many of his former admirers against him."],
+["switch off","feelings","to stop paying attention or thinking about something, often deliberately","desconectar, dejar de pensar","Repeating 'those are the rules' is a very easy way to switch off your conscience."],
+["come forward","society","to offer help or information, or to present yourself publicly, especially in response to an appeal","presentarse, dar la cara","After the advertisement appeared, a butcher in Australia came forward claiming to be the missing heir."],
+["free up","property","to make something such as land, money or time available for use","liberar, dejar disponible","The opposition says the answer is to free up more land for building."],
+["fall out with","people","to have an argument with someone and stop being friendly with them","enfadarse con, pelearse con","I don't want to fall out with my landlord, but I can't pay another £275 a month."],
+["wear through","describing","to become thin or develop a hole after a lot of use or rubbing","desgastarse hasta agujerearse, gastarse","The silver had worn through to the brass on one handle of the old cup."],
+["push for","politics","to keep demanding something or trying to make it happen","presionar para conseguir, insistir en","The smaller unions had been pushing for a general strike since the summer."],
+["peel away","describing","to separate from a group or surface and move away","apartarse, desprenderse","Shoals of bright fish swam alongside them and then peeled away."],
+["throw out","work","to force someone to leave an organisation, place or profession","echar, expulsar","His conduct in court was so outrageous that he was effectively thrown out of the profession."],
+["run off","daily","to leave somewhere quickly, often to avoid something","salir corriendo, largarse","The boys grabbed the coins and ran off up the beach."],
+["lean out","describing","to bend your body forward over or through something","asomarse, inclinarse hacia fuera","The pines leant out over the water as though listening to the sea."],
+["gather round","people","to come together and stand around someone or something","congregarse alrededor de, arremolinarse","A crowd gathered round the referee to see the replay."],
+["own up to","feelings","to admit that you have done something wrong","reconocer, confesar","In the end he owned up to pushing the defender in the back."],
+["weigh in","opinion","to join a discussion or argument by giving your opinion","intervenir, dar su opinión","Several landlords weighed in on the thread with practical advice."]
+]);
+addVocab('idiom', [
+["cut both ways","opinion","to have both advantages and disadvantages, or to affect both sides equally","ser un arma de doble filo, valer para los dos lados","The change cuts both ways: you can leave whenever you like, and he can't simply wait for the term to end and tell you to go."],
+["rub someone's nose in it","people","to keep reminding someone of a mistake or failure in an unkind way","restregárselo a alguien por la cara","Tell him the rules have changed, but don't rub his nose in it."],
+["eat someone for breakfast","people","to defeat or deal with someone very easily","merendarse a alguien, comérselo con patatas","Their keeper should have eaten that cross for breakfast."],
+["in the flesh","people","in person, rather than in a picture, film or description","en persona, en carne y hueso","She wanted to see one of these men in the flesh."],
+["on the spot","time","immediately, at the very place where something happens","en el acto, allí mismo","The claim collapsed and he was arrested on the spot."],
+["know just enough to be dangerous","work","to have a little knowledge of something, which can lead you to make mistakes","saber lo justo para meter la pata","I'm a corporate paralegal, so I know just enough housing law to be dangerous."],
+["keep something at bay","feelings","to stop something unpleasant from reaching you or affecting you","mantener a raya, contener","The box was the only thing keeping his years at bay."],
+["go quietly","daily","to leave a place or position without complaining or causing trouble","irse sin rechistar, irse por las buenas","He wasn't really selling; he just hoped I'd go quietly so he could re-let the flat."],
+["the human touch","people","the kindness and understanding that a person can bring and a machine or system cannot","el toque humano, la calidez humana","They kept a referee on the pitch to provide the human touch."],
+["by a landslide","politics","by a very large majority of votes","por goleada, por una mayoría aplastante","Kenealy was elected to Parliament by a landslide."]
+]);
+addVocab('colloc', [
+["a snap election","politics","an election called earlier than expected, often suddenly","elecciones anticipadas","The prime minister called a snap election after Congress rejected his housing decrees."],
+["call a strike","work","to officially tell workers to stop working as a protest","convocar una huelga","The two biggest unions agreed to call a general strike for 11 November."],
+["file a complaint","society","to make a formal complaint to an authority","presentar una denuncia, presentar una queja","The union said it would file a complaint over the use of pepper spray."],
+["a minority government","politics","a government whose party does not have more than half the seats in parliament","gobierno en minoría","A minority government depends on other parties to pass its laws."],
+["a stock phrase","advanced","an expression used so often that it has lost its force or originality","frase hecha, muletilla","He answered every question with stock phrases from the official jargon."],
+["make an allegation","society","to say that someone has done something wrong, without proof yet","hacer una acusación","Under pressure, he made a shocking allegation about his cousin."],
+["draw a crowd","media","to attract a large number of people","atraer a mucha gente, congregar a una multitud","The trial drew crowds every single day for months."],
+["go off air","media","to stop broadcasting, temporarily or permanently","dejar de emitir, irse a negro","The regional channel went off air for several hours during the strike."],
+["be at the heart of","opinion","to be the most important or central part of something","estar en el centro de, ser el eje de","Housing will be at the heart of the election campaign."],
+["raise the rent","property","to increase the amount a tenant pays","subir el alquiler","He can only raise the rent once a year, and with proper notice."]
+]);
+addVocab('slang', [
+["lurker","tech","someone who reads an online forum regularly but rarely or never posts","mirón (de foro), lector silencioso","Long-time lurker, first post, so apologies if I'm doing this wrong."],
+["pen-pusher","work","a person with a boring office job who just deals with paperwork (disapproving)","chupatintas","He was no harmless pen-pusher: he knew exactly what his timetables meant."],
+["jobsworth","work","an official who sticks rigidly to petty rules, even when it makes no sense","funcionario cuadriculado, el típico 'son normas'","The car park attendant was a real jobsworth and wouldn't let us in two minutes early."],
+["gaffer","sport","the manager of a football team, or the boss at work","el míster, el jefe","The gaffer wasn't happy with our second-half performance."],
+["chippy","food","a fish and chip shop","la freiduría, el sitio de fish and chips","His dad runs the chippy on the high street."]
+]);
+addVocab('legal', [
+["perjury","criminal","the crime of deliberately lying after promising to tell the truth in court","falso testimonio, perjurio","He was convicted of perjury and sentenced to fourteen years."],
+["penal servitude","criminal","a former sentence of imprisonment with hard labour in England","trabajos forzados (pena histórica)","The Tichborne claimant was sentenced to fourteen years' penal servitude."],
+["a possession order","property","a court order requiring a tenant to leave a property and give it back to the landlord","orden judicial de desahucio, sentencia de recuperación de la posesión","You don't have to leave until the court makes a possession order and it is enforced."],
+["a no-fault eviction","property","the ending of a tenancy by a landlord without having to give any reason","desahucio sin causa justificada","Section 21 no-fault evictions were abolished in England in May 2026."],
+["a periodic tenancy","property","a tenancy with no fixed end date that continues month by month or week by week","arrendamiento periódico, alquiler mes a mes","Existing tenancies were converted into periodic tenancies automatically."],
+["a deposit protection scheme","property","a government-approved scheme that holds or insures a tenant's deposit","sistema oficial de depósito de fianzas","The landlord must put the deposit in a protection scheme within thirty days."],
+["an illegal eviction","criminal","forcing a tenant out of their home without following the proper legal process","desahucio ilegal, desalojo ilegal","Changing the locks without a court order is an illegal eviction and a criminal offence."],
+["a decree-law","public","in some countries, a law made by the government in urgent cases, which parliament must later confirm","real decreto-ley","In Spain, Congress must confirm a decree-law within thirty working days or it lapses."],
+["be disbarred","basics","to be officially banned from working as a barrister","ser inhabilitado para ejercer la abogacía","His conduct during the trial was so outrageous that he was later disbarred."],
+["a ground for possession","property","a legal reason on which a landlord can ask a court to evict a tenant","causa de desahucio, motivo legal para recuperar la vivienda","Selling the property is a ground for possession, but it needs four months' notice."]
+]);
