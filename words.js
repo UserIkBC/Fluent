@@ -202,41 +202,48 @@ function renderWords() {
   const dicN = dicItems().length;
   const catRow = c => { const k = catCounts(c); return `<a class="coll" href="#lib/${c}"><div class="grow"><b>${esc(LIB_CATS[c].name)}</b><small>${esc(LIB_CATS[c].desc)}</small></div><span>${k.learned} / ${k.total}</span></a>`; };
   const sets = [['fav', 'Favoritas'], ['unknown', 'No me la sé'], ['hard', 'Difíciles']].map(([k, n]) => [k, n, setItems(k).length]).concat(LISTS.map(L => ['list:' + L.id, L.name, L.items.length])).concat(LABELS.map(L => ['label:' + L.id, L.name, setItems('label:' + L.id).length]));
+  const CAT_TILE = { word: ['book', 't-blue'], phrasal: ['link', 't-green'], idiom: ['quote', 't-orange'], convo: ['chat', 't-teal'], chunk: ['list', 't-slate'], colloc: ['link', 't-plum'], linker: ['order', 't-ochre'], false: ['x', 't-red'], slang: ['spark', 't-orange'], ukus: ['globe', 't-blue'], legal: ['gavel', 't-green'], business: ['chart', 't-slate'] };
+  const collRow = (href, ic, col, name, desc, right) => `<a class="coll" href="${href}"><span class="tile" style="--tc:var(--${col})">${ICF[ic] || ICF.book}</span><div class="grow"><b>${esc(name)}</b><small>${esc(desc)}</small></div><span>${right}</span></a>`;
   $('#view').innerHTML = `
     <div class="h1">Palabras</div>
-    <div class="say">${due ? `Hoy te tocan <b>${due} ${due === 1 ? 'tarjeta' : 'tarjetas'}</b>.` : 'Hoy no te toca ninguna tarjeta.'} <a class="link" href="#ex/review">${due ? 'Repasar' : 'Repaso extra'}</a>
-      <small>${left ? `Puedes aprender ${left} ${left === 1 ? 'palabra nueva' : 'palabras nuevas'} de la biblioteca. <a class="link" href="#learn/new" style="font-size:13.5px;margin-left:4px">Aprender</a>` : 'Ya has aprendido las palabras nuevas de hoy. <a class="link" href="#learn/new" style="font-size:13.5px;margin-left:4px">Cinco más</a>'}</small></div>
-    <div class="build">
-      <p>Practicar ${vocabHow ? `<button class="slot" id="bWhat">${esc(prName())}</button>` : '<span class="slot" style="border-bottom-style:solid;cursor:default">frases de tus textos</span>'} con <button class="slot" id="bHow">${esc(how.n.toLowerCase())}</button></p>
-      ${how.lv ? `<div class="lv" id="bLv">${LVL.map((l, i) => `<button data-l="${i + 1}" class="${i < PR.lvl ? 'f' : ''}"><b>${i + 1}</b>${l.n}</button>`).join('')}</div>
+    <div class="card revhero"><div class="top"><span class="tile big" style="--tc:var(--t-blue)">${ICF.cards}</span><div class="grow"><b>${due ? due + (due === 1 ? ' tarjeta para hoy' : ' tarjetas para hoy') : 'Repaso al día'}</b><span>${due ? 'Unos ' + Math.max(1, Math.ceil(due / 4)) + ' minutos, con la frase donde las viste' : 'Puedes hacer un repaso extra cuando quieras'}</span></div></div>
+      <a class="btn ${due ? 'primary' : ''}" href="#ex/review">${due ? 'Empezar repaso' : 'Hacer un repaso extra'}</a>
+      <div class="alt"><a href="#learn/new">${left ? 'Aprender ' + left + (left === 1 ? ' palabra nueva' : ' palabras nuevas') : 'Aprender cinco palabras más'}</a></div></div>
+    <div class="card build">
+      <div class="bt">Practicar</div>
+      ${vocabHow ? `<button class="prow" id="bWhat">Qué<span><em>${esc(prName())}</em>${IC.right}</span></button>` : `<div class="prow">Qué<span><em>Frases de tus textos</em></span></div>`}
+      <button class="prow" id="bHow">Cómo<span><em>${esc(how.n)}</em>${IC.right}</span></button>
+      ${how.lv ? `<div class="lv" id="bLv">${LVL.map((l, i) => `<button data-l="${i + 1}" class="${i + 1 === PR.lvl ? 'on' : ''}" aria-pressed="${i + 1 === PR.lvl}"><b>${i + 1}</b>${l.n}</button>`).join('')}</div>
       <div class="lvdesc">${esc(vocabHow ? LVL[PR.lvl - 1].vocab : LVL[PR.lvl - 1].text)}</div>
       <label class="switch"><span>Subir o bajar de nivel según aciertes</span><input type="checkbox" id="bAdapt" ${PR.adapt ? 'checked' : ''}></label>` : `<div class="lvdesc">${esc(how.d)}. Este ejercicio no tiene niveles.</div>`}
-      <div class="row"><div class="seg mini" id="bN" style="margin:0;border:none;gap:14px">${[5, 10, 20].map(n => `<button data-n="${n}" class="${PR.n === n ? 'on' : ''}">${n}</button>`).join('')}</div><button class="btn primary grow" id="bGo" ${vocabHow && !list.length ? 'disabled' : ''}>${vocabHow && !list.length ? 'No hay nada con esa selección' : 'Empezar'}</button></div>
-      ${vocabHow ? `<div class="meta" style="margin-top:10px">${fmtNum(list.length)} ${list.length === 1 ? 'entrada' : 'entradas'} en tu selección. <a class="link" href="#practice" style="font-size:13px">Afinar</a></div>` : ''}
+      <div class="row"><div class="seg mini" id="bN" style="margin:0;flex:0 0 132px">${[5, 10, 20].map(n => `<button data-n="${n}" class="${PR.n === n ? 'on' : ''}">${n}</button>`).join('')}</div><button class="btn primary grow" id="bGo" ${vocabHow && !list.length ? 'disabled' : ''}>${vocabHow && !list.length ? 'Nada con esa selección' : 'Empezar ' + PR.n + ' preguntas'}</button></div>
+      ${vocabHow ? `<div class="meta" style="margin-top:10px">${fmtNum(list.length)} ${list.length === 1 ? 'entrada' : 'entradas'} en tu selección · <a href="#practice">Afinar con filtros</a></div>` : ''}
     </div>
-    <div class="dh"><b>Tu diccionario</b><span>${fmtNum(dicN)} ${dicN === 1 ? 'entrada' : 'entradas'}</span></div>
-    <div class="seg" id="dFilt" style="margin-bottom:10px">${[['all', 'Todas'], ['learning', 'Aprendiendo'], ['done', 'Dominadas'], ['hard', 'Difíciles'], ['fav', 'Favoritas'], ['unknown', 'No me la sé']].map(([k, n]) => `<button data-f="${k}" class="${DIC_F === k ? 'on' : ''}">${n}</button>`).join('')}</div>
-    <div class="search">${IC.search}<input class="input" id="dQ" type="search" value="${esc(DIC_Q)}" placeholder="Busca en tu diccionario" autocapitalize="off" autocomplete="off"></div>
+    <div class="h2">Tu diccionario <span class="muted" style="font:500 15px var(--ui)">${fmtNum(dicN)}</span></div>
+    <div class="chips" id="dFilt">${[['all', 'Todas'], ['learning', 'Aprendiendo'], ['done', 'Dominadas'], ['hard', 'Difíciles'], ['fav', 'Favoritas'], ['unknown', 'No me la sé']].map(([k, n]) => `<button class="chip ${DIC_F === k ? 'active' : ''}" data-f="${k}">${n}</button>`).join('')}</div>
+    <div class="search">${IC.search}<input class="input" id="dQ" type="search" value="${esc(DIC_Q)}" placeholder="Buscar en tu diccionario" autocapitalize="off" autocomplete="off" aria-label="Buscar en tu diccionario"></div>
     <div id="dicBox">${dicHTML()}</div>
-    <div class="dh"><b>Colecciones</b><span>${fmtNum(LIB.length)} entradas</span></div>
-    ${Object.keys(LIB_CATS).map(catRow).join('')}
-    <a class="coll" href="#phrasal"><div class="grow"><b>Phrasal verbs por partícula</b><small>La lógica de up, out, off… agrupados por verbo</small></div><span>›</span></a>
-    <a class="coll" href="#grammar"><div class="grow"><b>Gramática</b><small>${(window.GRAMMAR || []).length} lecciones de consulta</small></div><span>${Object.keys(GPROG).length} hechas</span></a>
-    <a class="coll" href="#sit"><div class="grow"><b>Situaciones</b><small>Frases para la vida real y el despacho</small></div><span>›</span></a>
-    <a class="coll" href="#packs"><div class="grow"><b>Lo que dicen los nativos</b><small>En el pub, en la oficina, en el fútbol</small></div><span>›</span></a>
-    <a class="coll" href="#natural"><div class="grow"><b>Inglés natural</b><small>${(window.NATIVE || []).length} frases que delatan a un español</small></div><span>›</span></a>
-    <a class="coll" href="#freq"><div class="grow"><b>Las 25.000 palabras más usadas</b><small>Descubre las frecuentes que aún no conoces</small></div><span>›</span></a>
-    <a class="coll" href="#calib"><div class="grow"><b>Calibrar tu vocabulario</b><small>Para que los textos sepan qué palabras conoces</small></div><span>›</span></a>
-    <div class="dh"><b>Tus listas</b><a class="link" href="#mine" style="font-size:13px">Gestionar</a></div>
-    ${sets.map(([k, n, c]) => `<div class="coll"><div class="grow"><b>${esc(n)}</b><small>${c} ${c === 1 ? 'entrada' : 'entradas'}</small></div>${c >= 2 ? `<span style="display:flex;gap:16px"><a class="link" style="font-size:13.5px" href="#ex/lx/${k}">Practicar</a><a class="link" style="font-size:13.5px" href="#ex/review/${k}">Tarjetas</a></span>` : ''}</div>`).join('')}
-    <div class="dh"><b>Buscar en toda la biblioteca</b></div>
-    <div class="search">${IC.search}<input class="input" id="libq" type="search" placeholder="Las ${fmtNum(LIB.length)} entradas, en inglés o español"></div>
+    <div class="h2">Colecciones <span class="muted" style="font:500 15px var(--ui)">${fmtNum(LIB.length)}</span></div>
+    <div class="group">${Object.keys(LIB_CATS).map(c => { const k = catCounts(c); const [ic, col] = CAT_TILE[c] || ['book', 't-blue']; return collRow('#lib/' + c, ic, col, LIB_CATS[c].name, LIB_CATS[c].desc, k.learned + ' / ' + k.total); }).join('')}</div>
+    <div class="group">
+      ${collRow('#phrasal', 'link', 't-green', 'Phrasal verbs por partícula', 'La lógica de up, out, off… agrupados por verbo', '')}
+      ${collRow('#grammar', 'cap', 't-blue', 'Gramática', (window.GRAMMAR || []).length + ' lecciones de consulta', Object.keys(GPROG).length + ' hechas')}
+      ${collRow('#sit', 'chat', 't-teal', 'Situaciones', 'Frases para la vida real y el despacho', '')}
+      ${collRow('#packs', 'quote', 't-orange', 'Lo que dicen los nativos', 'En el pub, en la oficina, en el fútbol', '')}
+      ${collRow('#natural', 'spark', 't-ochre', 'Inglés natural', (window.NATIVE || []).length + ' frases que delatan a un español', '')}
+      ${collRow('#freq', 'chart', 't-slate', 'Las 25.000 palabras más usadas', 'Descubre las frecuentes que aún no conoces', '')}
+      ${collRow('#calib', 'target', 't-red', 'Calibrar tu vocabulario', 'Para que los textos sepan qué palabras conoces', '')}
+    </div>
+    <div class="h2">Tus listas <a href="#mine">Gestionar</a></div>
+    <div class="group">${sets.map(([k, n, c]) => `<div class="coll"><span class="tile" style="--tc:var(--${k === 'fav' ? 't-ochre' : k === 'unknown' ? 't-red' : k === 'hard' ? 't-orange' : 't-slate'})">${ICF[k === 'fav' ? 'star' : k === 'unknown' ? 'x' : k === 'hard' ? 'flag' : 'list']}</span><div class="grow"><b>${esc(n)}</b><small>${c} ${c === 1 ? 'entrada' : 'entradas'}</small></div>${c >= 2 ? `<span style="display:flex;gap:14px"><a href="#ex/lx/${k}">Practicar</a><a href="#ex/review/${k}">Tarjetas</a></span>` : ''}</div>`).join('')}</div>
+    <div class="h2">Buscar en toda la biblioteca</div>
+    <div class="search">${IC.search}<input class="input" id="libq" type="search" placeholder="${fmtNum(LIB.length)} entradas, en inglés o español" aria-label="Buscar en la biblioteca"></div>
     <div id="libRes"></div>
-    <p class="meta" style="margin-top:16px">Hoy llevas ${t.ex || 0} ejercicios, ${t.rev || 0} repasos y ${t.newLib || 0} palabras nuevas.</p>`;
+    <p class="meta" style="margin:16px 4px 0">Hoy llevas ${t.ex || 0} ejercicios, ${t.rev || 0} repasos y ${t.newLib || 0} palabras nuevas.</p>`;
   const re = () => { savePR(); const y = scrollY; renderWords(); scrollTo(0, y); };
   if ($('#bWhat')) $('#bWhat').onclick = () => {
     const paint = () => `<h3>Qué practicar</h3><p class="sub">Puedes elegir varias.</p><div class="pickl" id="pkC">${Object.entries(PR_CATS).map(([k, n]) => { const c = k === 'mine' ? NOTES.length : LIB.filter(x => x.cat === k).length; return `<button data-c="${k}" class="${PR.cats.includes(k) ? 'on' : ''}"><span>${esc(n)}<small>${fmtNum(c)} entradas</small></span></button>`; }).join('')}</div>
-      <div class="row" style="margin-top:14px"><a class="btn grow" href="#practice">Más filtros</a><button class="btn primary grow" id="pkOk">Hecho</button></div>`;
+      <div class="row" style="margin-top:14px"><a class="btn grow" href="#practice">Más filtros</a><button class="btn primary grow" id="pkOk">Usar selección</button></div>`;
     openSheet(paint());
     const bind = () => {
       $('#pkC').onclick = e => { const b = e.target.closest('[data-c]'); if (!b) return; const c = b.dataset.c; const i = PR.cats.indexOf(c); if (i >= 0) { if (PR.cats.length > 1) PR.cats.splice(i, 1); } else PR.cats.push(c); if (!PR.cats.includes('phrasal')) { PR.verb = ''; PR.parts = []; } PR.tops = []; savePR(); $('#sheetBody').innerHTML = paint(); bind(); };
@@ -246,7 +253,7 @@ function renderWords() {
   };
   $('#bHow').onclick = () => {
     const hasPhr = PR.cats.includes('phrasal');
-    openSheet(`<h3>Cómo practicar</h3><div class="pickl" id="pkH">${HOW.filter(h => !h.phr || hasPhr).map((h, i) => `${i === 8 ? '<div class="h2" style="margin:18px 0 4px">Con frases de tus textos</div>' : ''}<button data-h="${h.id}" class="${PR.how === h.id ? 'on' : ''}"><span>${esc(h.n)}<small>${esc(h.d)}${h.lv ? '' : ' · sin niveles'}</small></span></button>`).join('')}</div>`);
+    openSheet(`<h3>Cómo practicar</h3><div class="pickl" id="pkH">${HOW.filter(h => !h.phr || hasPhr).map((h, i) => `${i === 8 ? '<div class="h2">Con frases de tus textos</div>' : ''}<button data-h="${h.id}" class="${PR.how === h.id ? 'on' : ''}"><span>${esc(h.n)}<small>${esc(h.d)}${h.lv ? '' : ' · sin niveles'}</small></span></button>`).join('')}</div>`);
     $('#pkH').onclick = e => { const b = e.target.closest('[data-h]'); if (!b) return; PR.how = b.dataset.h; savePR(); closeSheet(); re(); };
   };
   if ($('#bLv')) $('#bLv').onclick = e => { const b = e.target.closest('[data-l]'); if (!b) return; PR.lvl = +b.dataset.l; re(); };
@@ -263,7 +270,7 @@ function renderWords() {
     S.exLen = PR.n; saveSettings();
     go('#ex/' + how.id);
   };
-  $('#dFilt').onclick = e => { const b = e.target.closest('[data-f]'); if (!b) return; DIC_F = b.dataset.f; DIC_N = 150; $$('#dFilt button').forEach(x => x.classList.toggle('on', x === b)); $('#dicBox').innerHTML = dicHTML(); };
+  $('#dFilt').onclick = e => { const b = e.target.closest('[data-f]'); if (!b) return; DIC_F = b.dataset.f; DIC_N = 150; $$('#dFilt button').forEach(x => x.classList.toggle('active', x === b)); $('#dicBox').innerHTML = dicHTML(); };
   let tq; $('#dQ').addEventListener('input', e => { clearTimeout(tq); tq = setTimeout(() => { DIC_Q = e.target.value; DIC_N = 150; $('#dicBox').innerHTML = dicHTML(); }, 200); });
   $('#libq').addEventListener('input', e => {
     const q = norm(e.target.value); const box = $('#libRes');

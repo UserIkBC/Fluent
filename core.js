@@ -3,7 +3,7 @@
    Fluent 6 · núcleo: utilidades, estado, tema, voz, biblioteca,
    repetición espaciada (FSRS), estadísticas y navegación
    ========================================================== */
-const VERSION = '7.0.0';
+const VERSION = '8.0.0';
 
 /* ---------- utilidades ---------- */
 const $ = (s, el = document) => el.querySelector(s);
@@ -68,7 +68,7 @@ function applyTheme() {
   r.style.setProperty('--read-size', S.readSize + 'px');
   const dark = S.theme === 'dark' || (S.theme === 'auto' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
   const tc = document.querySelector('meta[name=theme-color]:not([media])') || Object.assign(document.head.appendChild(document.createElement('meta')), { name: 'theme-color' });
-  tc.content = dark ? '#22201D' : '#C0BDB6';
+  tc.content = dark ? '#121214' : '#C9C9CF';
   r.classList.toggle('sansread', S.font === 'sans');
   document.body.style.fontSize = { small: '15px', normal: '16px', large: '17.5px' }[S.uiSize] || '16px';
   document.body.classList.toggle('hide-es', !S.showEs);
@@ -97,44 +97,7 @@ function closeSheet() {
 }
 const sheetOpen = () => !$('#sheet').classList.contains('hidden') && $('#sheet').classList.contains('show');
 
-/* ---------- iconos ---------- */
-const svg = (p, f) => `<svg viewBox="0 0 24 24" ${f ? 'fill="currentColor"' : 'fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"'}>${p}</svg>`;
-const IC = {
-  book: svg('<path d="M4 5a2 2 0 012-2h13v16H6a2 2 0 00-2 2z"/><path d="M4 19V5M19 17H6a2 2 0 00-2 2"/>'),
-  news: svg('<rect x="3" y="4" width="18" height="16" rx="2"/><path d="M7 8h10M7 12h10M7 16h6"/>'),
-  globe: svg('<circle cx="12" cy="12" r="9"/><path d="M3 12h18M12 3a14 14 0 010 18M12 3a14 14 0 000 18"/>'),
-  link: svg('<path d="M10 14a4 4 0 005.7 0l3-3a4 4 0 00-5.7-5.7l-1 1"/><path d="M14 10a4 4 0 00-5.7 0l-3 3a4 4 0 005.7 5.7l1-1"/>'),
-  chat: svg('<path d="M4 5h16v11H9l-5 4z"/><path d="M8 9h8M8 12h5"/>'),
-  scale: svg('<path d="M12 3v18M7 21h10M5 7h14M5 7l-3 7a3 3 0 006 0zM19 7l-3 7a3 3 0 006 0z"/>'),
-  speak: svg('<path d="M11 5L6 9H2v6h4l5 4V5z"/><path d="M15.5 8.5a5 5 0 010 7M19 5a10 10 0 010 14"/>'),
-  play: svg('<path d="M7 4.5v15l13-7.5z"/>', 1),
-  pause: svg('<rect x="6" y="4.5" width="4" height="15" rx="1"/><rect x="14" y="4.5" width="4" height="15" rx="1"/>', 1),
-  stop: svg('<rect x="6" y="6" width="12" height="12" rx="2"/>', 1),
-  prev: svg('<path d="M18 5v14l-9-7zM6 5v14"/>'),
-  next: svg('<path d="M6 5v14l9-7zM18 5v14"/>'),
-  back10: svg('<path d="M3 12a9 9 0 109-9 9 9 0 00-6.4 2.6L3 8"/><path d="M3 3v5h5"/>'),
-  search: svg('<circle cx="11" cy="11" r="7"/><path d="M20 20l-3.5-3.5"/>'),
-  plus: svg('<path d="M12 5v14M5 12h14"/>'),
-  check: svg('<path d="M5 12l5 5L20 7"/>'),
-  bookmark: svg('<path d="M6 3h12v18l-6-4-6 4z"/>'),
-  ext: svg('<path d="M14 4h6v6M20 4l-9 9M18 14v5a1 1 0 01-1 1H5a1 1 0 01-1-1V7a1 1 0 011-1h5"/>'),
-  cards: svg('<rect x="3" y="6" width="14" height="14" rx="2"/><path d="M7 3h12a2 2 0 012 2v12"/>'),
-  quiz: svg('<circle cx="12" cy="12" r="9"/><path d="M9.5 9a2.5 2.5 0 015 .5c0 2-2.5 2-2.5 4M12 17h.01"/>'),
-  gap: svg('<path d="M3 12h4M17 12h4"/><rect x="9" y="8" width="6" height="8" rx="1.5"/>'),
-  pen: svg('<path d="M4 20h4L19 9l-4-4L4 16z"/>'),
-  ear: svg('<path d="M3 14v-2a9 9 0 0118 0v2"/><rect x="3" y="14" width="4" height="6" rx="1.5"/><rect x="17" y="14" width="4" height="6" rx="1.5"/>'),
-  order: svg('<path d="M4 6h10M4 12h16M4 18h7"/>'),
-  spark: svg('<path d="M12 3l2 6 6 2-6 2-2 6-2-6-6-2 6-2z"/>'),
-  flag: svg('<path d="M5 21V4M5 4h11l-2 4 2 4H5"/>'),
-  trash: svg('<path d="M4 7h16M9 7V4h6v3M6 7l1 13h10l1-13"/>'),
-  podcast: svg('<circle cx="12" cy="11" r="3"/><path d="M12 14v7M7.5 16.5a7 7 0 119 0"/>'),
-  video: svg('<rect x="3" y="5" width="14" height="14" rx="2"/><path d="M17 10l4-2v8l-4-2"/>'),
-  shuffle: svg('<path d="M16 3h5v5M4 20L21 3M21 16v5h-5M15 15l6 6M4 4l5 5"/>'),
-  clock: svg('<circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/>'),
-  gear: svg('<circle cx="12" cy="12" r="3"/><path d="M19.4 15a1.6 1.6 0 00.3 1.8l.1.1a2 2 0 11-2.8 2.8l-.1-.1a1.6 1.6 0 00-1.8-.3 1.6 1.6 0 00-1 1.5V21a2 2 0 11-4 0v-.1a1.6 1.6 0 00-1-1.5 1.6 1.6 0 00-1.8.3l-.1.1a2 2 0 11-2.8-2.8l.1-.1a1.6 1.6 0 00.3-1.8 1.6 1.6 0 00-1.5-1H3a2 2 0 110-4h.1a1.6 1.6 0 001.5-1 1.6 1.6 0 00-.3-1.8l-.1-.1a2 2 0 112.8-2.8l.1.1a1.6 1.6 0 001.8.3H9a1.6 1.6 0 001-1.5V3a2 2 0 114 0v.1a1.6 1.6 0 001 1.5 1.6 1.6 0 001.8-.3l.1-.1a2 2 0 112.8 2.8l-.1.1a1.6 1.6 0 00-.3 1.8V9a1.6 1.6 0 001.5 1H21a2 2 0 110 4h-.1a1.6 1.6 0 00-1.5 1z"/>'),
-  chart: svg('<path d="M4 20V10M10 20V4M16 20v-7M22 20H2"/>')
-};
-const ico = (k, s = 16) => (IC[k] || '').replace('<svg', `<svg width="${s}" height="${s}"`);
+/* ---------- iconos: ver icons.js ---------- */
 
 /* ==========================================================
    VOZ · lee por frases para que no se corte en el iPhone
@@ -332,7 +295,7 @@ function streak() {
   while (isActive(STATS[dayKey(d)])) { n++; d.setDate(d.getDate() - 1); }
   return n;
 }
-function renderStreak() { const el = $('#streakNum'); if (el) el.textContent = streak(); }
+function renderStreak() { const el = $('#streakNum'); if (el) el.textContent = streak(); const ic = $('#streakIc'); if (ic && !ic.innerHTML) ic.innerHTML = ICF.flame; }
 
 /* ==========================================================
    NAVEGACIÓN
@@ -356,11 +319,13 @@ function route() {
   const isRoot = TABS.includes(view);
   if (isRoot && view !== 'home' && typeof HOME_SESSION !== 'undefined') HOME_SESSION = false;
   document.body.classList.toggle('root', isRoot);
+  document.body.dataset.tab = isRoot ? view : '';
   const TAB_NAMES = { home: 'Hoy', read: 'Leer', listen: 'Escuchar', words: 'Palabras', mine: 'Mío' };
   $('#backLbl').textContent = TAB_NAMES[r.tab] || 'Volver';
   const rp = $('#readProg'); if (rp) rp.style.width = '0';
   currentTab = r.tab || currentTab;
-  $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === currentTab));
+  $$('.tab').forEach(t => { const on = t.dataset.tab === currentTab; t.classList.toggle('active', on); t.querySelector('.ti').innerHTML = (on ? ICF : IC)[t.dataset.ic] || ''; });
+  if (isRoot) { const av = $('#avatar'); if (av) av.textContent = (S.name || 'Yo').trim().charAt(0).toUpperCase(); renderStreak(); }
   $('#brandSub').textContent = r.title || '';
   window.scrollTo(0, 0);
   const v = $('#view'); v.classList.remove('enter'); void v.offsetWidth; v.classList.add('enter');

@@ -5,8 +5,8 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Fluent · English</title>
 <meta name="description" content="Lee, escucha y aprende inglés de verdad">
-<meta name="theme-color" content="#C0BDB6" media="(prefers-color-scheme: light)">
-<meta name="theme-color" content="#22201D" media="(prefers-color-scheme: dark)">
+<meta name="theme-color" content="#C9C9CF" media="(prefers-color-scheme: light)">
+<meta name="theme-color" content="#121214" media="(prefers-color-scheme: dark)">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-title" content="Fluent">
@@ -15,27 +15,29 @@
 <link rel="apple-touch-icon" href="icons/apple-touch-icon.png">
 <link rel="icon" type="image/png" href="icons/icon-192.png">
 <link rel="preload" href="fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="preload" href="fonts/franklin.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=7.0.0">
+<link rel="preload" href="fonts/hanken.woff2" as="font" type="font/woff2" crossorigin>
+<link rel="stylesheet" href="styles.css?v=8.0.0">
 </head>
 <body>
 <div id="readProg"></div>
 <header class="topbar">
   <div class="topbar-inner">
-    <button id="backBtn" aria-label="Volver"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M15 18l-6-6 6-6"/></svg><span id="backLbl">Volver</span></button>
+    <button id="backBtn" aria-label="Volver"><svg viewBox="0 0 256 256" fill="currentColor" aria-hidden="true"><path d="M165.66,202.34a8,8,0,0,1-11.32,11.32l-80-80a8,8,0,0,1,0-11.32l80-80a8,8,0,0,1,11.32,11.32L91.31,128Z"/></svg><span id="backLbl">Volver</span></button>
     <div class="brand" id="brand"><small id="brandSub"></small></div>
+    <span></span>
   </div>
 </header>
 
 <main id="view"></main>
+<div class="rootchips" id="rootChips"><a class="streak" href="#progress" aria-label="Racha de días"><span id="streakIc"></span><span id="streakNum">0</span></a><a class="av" href="#mine" id="avatar" aria-label="Mío">I</a></div>
 
 <nav class="tabbar" aria-label="Secciones">
   <div class="tabbar-inner">
-    <button class="tab" data-tab="home"><span>Hoy</span></button>
-    <button class="tab" data-tab="read"><span>Leer</span></button>
-    <button class="tab" data-tab="listen"><span>Escuchar</span></button>
-    <button class="tab" data-tab="words"><span>Palabras</span><span class="badge hidden" id="dueBadge"></span></button>
-    <button class="tab" data-tab="mine"><span>Mío</span></button>
+    <button class="tab" data-tab="home" data-ic="home"><span class="ti"></span><span>Hoy</span></button>
+    <button class="tab" data-tab="read" data-ic="book"><span class="ti"></span><span>Leer</span></button>
+    <button class="tab" data-tab="listen" data-ic="ear"><span class="ti"></span><span>Escuchar</span></button>
+    <button class="tab" data-tab="words" data-ic="cards"><span class="ti"></span><span>Palabras</span><span class="badge hidden" id="dueBadge"></span></button>
+    <button class="tab" data-tab="mine" data-ic="user"><span class="ti"></span><span>Mío</span></button>
   </div>
 </nav>
 
@@ -43,28 +45,29 @@
 <div class="sheet hidden" id="sheet" role="dialog" aria-modal="true"><div class="grabber"></div><div id="sheetBody"></div></div>
 <div class="toast" id="toast"></div>
 
-<script src="config.js?v=7.0.0"></script>
-<script src="content/vocab_general.js?v=7.0.0"></script>
-<script src="content/vocab_general2.js?v=7.0.0"></script>
-<script src="content/vocab_general3.js?v=7.0.0"></script>
-<script src="content/vocab_expr.js?v=7.0.0"></script>
-<script src="content/vocab_expr2.js?v=7.0.0"></script>
-<script src="content/phrasal3.js?v=7.0.0"></script>
-<script src="content/chunks.js?v=7.0.0"></script>
-<script src="content/slang.js?v=7.0.0"></script>
-<script src="content/vocab_legal.js?v=7.0.0"></script>
-<script src="content/vocab_legal2.js?v=7.0.0"></script>
-<script src="content/grammar.js?v=7.0.0"></script>
-<script src="content/grammar2.js?v=7.0.0"></script>
-<script src="content/situations.js?v=7.0.0"></script>
-<script src="content/situations2.js?v=7.0.0"></script>
-<script src="content/pronunciation.js?v=7.0.0"></script>
-<script src="content/native.js?v=7.0.0"></script>
-<script src="content/dialogues.js?v=7.0.0"></script>
-<script src="content/connected.js?v=7.0.0"></script>
-<script src="content/freq.js?v=7.0.0"></script>
-<script src="content/books/index.js?v=7.0.0"></script>
-<script src="content/texts/index.js?v=7.0.0"></script>
+<script src="config.js?v=8.0.0"></script>
+<script src="icons.js?v=8.0.0"></script>
+<script src="content/vocab_general.js?v=8.0.0"></script>
+<script src="content/vocab_general2.js?v=8.0.0"></script>
+<script src="content/vocab_general3.js?v=8.0.0"></script>
+<script src="content/vocab_expr.js?v=8.0.0"></script>
+<script src="content/vocab_expr2.js?v=8.0.0"></script>
+<script src="content/phrasal3.js?v=8.0.0"></script>
+<script src="content/chunks.js?v=8.0.0"></script>
+<script src="content/slang.js?v=8.0.0"></script>
+<script src="content/vocab_legal.js?v=8.0.0"></script>
+<script src="content/vocab_legal2.js?v=8.0.0"></script>
+<script src="content/grammar.js?v=8.0.0"></script>
+<script src="content/grammar2.js?v=8.0.0"></script>
+<script src="content/situations.js?v=8.0.0"></script>
+<script src="content/situations2.js?v=8.0.0"></script>
+<script src="content/pronunciation.js?v=8.0.0"></script>
+<script src="content/native.js?v=8.0.0"></script>
+<script src="content/dialogues.js?v=8.0.0"></script>
+<script src="content/connected.js?v=8.0.0"></script>
+<script src="content/freq.js?v=8.0.0"></script>
+<script src="content/books/index.js?v=8.0.0"></script>
+<script src="content/texts/index.js?v=8.0.0"></script>
 <script src="content/texts/s00.js"></script>
 <script src="content/texts/s01.js"></script>
 <script src="content/texts/s02.js"></script>
@@ -74,18 +77,18 @@
 <script src="content/texts/s06.js"></script>
 <script src="content/texts/s07.js"></script>
 <script src="content/texts/s08.js"></script>
-<script src="content/monthly.js?v=7.0.0"></script>
-<script src="core.js?v=7.0.0"></script>
-<script src="reader.js?v=7.0.0"></script>
-<script src="library.js?v=7.0.0"></script>
-<script src="exercises.js?v=7.0.0"></script>
-<script src="vocab.js?v=7.0.0"></script>
-<script src="listen.js?v=7.0.0"></script>
-<script src="home.js?v=7.0.0"></script>
-<script src="mine.js?v=7.0.0"></script>
-<script src="learn.js?v=7.0.0"></script>
-<script src="practice.js?v=7.0.0"></script>
-<script src="words.js?v=7.0.0"></script>
-<script src="sync.js?v=7.0.0"></script>
+<script src="content/monthly.js?v=8.0.0"></script>
+<script src="core.js?v=8.0.0"></script>
+<script src="reader.js?v=8.0.0"></script>
+<script src="library.js?v=8.0.0"></script>
+<script src="exercises.js?v=8.0.0"></script>
+<script src="vocab.js?v=8.0.0"></script>
+<script src="listen.js?v=8.0.0"></script>
+<script src="home.js?v=8.0.0"></script>
+<script src="mine.js?v=8.0.0"></script>
+<script src="learn.js?v=8.0.0"></script>
+<script src="practice.js?v=8.0.0"></script>
+<script src="words.js?v=8.0.0"></script>
+<script src="sync.js?v=8.0.0"></script>
 </body>
 </html>

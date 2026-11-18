@@ -29,47 +29,56 @@ function sessionSteps() {
   const rd = id => id && READS[id] && READS[id].done && READS[id].upd > new Date().setHours(0, 0, 0, 0);
   const tr = id => { const x = id && origById(id); return x ? x.title : ''; };
   const steps = [
-    { k: 'rev', ic: 'cards', t: 'Repasa tus tarjetas', d: due ? due + ' pendientes · con la frase donde encontraste cada palabra' : 'Al día', href: '#ex/review', done: !due || (t.rev || 0) >= 60, min: Math.min(15, Math.ceil(due / 4)) },
+    { k: 'rev', ic: 'cards', t: 'Repasar tarjetas', d: due ? due + (due === 1 ? ' pendiente' : ' pendientes') : 'Al día, puedes hacer uno extra', href: '#ex/review', done: !due || (t.rev || 0) >= 60, min: Math.min(15, Math.ceil(due / 4)) },
     { k: 'read', ic: 'book', t: 'Lectura del día', d: tr(p.read), href: '#r/' + p.read, done: rd(p.read), min: p.read && origById(p.read) ? readMin(origById(p.read).body) : 20 },
-    { k: 'listen', ic: 'ear', t: 'Escucha en 3 pasadas', d: tr(p.listen), href: '#r/' + p.listen, mode: 'hide', done: rd(p.listen) || (t.lsec || 0) >= (long ? 900 : 420), min: 10 }
+    { k: 'listen', ic: 'ear', t: 'Escuchar sin texto', d: tr(p.listen), href: '#r/' + p.listen, mode: 'hide', done: rd(p.listen) || (t.lsec || 0) >= (long ? 900 : 420), min: 10 }
   ];
   if (long) {
-    steps.push({ k: 'new', ic: 'spark', t: 'Palabras nuevas, a fondo', d: 'De la biblioteca, en 5 pasos hasta que las escribas de memoria', href: '#learn/new', done: (t.newLib || 0) >= S.newPerDay, min: 8 });
-    steps.push(S.guardianKey ? { k: 'real', ic: 'news', t: 'Un artículo real del Guardian', d: 'Opinión o reportaje de hoy, de tus temas', href: '#guardian/' + dailyPick(['opinion', 'longread', 'features', 'law', 'world', 'business', 'culture', 'sport', 'science'], 'gs'), done: Object.keys(READS).some(k => k.startsWith('g:') && READS[k].done && READS[k].upd > new Date().setHours(0, 0, 0, 0)), min: 15 }
+    steps.push({ k: 'new', ic: 'spark', t: 'Aprender palabras nuevas', d: S.newPerDay + ' de la biblioteca, en cinco pasos', href: '#learn/new', done: (t.newLib || 0) >= S.newPerDay, min: 8 });
+    steps.push(S.guardianKey ? { k: 'real', ic: 'news', t: 'Leer el Guardian', d: 'Un artículo de hoy sobre tus temas', href: '#guardian/' + dailyPick(['opinion', 'longread', 'features', 'law', 'world', 'business', 'culture', 'sport', 'science'], 'gs'), done: Object.keys(READS).some(k => k.startsWith('g:') && READS[k].done && READS[k].upd > new Date().setHours(0, 0, 0, 0)), min: 15 }
       : { k: 'real', ic: 'book', t: 'Segunda lectura', d: tr(p.read2) || 'Un capítulo de novela o un artículo de Wikipedia', href: p.read2 ? '#r/' + p.read2 : '#books', done: rd(p.read2) || (t.art || 0) >= 3, min: 15 });
-    steps.push({ k: 'pod', ic: 'podcast', t: 'Un podcast de nativos', d: 'Sin texto, para entrenar el oído de verdad', href: '#podcasts', done: (t.lsec || 0) >= 1800, min: 15 });
+    steps.push({ k: 'pod', ic: 'podcast', t: 'Escuchar un podcast', d: 'Nativos hablando de verdad, sin texto', href: '#podcasts', done: (t.lsec || 0) >= 1800, min: 15 });
   }
-  steps.push({ k: 'ex', ic: 'gap', t: 'Ejercicios con lo de hoy', d: 'Huecos en frases de los textos que has leído', href: '#ex/gap', done: (t.ex || 0) >= 10, min: 5 });
+  steps.push({ k: 'ex', ic: 'gap', t: 'Practicar', d: 'Huecos con frases de lo que has leído', href: '#ex/gap', done: (t.ex || 0) >= 10, min: 5 });
   return steps;
 }
 function renderHome() {
   HOME_SESSION = true;
   const d = new Date();
   let dateStr = d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' }); dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
-  const st = streak(); const due = dueCards().length;
+  const t = today(); const due = dueCards().length;
   const steps = sessionSteps(); const p = todayPicks();
-  const sRead = steps.find(s => s.k === 'read'), sRev = steps.find(s => s.k === 'rev'), sListen = steps.find(s => s.k === 'listen');
-  const rest = steps.filter(s => !['rev', 'read', 'listen'].includes(s.k));
-  const lead = p.read && origById(p.read), lis = p.listen && origById(p.listen);
-  const contE = Object.entries(READS).filter(([id, r]) => !r.done && r.pct > 3 && r.pct < 100 && id !== p.read && (!/^[om]:/.test(id) || origById(id))).sort((a, b) => b[1].upd - a[1].upd)[0];
-  const contT = contE && origById(contE[0]);
+  const sRead = steps.find(s => s.k === 'read');
+  const rest = steps.filter(s => s.k !== 'read');
+  const lead = p.read && origById(p.read);
+  const contE = Object.entries(READS).filter(([id, r]) => !r.done && r.pct > 3 && r.pct < 100 && (!/^[om]:/.test(id) || origById(id))).sort((a, b) => b[1].upd - a[1].upd)[0];
+  /* tarjeta principal: lo que dejaste a medias o la lectura del día */
+  let main = null;
+  if (contE) { const ct = origById(contE[0]); main = { id: contE[0], t: ct, title: contE[1].title, kind: contE[1].kind, pct: contE[1].pct, min: ct ? readMin(ct.body) : null, cont: true }; }
+  else if (lead) main = { id: lead.id, t: lead, title: lead.title, kind: lead.kind, pct: (READS[lead.id] || {}).pct || 0, min: readMin(lead.body), cont: false, done: sRead.done };
+  const goalMin = S.sessionLen === 'short' ? 25 : 45;
+  const doneMin = Math.round(((t.sec || 0) + (t.lsec || 0)) / 60 + ((t.ex || 0) + (t.rev || 0)) / 3);
+  const frac = Math.min(1, doneMin / goalMin); const C = 2 * Math.PI * 26;
   const exp = dailyPick(LIB.filter(x => ['idiom', 'phrasal', 'chunk', 'slang', 'convo', 'colloc'].includes(x.cat) && x.ex), 'e');
   const acct = typeof cfg === 'function' && cfg() && SYNC.ready && !SYNC.user;
+  const TILE = { rev: ['cards', 't-blue'], listen: ['ear', 't-orange'], new: ['spark', 't-green'], real: ['news', 't-slate'], pod: ['mic', 't-teal'], ex: ['pen', 't-ochre'] };
+  const stepRow = s => { const [ic, col] = TILE[s.k] || ['book', 't-blue']; return `<a class="li ${s.done ? 'done' : ''}" href="${esc(s.href)}" ${s.mode ? `data-mode="${s.mode}"` : ''}><span class="tile" style="--tc:var(--${col})">${s.done ? ICF.check : ICF[ic]}</span><span class="g"><b>${esc(s.t)}</b><span>${esc(s.d || '')}</span></span><span class="m">${s.min} min</span><span class="chev"></span></a>`; };
   $('#view').innerHTML = `
-    <div class="mast"><div class="mast-n">Fluent</div><div class="mast-d"><span>${esc(dateStr)}</span><a href="#progress">${st ? (st === 1 ? '1 día seguido' : st + ' días seguidos') : 'Hoy empieza tu racha'}</a></div></div>
-    ${acct ? `<a class="alert" href="#settings"><span class="grow">Crea tu cuenta para no perder nunca tu progreso.</span><span class="link">Crear</span></a>` : ''}
-    ${!S.knownRank ? `<a class="alert" href="#calib"><span class="grow">Calibra tu vocabulario en dos minutos y los textos sabrán qué palabras conoces.</span><span class="link">Calibrar</span></a>` : ''}
-    ${lead ? `<a class="lead" href="#r/${esc(lead.id)}">${coverHTML(lead, 'big')}<div class="grow"><div class="k">${sRead.done ? 'Leído hoy' : 'Para leer hoy'}</div><h2>${esc(lead.title)}</h2>${lead.sub ? `<p>${esc(lead.sub)}</p>` : ''}<span class="link">Leer · ${readMin(lead.body)} min</span></div></a>` : ''}
-    ${contE ? `<a class="controw" href="#r/${esc(contE[0])}">${contT ? coverHTML(contT) : ''}<div class="grow"><small>Lo dejaste a medias</small><b>${esc(contE[1].title)}</b><div class="bar"><i style="width:${contE[1].pct}%"></i></div></div></a>` : ''}
-    <div class="cols">
-      <a href="#ex/review" class="${sRev.done ? 'done' : ''}"><div class="h">Repaso</div><b>${due ? due + (due === 1 ? ' tarjeta' : ' tarjetas') : 'Al día'}</b><span>${due ? 'Unos ' + Math.max(1, Math.ceil(due / 4)) + ' minutos' : 'Si quieres, uno extra'}</span></a>
-      ${lis ? `<a href="#r/${esc(lis.id)}" data-mode="hide" class="${sListen.done ? 'done' : ''}"><div class="h">Para escuchar</div><b>${esc(lis.title)}</b><span>Primero sin mirar el texto</span></a>` : '<a href="#listen"><div class="h">Para escuchar</div><b>Podcasts y audiolibros</b></a>'}
-    </div>
-    <div class="planhead"><b>${S.sessionLen === 'short' ? 'Para rematar' : 'Y si te queda tiempo'}</b><span class="lenpick" id="slen">Sesión <button data-l="short" class="${S.sessionLen === 'short' ? 'on' : ''}">corta</button> · <button data-l="long" class="${S.sessionLen !== 'short' ? 'on' : ''}">larga</button></span></div>
-    ${rest.map((s, i) => `<a class="step ${s.done ? 'done' : ''}" href="${esc(s.href)}" ${s.mode ? `data-mode="${s.mode}"` : ''}><span class="n">${s.done ? '✓' : i + 1}</span><span class="grow"><b>${esc(s.t)}</b><span class="d">${esc(s.d || '')}</span></span><span class="m">${s.min} min</span></a>`).join('')}
-    ${exp ? `<div class="dict"><div class="h">La expresión de hoy</div><div><span class="hw">${esc(exp.term)}</span></div><div class="pos">${esc((CATS[exp.cat] || '').toLowerCase())}</div><div class="sense"><i>1</i>${esc(exp.es)}</div><div class="exl">${esc(exp.ex)}</div>
-      <div class="acts"><button class="link" data-say="${esc(exp.term)}">Escuchar</button>${!exp.srs ? `<button class="link" data-learn="${esc(exp.id)}">Aprenderla</button>` : '<span class="muted" style="font-size:14px">Ya está en tus repasos</span>'}<button class="link" data-det="${esc(exp.id)}">Ficha</button></div></div>` : ''}
-    <div class="homefoot"><a href="#progress">Progreso</a><a href="#history">Leídos</a><a href="#settings">Ajustes</a></div>`;
+    <div class="kicker">${esc(dateStr)}</div>
+    <div class="h1">Hoy</div>
+    ${acct ? `<a class="card li" href="#settings"><span class="tile" style="--tc:var(--t-slate)">${ICF.user}</span><span class="g"><b>Crea tu cuenta</b><span>Para no perder nunca tu progreso</span></span><span class="chev"></span></a>` : ''}
+    ${!S.knownRank ? `<a class="card li" href="#calib"><span class="tile" style="--tc:var(--t-teal)">${ICF.target}</span><span class="g"><b>Calibra tu vocabulario</b><span>Dos minutos para que la app sepa qué palabras conoces</span></span><span class="chev"></span></a>` : ''}
+    ${main ? `<div class="card contcard"><a class="in" href="#r/${esc(main.id)}">${main.t ? coverHTML(main.t) : ''}<div class="grow"><div class="k">${main.cont ? 'Sigue leyendo' : main.done ? 'Leído hoy' : 'Para leer hoy'}${main.kind ? ' · ' + esc(main.kind) : ''}${main.min ? ', ' + main.min + ' min' : ''}</div><div class="tt">${esc(main.title)}</div><div class="pbar"><i style="width:${main.done ? 100 : main.pct}%"></i></div>${main.min ? `<div class="left">${main.done ? 'Terminado' : main.pct ? 'Te quedan unos ' + Math.max(1, Math.round(main.min * (100 - main.pct) / 100)) + ' minutos' : 'Sin empezar'}</div>` : ''}</div></a>
+      <a class="btn primary" href="#r/${esc(main.id)}">${ICF.bookopen}${main.cont ? 'Seguir leyendo' : main.done ? 'Leer otra vez' : 'Empezar a leer'}</a></div>` : ''}
+    <div class="card goal"><svg class="ring" viewBox="0 0 62 62" aria-hidden="true"><circle cx="31" cy="31" r="26" fill="none" stroke="var(--surface2)" stroke-width="8"/><circle cx="31" cy="31" r="26" fill="none" stroke="var(--accent)" stroke-width="8" stroke-linecap="round" stroke-dasharray="${C.toFixed(1)}" stroke-dashoffset="${(C * (1 - frac)).toFixed(1)}" transform="rotate(-90 31 31)"/></svg>
+      <div class="grow"><b>${doneMin} de ${goalMin} minutos</b><span>${frac >= 1 ? 'Objetivo de hoy cumplido.' : 'Tu objetivo de hoy.'} ${fmtMin(t.sec)} leyendo y ${fmtMin(t.lsec)} escuchando.</span>
+      <div class="seg mini" id="slen"><button data-l="short" class="${S.sessionLen === 'short' ? 'on' : ''}">Corta, 25 min</button><button data-l="long" class="${S.sessionLen !== 'short' ? 'on' : ''}">Larga, 45 min</button></div></div></div>
+    <div class="h2">Tu plan de hoy</div>
+    <div class="group">${rest.map(stepRow).join('')}</div>
+    ${exp ? `<div class="h2">Expresión del día</div>
+    <div class="card exp"><div class="hw"><div><b>${esc(exp.term)}</b><small>${esc(CATS[exp.cat] || '')}</small></div><button class="mini" data-say="${esc(exp.term)}" aria-label="Escuchar">${ICF.speak}</button></div>
+      <div class="es">${esc(exp.es)}</div><div class="ex">${esc(exp.ex)}</div>
+      <div class="pair">${!exp.srs ? `<button class="btn primary" data-learn="${esc(exp.id)}">${IC.plus}Aprenderla</button>` : '<span class="btn" style="pointer-events:none">En tus repasos</span>'}<button class="btn" data-det="${esc(exp.id)}">Ver ficha</button></div></div>` : ''}`;
   $('#slen').onclick = e => { const b = e.target.closest('[data-l]'); if (!b) return; S.sessionLen = b.dataset.l; saveSettings(); renderHome(); };
   $('#view').onclick = e => {
     const m = e.target.closest('[data-mode]'); if (m) { READER_START_MODE = m.dataset.mode; return; }

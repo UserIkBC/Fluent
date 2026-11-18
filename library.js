@@ -71,7 +71,7 @@ const SHELF_NAMES = { ideas: 'Ideas y filosofía', story: 'Relatos con mensaje',
 const SHELF_ORDER = ['ideas', 'story', 'myth', 'history', 'mind', 'law', 'news', 'science', 'nature', 'mystery', 'culture', 'other'];
 function shelfItem(t) {
   const r = READS[t.id];
-  return `<a href="#r/${esc(t.id)}">${coverHTML(t)}<div class="min">${readMin(t.body)} min${r && r.done ? ' · <b>leído</b>' : r && r.pct ? ' · ' + r.pct + '%' : ''}</div></a>`;
+  return `<a href="#r/${esc(t.id)}">${coverHTML(t)}<div class="t2">${esc(t.title)}</div><div class="s2">${r && r.done ? '<b>Leído</b>' : r && r.pct ? r.pct + '% leído' : readMin(t.body) + ' min'}</div></a>`;
 }
 function renderRead() {
   const all = allTexts().filter(t => t.src === 'orig');
@@ -82,16 +82,26 @@ function renderRead() {
   const sortShelf = l => l.slice().sort((a, b) => ((READS[a.id] && READS[a.id].done) ? 1 : 0) - ((READS[b.id] && READS[b.id].done) ? 1 : 0));
   $('#view').innerHTML = `
     <div class="h1">Leer</div>
-    <div class="srcline"><a href="#orig">Todos <span>${fmtNum(all.length)}</span></a><a href="#guardian">The Guardian</a><a href="#wiki">Wikipedia</a><a href="#books">Novelas <span>${(window.BOOKS || []).length}</span></a><a href="#texts">Mis textos <span>${window.TEXTS.length}</span></a><a href="#history">Leídos <span>${HISTORY.length}</span></a></div>
-    ${cont.map(([id, r]) => { const t = origById(id); return `<a class="controw" href="#r/${esc(id)}">${t ? coverHTML(t) : ''}<div class="grow"><small>Seguir leyendo</small><b>${esc(r.title)}</b><div class="bar"><i style="width:${r.pct}%"></i></div></div></a>`; }).join('')}
-    ${forYou.length ? `<div class="shelfh"><b>Para ti ahora</b><span>sin leer</span></div><div class="shelf">${forYou.map(shelfItem).join('')}</div>` : ''}
-    ${SHELF_ORDER.filter(g => groups[g] && groups[g].length).map(g => `<a class="shelfh" href="#orig/grp:${g}"><b>${esc(SHELF_NAMES[g])}</b><span>${groups[g].length} ${groups[g].length === 1 ? 'texto' : 'textos'} ›</span></a><div class="shelf">${sortShelf(groups[g]).slice(0, 14).map(shelfItem).join('')}</div>`).join('')}
-    <div class="h2">Buscar</div>
-    <div class="search">${IC.search}<input class="input" id="rq" type="search" placeholder="Busca en los ${fmtNum(all.length)} textos"></div><div id="rqRes" style="margin-top:10px"></div>`;
+    <div class="search">${IC.search}<input class="input" id="rq" type="search" placeholder="Buscar en ${fmtNum(all.length)} textos" aria-label="Buscar textos"></div>
+    <div class="seg" role="tablist"><button class="on">Fluent</button><button data-go="#guardian">Guardian</button><button data-go="#wiki">Wikipedia</button><button data-go="#books">Novelas</button></div>
+    <div id="rqRes"></div>
+    <div id="rMain">
+    ${cont.length ? `<div class="h2">Sigue leyendo</div><div class="group">${cont.map(([id, r]) => { const t = origById(id); return `<a class="li" href="#r/${esc(id)}">${t ? `<span style="width:40px;flex:none">${coverHTML(t)}</span>` : `<span class="tile" style="--tc:var(--t-slate)">${ICF.book}</span>`}<span class="g"><b>${esc(r.title)}</b><span>${r.pct}% leído</span><div class="pbar" style="margin-top:6px"><i style="width:${r.pct}%"></i></div></span><span class="chev"></span></a>`; }).join('')}</div>` : ''}
+    ${forYou.length ? `<div class="h2">Para ti <a href="#orig">Ver todo</a></div><div class="car">${forYou.map(shelfItem).join('')}</div>` : ''}
+    ${SHELF_ORDER.filter(g => groups[g] && groups[g].length).map(g => `<div class="h2">${esc(SHELF_NAMES[g])} <a href="#orig/grp:${g}">${groups[g].length}</a></div><div class="car sm">${sortShelf(groups[g]).slice(0, 14).map(shelfItem).join('')}</div>`).join('')}
+    <div class="h2">Más</div>
+    <div class="group">
+      <a class="li" href="#texts"><span class="tile" style="--tc:var(--t-teal)">${ICF.note}</span><span class="g"><b>Mis textos</b><span>Pega cualquier texto y léelo con la app</span></span><span class="m">${window.TEXTS.length}</span><span class="chev"></span></a>
+      <a class="li" href="#history"><span class="tile" style="--tc:var(--t-green)">${ICF.checkc}</span><span class="g"><b>Leídos</b><span>Todo lo que has terminado</span></span><span class="m">${HISTORY.length}</span><span class="chev"></span></a>
+      <a class="li" href="#orig"><span class="tile" style="--tc:var(--t-blue)">${ICF.books}</span><span class="g"><b>Todos los textos Fluent</b><span>Con filtros y orden</span></span><span class="m">${fmtNum(all.length)}</span><span class="chev"></span></a>
+    </div></div>`;
+  $('#view').querySelector('.seg').onclick = e => { const b = e.target.closest('[data-go]'); if (b) go(b.dataset.go); };
   $('#rq').addEventListener('input', e => {
-    const q = norm(e.target.value); if (q.length < 3) { $('#rqRes').innerHTML = ''; return; }
+    const q = norm(e.target.value); $('#rMain').classList.toggle('hidden', q.length >= 3);
+    if (q.length < 3) { $('#rqRes').innerHTML = ''; return; }
     const r = allTexts().filter(t => norm(t.title + ' ' + (t.sub || '')).includes(q) || norm(t.body.join(' ')).includes(q)).slice(0, 30);
-    $('#rqRes').innerHTML = r.length ? `<div class="list-card">${r.map(textCard).join('')}</div>` : '<div class="empty">Nada por aquí.</div>';
+    $('#rqRes').innerHTML = r.length ? `<div class="list-card">${r.map(textCard).join('')}</div>` : `<div class="empty">Ningún texto contiene «${esc(e.target.value)}».<br><button class="link" id="rqClear" style="margin-top:8px">Borrar la búsqueda</button></div>`;
+    const c = $('#rqClear'); if (c) c.onclick = () => { $('#rq').value = ''; $('#rq').dispatchEvent(new Event('input')); };
   });
 }
 /* recomendación: textos que no has leído, de tus temas, con un % conocido que permita leer cómodo */
@@ -101,7 +111,8 @@ function recommend(list, n) {
   list = list.filter(nextInSeries);
   const scored = list.map(t => { const p = cachedPct(t); let sc = 0; const wc = wordCount(t.body); if (wc >= 2500) sc += 4; else if (wc >= 1200) sc += 2; if (p >= 88 && p <= 98) sc += 3; else if (p > 98) sc += 1; if (fav.has(t.topic)) sc += 2; sc += Math.random() * 1.5; return [sc, t]; });
   const seen = new Set(); const out = [];
-  scored.sort((a, b) => b[0] - a[0]).forEach(([, t]) => { if (out.length < n && !seen.has(t.kind)) { seen.add(t.kind); out.push(t); } });
+  scored.sort((a, b) => b[0] - a[0]).forEach(([, t]) => { const g = coverOf(t)[0]; if (out.length < n && !seen.has(g)) { seen.add(g); out.push(t); } });
+  scored.forEach(([, t]) => { if (out.length < n && !out.includes(t)) out.push(t); });
   return out;
 }
 
