@@ -225,18 +225,18 @@ function renderFast() {
   $('#view').innerHTML = `<div class="h1">Inglés rápido</div><p class="sub">Así suena el inglés cuando se habla deprisa. Si conoces estas reducciones, entenderás muchísimo más a los nativos.</p>
     <div class="notice warm">La voz del móvil no reduce las palabras como un nativo. Fíjate en cómo se escribe la versión real y búscala después en los podcasts.</div>
     <a class="btn primary block" href="#ex/fast" style="margin-bottom:12px">Test: escribe lo que oyes</a>
-    <div class="card">${C.map((c, k) => `<div class="note"><div class="grow"><span class="term">${esc(c[1])}</span><div class="es">${esc(c[0])}</div><div class="muted" style="font-size:13.5px;margin-top:3px"><b>${esc(c[2])}</b> · ${esc(c[3])}</div></div><div style="display:flex;flex-direction:column;gap:6px"><button class="mini" data-fk="${k}" data-r="1">${IC.speak}</button><button class="mini" data-fk="${k}" data-r="1.35">⚡</button></div></div>`).join('')}</div>`;
+    <div class="card">${C.map((c, k) => `<div class="note"><div class="grow"><span class="term">${esc(c[1])}</span><div class="es">${esc(c[0])}</div><div class="muted" style="font-size:13.5px;margin-top:3px"><b>${esc(c[2])}</b> · ${esc(c[3])}</div></div><div style="display:flex;flex-direction:column;gap:6px"><button class="mini" data-fk="${k}" data-r="1">${IC.speak}</button><button class="mini" data-fk="${k}" data-r="1.35" style="width:auto;padding:0 10px;border-radius:17px;font-size:12px">rápido</button></div></div>`).join('')}</div>`;
   $('#view').onclick = e => { const b = e.target.closest('[data-fk]'); if (b) TTS.speak(C[+b.dataset.fk][0], { rate: +b.dataset.r }); };
 }
 EXTRA_TITLES.fast = 'Inglés rápido';
 EXTRA_GENS.fast = () => { const C = window.CONNECTED || []; const pool = C.concat((window.DIALOGUES || []).flatMap(d => d.lines.filter(l => l[1].split(' ').length <= 14).map(l => [l[1], l[1], 'diálogo', '']))); if (!pool.length) return null; const c = pick(pool); return { type: 'fast', c, it: { s: c[0], src: 'Inglés rápido' } }; };
 EXTRA_RENDER.fast = q => {
   $('#view').innerHTML = `${exHeader()}<div id="qArea"><p class="muted" style="margin:16px 0 8px">Escucha la frase a velocidad rápida y escríbela completa</p>
-    <div class="row" style="justify-content:center;gap:10px;margin:14px 0"><button class="btn primary" id="fP">${ico('play')} Rápido</button><button class="btn" id="fN">Normal</button><button class="btn" id="fS">🐢 Lento</button></div>
+    <div class="row" style="justify-content:center;gap:10px;margin:14px 0"><button class="btn primary" id="fP">${ico('play')} Rápido</button><button class="btn" id="fN">Normal</button><button class="btn" id="fS">Lento</button></div>
     <textarea class="textarea" id="fIn" autocapitalize="sentences" spellcheck="false" placeholder="Escribe lo que oyes…"></textarea>
     <button class="btn primary block" id="fC" style="margin-top:10px">Comprobar</button></div>`;
   $('#fP').onclick = () => TTS.speak(q.c[0], { rate: 1.4 }); $('#fN').onclick = () => TTS.speak(q.c[0], { rate: 1 }); $('#fS').onclick = () => TTS.speak(q.c[0], { rate: 0.7 });
-  setTimeout(() => TTS.speak(q.c[0], { rate: 1.4 }), 250);
+  setTimeout(() => TTS.auto(q.c[0], { rate: 1.4 }), 250);
   $('#fC').onclick = () => {
     if ($('.feedback')) return;
     const a = tokenize(q.c[0]).map(t => t.w), b = tokenize($('#fIn').value).map(t => t.w); if (!b.length) return;
@@ -339,17 +339,17 @@ EXTRA_STARTS.ear = arg => {
   if (!pool.length) { v.innerHTML = emptyBox('Aún no tienes palabras en repaso. Guarda palabras leyendo o aprende palabras nuevas.', '#new', 'Aprender palabras nuevas'); return; }
   const queue = shuffle(pool).slice(0, S.exLen || 10); let i = 0, ok = 0;
   const show = () => {
-    if (i >= queue.length) { v.innerHTML = `<div class="card pad" style="text-align:center;padding:28px"><div style="font-size:42px">👂</div><b>${ok}/${queue.length} reconocidas de oído</b><p class="muted">Entender sin leer es justo lo que necesitas para las conversaciones reales.</p><button class="btn primary block" id="again">Otra ronda</button><a class="btn ghost block" href="#listen" style="margin-top:8px">Volver</a></div>`; $('#again').onclick = () => EXTRA_STARTS.ear(arg); return; }
+    if (i >= queue.length) { v.innerHTML = `<div class="card pad" style="text-align:center;padding:28px"><b>${ok}/${queue.length} reconocidas de oído</b><p class="muted">Entender sin leer es justo lo que necesitas para las conversaciones reales.</p><button class="btn primary block" id="again">Otra ronda</button><a class="btn ghost block" href="#listen" style="margin-top:8px">Volver</a></div>`; $('#again').onclick = () => EXTRA_STARTS.ear(arg); return; }
     const x = queue[i];
     v.innerHTML = `<div class="row" style="margin-bottom:8px"><b class="grow">Tarjetas de oído</b><span class="muted">${i + 1}/${queue.length}</span></div><div class="progressbar"><i style="width:${i / queue.length * 100}%"></i></div>
-      <div class="card flash" style="margin-top:14px"><div style="font-size:54px">👂</div><div class="muted">Escucha y piensa qué significa</div>
-        <div class="row" style="justify-content:center;margin-top:12px;gap:8px"><button class="btn primary" id="eP">${ico('play')} Otra vez</button><button class="btn" id="eS">🐢</button>${x.ex ? '<button class="btn" id="eX">En una frase</button>' : ''}</div>
+      <div class="card flash" style="margin-top:14px"><div class="muted">Escucha y piensa qué significa</div>
+        <div class="row" style="justify-content:center;margin-top:12px;gap:8px"><button class="btn primary" id="eP">${ico('play')} Otra vez</button><button class="btn" id="eS">Lento</button>${x.ex ? '<button class="btn" id="eX">En una frase</button>' : ''}</div>
         <div id="eBack" class="back hidden"><div class="term" style="font-size:24px">${esc(x.term)}</div><div style="font-size:18px;font-weight:600;margin-top:6px">${esc(x.es || '')}</div>${x.ex ? `<div class="ctx muted" style="margin-top:6px;font-style:italic">${esc(x.ex)}</div>` : ''}</div></div>
       <button class="btn primary block" id="eR" style="margin-top:12px">Ver</button>
       <div class="row hidden" id="eG" style="margin-top:12px"><button class="btn grow" data-g="0" style="color:var(--bad)">No la he entendido</button><button class="btn grow" data-g="2" style="color:var(--good)">La he entendido</button></div>`;
     const play = () => TTS.speak(x.term, { rate: 0.95 });
     $('#eP').onclick = play; $('#eS').onclick = () => TTS.speak(x.term, { rate: 0.7 }); if ($('#eX')) $('#eX').onclick = () => TTS.speak(x.ex);
-    setTimeout(play, 250);
+    setTimeout(() => TTS.auto(x.term, { rate: 0.95 }), 250);
     $('#eR').onclick = () => { $('#eBack').classList.remove('hidden'); $('#eR').classList.add('hidden'); $('#eG').classList.remove('hidden'); };
     $('#eG').onclick = e => { const b = e.target.closest('[data-g]'); if (!b) return; const g = +b.dataset.g; if (g) ok++; if (x.srs) grade(x, g); bump('ex'); if (g) bump('ok'); i++; show(); };
   };

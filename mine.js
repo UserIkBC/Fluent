@@ -268,7 +268,7 @@ function refreshMine() {
 /* ---------- filas ---------- */
 function noteRow(n) {
   return `<div class="note" data-id="${esc(n.id)}"><div class="grow" data-open="${esc(n.id)}"><div class="row wrap" style="gap:6px"><span class="term">${esc(n.term)}</span><span class="tag ${n.cat === 'legal' ? 'warm' : ''}">${esc(NOTE_CATS[n.cat] || CATS[n.cat] || 'Otro')}</span>${markBadges(n.id)}</div>
-    ${n.def ? `<div class="def">${esc(n.def)}</div>` : ''}${n.es ? `<div class="es">${esc(n.es)}</div>` : ''}${n.ex ? `<div class="ex">${esc(n.ex)}</div>` : ''}${n.note ? `<div class="muted" style="font-size:13.5px;margin-top:4px">📝 ${esc(n.note)}</div>` : ''}</div>
+    ${n.def ? `<div class="def">${esc(n.def)}</div>` : ''}${n.es ? `<div class="es">${esc(n.es)}</div>` : ''}${n.ex ? `<div class="ex">${esc(n.ex)}</div>` : ''}${n.note ? `<div class="muted" style="font-size:13.5px;margin-top:4px">${esc(n.note)}</div>` : ''}</div>
     <div style="display:flex;flex-direction:column;gap:6px"><button class="mini" data-say="${esc(n.term)}" aria-label="Escuchar">${IC.speak}</button><button class="mini" data-mark="${esc(n.id)}" aria-label="Marcar">${IC.flag}</button></div></div>`;
 }
 function anyRow(x) { return x.lib ? libRow(x, { cat: true }) : noteRow(x); }
@@ -386,7 +386,7 @@ function mineNB() {
     const q = norm($('#nbq').value);
     const list = NB.filter(x => !q || norm(x.title + ' ' + x.body).includes(q)).sort((a, b) => (b.pinned ? 1 : 0) - (a.pinned ? 1 : 0) || b.upd - a.upd);
     $('#nbList').innerHTML = !NB.length ? '<div class="card pad empty">Tu cuaderno está vacío.<br><br>Úsalo para lo que no encaja en una ficha: explicaciones de clase, errores que cometes, frases de una serie…</div>'
-      : list.length ? `<div class="card">${list.map(x => `<a class="note" href="#nb/${x.id}" style="text-decoration:none;color:inherit"><div class="grow"><span class="term">${x.pinned ? '📌 ' : ''}${esc(x.title || 'Sin título')}</span><div class="muted nbprev">${esc((x.body || '').slice(0, 140))}</div><div class="meta">${new Date(x.upd).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div></div></a>`).join('')}</div>` : '<div class="empty">Nada coincide.</div>';
+      : list.length ? `<div class="card">${list.map(x => `<a class="note" href="#nb/${x.id}" style="text-decoration:none;color:inherit"><div class="grow"><span class="term">${x.pinned ? '· ' : ''}${esc(x.title || 'Sin título')}</span><div class="muted nbprev">${esc((x.body || '').slice(0, 140))}</div><div class="meta">${new Date(x.upd).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</div></div></a>`).join('')}</div>` : '<div class="empty">Nada coincide.</div>';
   };
   $('#nbq').addEventListener('input', paint);
   $('#addNB').onclick = () => { const x = { id: uid(), title: '', body: '', pinned: false, created: Date.now(), upd: Date.now() }; NB.unshift(x); saveNB(); go('#nb/' + x.id); };
@@ -394,7 +394,7 @@ function mineNB() {
 }
 function renderNB(id) {
   const x = NB.find(n => n.id === id); if (!x) return go('#mine/nb');
-  $('#view').innerHTML = `<div class="row" style="margin-bottom:8px"><span class="eyebrow grow" style="margin:0">Cuaderno</span><button class="btn small" id="nbPin">${x.pinned ? '📌 Fijada' : 'Fijar arriba'}</button><button class="mini" id="nbDel">${IC.trash}</button></div>
+  $('#view').innerHTML = `<div class="row" style="margin-bottom:8px"><span class="eyebrow grow" style="margin:0">Cuaderno</span><button class="btn small" id="nbPin">${x.pinned ? 'Fijada arriba' : 'Fijar arriba'}</button><button class="mini" id="nbDel">${IC.trash}</button></div>
     <input class="input nbtitle" id="nbT" value="${esc(x.title)}" placeholder="Título">
     <textarea class="textarea nbbody" id="nbB" placeholder="Escribe aquí…">${esc(x.body)}</textarea>
     <div class="row" style="margin-top:8px"><span class="meta grow" id="nbSaved">Se guarda automáticamente</span><button class="btn small" id="nbSay">${IC.speak.replace('<svg', '<svg width="15" height="15"')} Leer en voz alta</button></div>`;
@@ -404,7 +404,7 @@ function renderNB(id) {
   $('#nbT').addEventListener('input', later); $('#nbB').addEventListener('input', later);
   const grow = () => { const b = $('#nbB'); b.style.height = 'auto'; b.style.height = Math.max(260, b.scrollHeight) + 'px'; };
   $('#nbB').addEventListener('input', grow); grow();
-  $('#nbPin').onclick = () => { x.pinned = !x.pinned; x.upd = Date.now(); saveNB(); $('#nbPin').textContent = x.pinned ? '📌 Fijada' : 'Fijar arriba'; };
+  $('#nbPin').onclick = () => { x.pinned = !x.pinned; x.upd = Date.now(); saveNB(); $('#nbPin').textContent = x.pinned ? 'Fijada arriba' : 'Fijar arriba'; };
   $('#nbDel').onclick = () => { if (!confirm('¿Borrar esta nota?')) return; NB = NB.filter(n => n.id !== id); TOMBS[id] = Date.now(); saveNB(); saveTombs(); go('#mine/nb'); };
   $('#nbSay').onclick = () => { const s = window.getSelection().toString() || $('#nbB').value; if (s.trim()) TTS.speak(s.slice(0, 3000)); };
   if (!x.title && !x.body) setTimeout(() => $('#nbT').focus(), 200);

@@ -11,6 +11,19 @@ function saveTexts() { store.set('texts', window.TEXTS); POOL = []; }
 const KINDS = ['Ensayo', 'Opinión', 'Noticia explicada', 'Reportaje', 'Entrevista', 'Reseña', 'Perfil', 'Relato', 'Historia por capítulos', 'Despacho', 'Email', 'Mensajes', 'Foro', 'Carta', 'Guía', 'Diario', 'Discurso', 'Lectura'];
 const TOPIC_NAMES = { news: 'Actualidad', myth: 'Mitos y leyendas', ideas: 'Ideas y filosofía', mind: 'Mente y psicología', tech: 'Tecnología', nature: 'Naturaleza', mystery: 'Crímenes y misterios', politics: 'Política', law: 'Derecho', business: 'Empresa y economía', sport: 'Deporte', culture: 'Cultura y ocio', science: 'Ciencia y tecnología', society: 'Sociedad', life: 'Vida diaria', history: 'Historia', travel: 'Viajes', food: 'Comida', work: 'Trabajo' };
 
+/* cubiertas de colección: tres franjas con el color del tema */
+const COVER_TOPIC = { myth: ['myth', 'MITOS'], ideas: ['ideas', 'IDEAS'], mind: ['mind', 'MENTE'], law: ['law', 'DERECHO'], news: ['news', 'ACTUALIDAD'], politics: ['news', 'POLÍTICA'], society: ['news', 'SOCIEDAD'],
+  history: ['history', 'HISTORIA'], nature: ['nature', 'NATURALEZA'], science: ['science', 'CIENCIA'], tech: ['science', 'TECNOLOGÍA'], mystery: ['mystery', 'MISTERIOS'], culture: ['culture', 'CULTURA'],
+  food: ['culture', 'COMIDA'], travel: ['culture', 'VIAJES'], business: ['other', 'ECONOMÍA'], work: ['other', 'TRABAJO'], life: ['other', 'VIDA'], sport: ['other', 'DEPORTE'], mine: ['other', 'MÍO'] };
+function coverOf(t) {
+  if ((t.kind === 'Relato' || t.kind === 'Historia por capítulos') && t.topic !== 'myth') return ['story', 'RELATO'];
+  return COVER_TOPIC[t.topic] || ['other', (t.kind || 'TEXTO').toUpperCase()];
+}
+function coverHTML(t, cls = '') {
+  const [c, lab] = coverOf(t); const done = READS[t.id] && READS[t.id].done;
+  return `<div class="cover ${cls} ${done ? 'done' : ''}" style="--c:var(--c-${c})"><div class="b1"><span>${esc(lab)}</span></div><div class="b2"><div class="t">${esc(t.title)}</div></div><div class="b3"><span>${t.src === 'mine' ? 'mío' : 'Fluent'}</span></div></div>`;
+}
+
 /* textos Fluent normalizados */
 let _ALLT = null;
 function allTexts() {
@@ -35,7 +48,7 @@ async function loadText(id) {
     const t = origById(id); if (!t) throw new Error('No encuentro este texto.');
     const o = Object.assign({ srcName: pre === 'm' ? 'Mi texto' : 'Fluent' }, t);
     if (t.series) { const nx = allTexts().find(x => x.series === t.series && x.chapter === t.chapter + 1); if (nx) o.next = { href: '#r/' + nx.id, label: t.parts ? 'Seguir con la parte ' + nx.chapter + ' de ' + t.parts : 'Siguiente capítulo' }; }
-    else { const sim = allTexts().filter(x => x.src === 'orig' && x.id !== id && (x.topic === t.topic || x.kind === t.kind) && !(READS[x.id] && READS[x.id].done)).slice(0, 4); if (sim.length) o.more = `<div class="card list-card">${sim.map(textCard).join('')}</div>`; }
+    else { const sim = allTexts().filter(x => x.src === 'orig' && x.id !== id && (x.topic === t.topic || x.kind === t.kind) && !(READS[x.id] && READS[x.id].done)).slice(0, 4); if (sim.length) o.more = `<div class="list-card">${sim.map(textCard).join('')}</div>`; }
     return o;
   }
   if (pre === 'g') return guardianArticle(key);
@@ -47,43 +60,38 @@ async function loadText(id) {
 /* tarjeta de un texto en las listas */
 function textCard(t) {
   const r = READS[t.id];
-  const pct = t.body ? cachedPct(t) : null;
   const words = t.body ? wordCount(t.body) : t.words || 0;
-  return `<a class="story" href="#r/${esc(t.id)}"><div class="meta"><span class="tag ${t.topic === 'law' ? 'warm' : ''}">${esc(t.kind || '')}</span>${t.topic && TOPIC_NAMES[t.topic] ? `<span>${esc(TOPIC_NAMES[t.topic])}</span>` : ''}${words ? `<span>${Math.max(1, Math.round(words / 160))} min</span>` : ''}${pct != null ? `<span class="pctchip ${pct >= 95 ? 'hi' : pct >= 88 ? 'mid' : 'lo'}">${pct}%</span>` : ''}${r && r.done ? '<span class="read-badge">✓ Leído</span>' : r && r.pct ? `<span class="read-badge">${r.pct}%</span>` : ''}</div><h3>${esc(t.title)}</h3>${t.sub ? `<p class="trail">${esc(t.sub)}</p>` : ''}</a>`;
+  return `<a class="story withcover" href="#r/${esc(t.id)}">${coverHTML(t)}<div class="grow"><div class="meta"><span class="tag">${esc(t.kind || '')}</span>${words ? `<span>${Math.max(1, Math.round(words / 160))} min</span>` : ''}${r && r.done ? '<span class="read-badge">leído</span>' : r && r.pct ? `<span class="read-badge">${r.pct}%</span>` : ''}</div><h3>${esc(t.title)}</h3>${t.sub ? `<p class="trail">${esc(t.sub)}</p>` : ''}</div></a>`;
 }
 
 /* ==========================================================
-   PESTAÑA LEER
+   PESTAÑA LEER · estanterías por colección
    ========================================================== */
+const SHELF_NAMES = { ideas: 'Ideas y filosofía', story: 'Relatos con mensaje', myth: 'Mitos y leyendas', history: 'Historia', mind: 'Mente y psicología', law: 'Derecho', news: 'Actualidad y sociedad', science: 'Ciencia y tecnología', nature: 'Naturaleza', mystery: 'Misterios', culture: 'Cultura', other: 'Vida, trabajo y más' };
+const SHELF_ORDER = ['ideas', 'story', 'myth', 'history', 'mind', 'law', 'news', 'science', 'nature', 'mystery', 'culture', 'other'];
+function shelfItem(t) {
+  const r = READS[t.id];
+  return `<a href="#r/${esc(t.id)}">${coverHTML(t)}<div class="min">${readMin(t.body)} min${r && r.done ? ' · <b>leído</b>' : r && r.pct ? ' · ' + r.pct + '%' : ''}</div></a>`;
+}
 function renderRead() {
   const all = allTexts().filter(t => t.src === 'orig');
   const unread = all.filter(t => !(READS[t.id] && READS[t.id].done));
-  const cont = Object.entries(READS).filter(([, r]) => !r.done && r.pct > 0 && r.pct < 100).sort((a, b) => b[1].upd - a[1].upd).slice(0, 4);
-  const forYou = recommend(unread, 5);
-  const kinds = KINDS.map(k => [k, all.filter(t => t.kind === k).length]).filter(x => x[1]);
+  const cont = Object.entries(READS).filter(([id, r]) => !r.done && r.pct > 0 && r.pct < 100 && (!/^[om]:/.test(id) || origById(id))).sort((a, b) => b[1].upd - a[1].upd).slice(0, 3);
+  const forYou = recommend(unread, 8);
+  const groups = {}; all.forEach(t => { const g = coverOf(t)[0]; (groups[g] = groups[g] || []).push(t); });
+  const sortShelf = l => l.slice().sort((a, b) => ((READS[a.id] && READS[a.id].done) ? 1 : 0) - ((READS[b.id] && READS[b.id].done) ? 1 : 0));
   $('#view').innerHTML = `
     <div class="h1">Leer</div>
-    <p class="sub">Textos reales, sin niveles ni simplificar. El porcentaje indica cuántas de sus palabras conoces ya.</p>
-    ${cont.length ? `<div class="h2">Seguir leyendo</div><div class="card list-card">${cont.map(([id, r]) => `<a class="story" href="#r/${esc(id)}"><div class="meta"><span class="tag">${esc(r.kind || '')}</span><span class="read-badge">${r.pct}%</span></div><h3>${esc(r.title)}</h3></a>`).join('')}</div>` : ''}
-    <div class="srcgrid">
-      <a class="srccard" href="#orig"><b>${fmtNum(all.length)}</b><span>Textos Fluent</span></a>
-      <a class="srccard" href="#guardian"><b>${ico('news', 22)}</b><span>The Guardian</span></a>
-      <a class="srccard" href="#wiki"><b>${ico('globe', 22)}</b><span>Wikipedia</span></a>
-      <a class="srccard" href="#books"><b>${(window.BOOKS || []).length}</b><span>Novelas</span></a>
-      <a class="srccard" href="#texts"><b>${window.TEXTS.length}</b><span>Mis textos</span></a>
-      <a class="srccard" href="#history"><b>${HISTORY.length}</b><span>Leídos</span></a>
-    </div>
-    ${forYou.length ? `<div class="h2">Para ti ahora</div><div class="card list-card">${forYou.map(textCard).join('')}</div>` : ''}
-    <div class="h2">Por tipo de texto</div>
-    <div class="chips wrapchips">${kinds.map(([k, n]) => `<a class="chip" href="#orig/kind:${encodeURIComponent(k)}">${esc(k)} <span class="muted">${n}</span></a>`).join('')}</div>
-    <div class="h2">Por tema</div>
-    <div class="chips wrapchips">${Object.entries(TOPIC_NAMES).map(([k, n]) => [k, n, all.filter(t => t.topic === k).length]).filter(x => x[2]).map(([k, n, c]) => `<a class="chip" href="#orig/topic:${k}">${esc(n)} <span class="muted">${c}</span></a>`).join('')}</div>
+    <div class="srcline"><a href="#orig">Todos <span>${fmtNum(all.length)}</span></a><a href="#guardian">The Guardian</a><a href="#wiki">Wikipedia</a><a href="#books">Novelas <span>${(window.BOOKS || []).length}</span></a><a href="#texts">Mis textos <span>${window.TEXTS.length}</span></a><a href="#history">Leídos <span>${HISTORY.length}</span></a></div>
+    ${cont.map(([id, r]) => { const t = origById(id); return `<a class="controw" href="#r/${esc(id)}">${t ? coverHTML(t) : ''}<div class="grow"><small>Seguir leyendo</small><b>${esc(r.title)}</b><div class="bar"><i style="width:${r.pct}%"></i></div></div></a>`; }).join('')}
+    ${forYou.length ? `<div class="shelfh"><b>Para ti ahora</b><span>sin leer</span></div><div class="shelf">${forYou.map(shelfItem).join('')}</div>` : ''}
+    ${SHELF_ORDER.filter(g => groups[g] && groups[g].length).map(g => `<a class="shelfh" href="#orig/grp:${g}"><b>${esc(SHELF_NAMES[g])}</b><span>${groups[g].length} ${groups[g].length === 1 ? 'texto' : 'textos'} ›</span></a><div class="shelf">${sortShelf(groups[g]).slice(0, 14).map(shelfItem).join('')}</div>`).join('')}
     <div class="h2">Buscar</div>
-    <div class="search">${IC.search}<input class="input" id="rq" type="search" placeholder="Busca en los ${fmtNum(all.length)} textos…"></div><div id="rqRes" style="margin-top:10px"></div>`;
+    <div class="search">${IC.search}<input class="input" id="rq" type="search" placeholder="Busca en los ${fmtNum(all.length)} textos"></div><div id="rqRes" style="margin-top:10px"></div>`;
   $('#rq').addEventListener('input', e => {
     const q = norm(e.target.value); if (q.length < 3) { $('#rqRes').innerHTML = ''; return; }
     const r = allTexts().filter(t => norm(t.title + ' ' + (t.sub || '')).includes(q) || norm(t.body.join(' ')).includes(q)).slice(0, 30);
-    $('#rqRes').innerHTML = r.length ? `<div class="card list-card">${r.map(textCard).join('')}</div>` : '<div class="empty">Nada por aquí.</div>';
+    $('#rqRes').innerHTML = r.length ? `<div class="list-card">${r.map(textCard).join('')}</div>` : '<div class="empty">Nada por aquí.</div>';
   });
 }
 /* recomendación: textos que no has leído, de tus temas, con un % conocido que permita leer cómodo */
@@ -105,6 +113,7 @@ function renderOrigList(arg) {
   let title = 'Textos Fluent';
   if (filt && filt.startsWith('kind:')) { const k = decodeURIComponent(filt.slice(5)); base = base.filter(t => t.kind === k); title = k; }
   if (filt && filt.startsWith('topic:')) { const k = filt.slice(6); base = base.filter(t => t.topic === k); title = TOPIC_NAMES[k] || k; }
+  if (filt && filt.startsWith('grp:')) { const k = filt.slice(4); base = base.filter(t => coverOf(t)[0] === k); title = SHELF_NAMES[k] || k; }
   $('#view').innerHTML = `<div class="h1">${esc(title)}</div><p class="sub">${fmtNum(base.length)} textos</p>
     <div class="row wrap" style="margin-bottom:10px"><select class="select" id="olSort" style="width:auto;padding:8px 10px;font-size:14px"><option value="rec">Recomendados</option><option value="pctd">Más fáciles para ti</option><option value="pcta">Más retadores</option><option value="short">Más cortos</option><option value="long">Más largos</option><option value="new">Más nuevos</option></select>
     <label class="switch" style="padding:0;gap:6px;flex:1"><span style="font-size:14px">Ocultar leídos</span><input type="checkbox" id="olHide" ${olState.hideRead ? 'checked' : ''}></label></div>
@@ -118,7 +127,7 @@ function renderOrigList(arg) {
     if (s === 'pctd') l.sort((a, b) => cachedPct(b) - cachedPct(a)); if (s === 'pcta') l.sort((a, b) => cachedPct(a) - cachedPct(b));
     if (s === 'short') l.sort((a, b) => wordCount(a.body) - wordCount(b.body)); if (s === 'long') l.sort((a, b) => wordCount(b.body) - wordCount(a.body));
     if (s === 'new') l = l.slice().reverse();
-    $('#olList').innerHTML = l.length ? `<div class="card list-card">${l.slice(0, shown).map(textCard).join('')}</div>` : '<div class="empty">Nada por aquí.</div>';
+    $('#olList').innerHTML = l.length ? `<div class="list-card">${l.slice(0, shown).map(textCard).join('')}</div>` : '<div class="empty">Nada por aquí.</div>';
     $('#olMore').classList.toggle('hidden', l.length <= shown);
   };
   $('#olSort').onchange = e => { olState.sort = e.target.value; shown = 30; paint(); };
@@ -128,7 +137,7 @@ function renderOrigList(arg) {
 }
 function renderHistory() {
   $('#view').innerHTML = `<div class="h1">Leídos</div><p class="sub">${fmtNum(HISTORY.length)} textos terminados · ${fmtNum(HISTORY.reduce((a, h) => a + (h.words || 0), 0))} palabras leídas</p>
-    ${HISTORY.length ? `<div class="card list-card">${HISTORY.slice(0, 200).map(h => `<a class="story" href="#r/${esc(h.id)}"><div class="meta"><span class="tag">${esc(h.section || '')}</span><span>${new Date(h.readAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</span></div><h3>${esc(h.title)}</h3></a>`).join('')}</div>` : '<div class="empty">Aún no has terminado ningún texto.</div>'}`;
+    ${HISTORY.length ? `<div class="list-card">${HISTORY.filter(h => !/^[om]:/.test(h.id) || origById(h.id)).slice(0, 200).map(h => `<a class="story" href="#r/${esc(h.id)}"><div class="meta"><span class="tag">${esc(h.section || '')}</span><span>${new Date(h.readAt).toLocaleDateString('es-ES', { day: 'numeric', month: 'short' })}</span></div><h3>${esc(h.title)}</h3></a>`).join('')}</div>` : '<div class="empty">Aún no has terminado ningún texto.</div>'}`;
 }
 
 /* ==========================================================

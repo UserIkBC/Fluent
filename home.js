@@ -18,7 +18,7 @@ function todayPicks() {
   const partDone = t => { const prev = t.chapter > 1 ? allTexts().find(x => x.series === t.series && x.chapter === t.chapter - 1) : null; return !prev || (READS[prev.id] && READS[prev.id].done); };
   const nextParts = unread.filter(t => t.chapter > 1 && partDone(t));
   const reads = nextParts.slice(0, 1).concat(recommend(pool.filter(t => (t.chapter || 1) === 1 && wordCount(t.body) >= 250), 3)).slice(0, 3);
-  const listens = recommend(pool.filter(t => !reads.includes(t) && wordCount(t.body) < 900 && t.kind !== 'Mensajes'), 3);
+  const listens = recommend(pool.filter(t => !reads.includes(t) && wordCount(t.body) < 1100 && t.kind !== 'Mensajes'), 3);
   p = { d: dayKey(), read: (reads[0] || pool[0] || {}).id, read2: (reads[1] || {}).id, listen: (listens[0] || pool[1] || {}).id };
   store.set('picks2', p);
   return p;
@@ -46,27 +46,30 @@ function renderHome() {
   HOME_SESSION = true;
   const d = new Date();
   let dateStr = d.toLocaleDateString('es-ES', { weekday: 'long', day: 'numeric', month: 'long' }); dateStr = dateStr.charAt(0).toUpperCase() + dateStr.slice(1);
-  const h = d.getHours(); const hello = h < 13 ? 'Good morning' : h < 20 ? 'Good afternoon' : 'Good evening';
-  const t = today(); const steps = sessionSteps(); const n = steps.filter(s => s.done).length;
-  const cont = Object.entries(READS).filter(([, r]) => !r.done && r.pct > 3 && r.pct < 100).sort((a, b) => b[1].upd - a[1].upd)[0];
-  const exp = dailyPick(LIB.filter(x => ['idiom', 'phrasal', 'chunk', 'slang', 'convo'].includes(x.cat)), 'e');
+  const st = streak(); const due = dueCards().length;
+  const steps = sessionSteps(); const p = todayPicks();
+  const sRead = steps.find(s => s.k === 'read'), sRev = steps.find(s => s.k === 'rev'), sListen = steps.find(s => s.k === 'listen');
+  const rest = steps.filter(s => !['rev', 'read', 'listen'].includes(s.k));
+  const lead = p.read && origById(p.read), lis = p.listen && origById(p.listen);
+  const contE = Object.entries(READS).filter(([id, r]) => !r.done && r.pct > 3 && r.pct < 100 && id !== p.read && (!/^[om]:/.test(id) || origById(id))).sort((a, b) => b[1].upd - a[1].upd)[0];
+  const contT = contE && origById(contE[0]);
+  const exp = dailyPick(LIB.filter(x => ['idiom', 'phrasal', 'chunk', 'slang', 'convo', 'colloc'].includes(x.cat) && x.ex), 'e');
+  const acct = typeof cfg === 'function' && cfg() && SYNC.ready && !SYNC.user;
   $('#view').innerHTML = `
-    <div class="eyebrow">${esc(dateStr)}</div>
-    <div class="h1">${hello}${S.name ? ', ' + esc(S.name) : ''}</div>
-    ${typeof cfg === 'function' && cfg() && SYNC.ready && !SYNC.user ? `<a class="card pad cta" href="#settings" style="border-color:var(--warm)"><div class="grow"><b>Crea tu cuenta</b><div class="muted" style="font-size:14px">Guarda tu progreso en internet para no perderlo nunca</div></div><span class="btn warm small">Crear</span></a>` : ''}
-    ${!S.knownRank ? `<a class="card pad cta" href="#calib"><div class="grow"><b>Primero, calibra tu vocabulario</b><div class="muted" style="font-size:14px">2 minutos para que los textos marquen bien las palabras que no conoces</div></div><span class="btn primary small">Empezar</span></a>` : ''}
-    <div class="card plan">
-      <div class="row" style="margin-bottom:6px;gap:8px"><b class="grow">Mi sesión de hoy</b><span class="tag ${n === steps.length ? 'good' : ''}">${n}/${steps.length}</span></div>
-      <div class="seg mini" id="slen" style="margin-bottom:8px"><button data-l="long" class="${S.sessionLen !== 'short' ? 'on' : ''}">Larga · 1 h</button><button data-l="short" class="${S.sessionLen === 'short' ? 'on' : ''}">Corta · 25 min</button></div>
-      <div class="sessbar"><i style="width:${n / steps.length * 100}%"></i></div>
-      ${steps.map((s, i) => `<a class="plan-row ${s.done ? 'done' : ''}" href="${esc(s.href)}" ${s.mode ? `data-mode="${s.mode}"` : ''}><span class="check">${s.done ? '✓' : i + 1}</span><span class="grow"><b style="font-weight:600">${esc(s.t)}</b><span class="muted plan-d">${esc(s.d || '')}</span></span><span class="muted" style="white-space:nowrap;font-size:13px">${s.min} min</span></a>`).join('')}
+    <div class="mast"><div class="mast-n">Fluent</div><div class="mast-d"><span>${esc(dateStr)}</span><a href="#progress">${st ? (st === 1 ? '1 día seguido' : st + ' días seguidos') : 'Hoy empieza tu racha'}</a></div></div>
+    ${acct ? `<a class="alert" href="#settings"><span class="grow">Crea tu cuenta para no perder nunca tu progreso.</span><span class="link">Crear</span></a>` : ''}
+    ${!S.knownRank ? `<a class="alert" href="#calib"><span class="grow">Calibra tu vocabulario en dos minutos y los textos sabrán qué palabras conoces.</span><span class="link">Calibrar</span></a>` : ''}
+    ${lead ? `<a class="lead" href="#r/${esc(lead.id)}">${coverHTML(lead, 'big')}<div class="grow"><div class="k">${sRead.done ? 'Leído hoy' : 'Para leer hoy'}</div><h2>${esc(lead.title)}</h2>${lead.sub ? `<p>${esc(lead.sub)}</p>` : ''}<span class="link">Leer · ${readMin(lead.body)} min</span></div></a>` : ''}
+    ${contE ? `<a class="controw" href="#r/${esc(contE[0])}">${contT ? coverHTML(contT) : ''}<div class="grow"><small>Lo dejaste a medias</small><b>${esc(contE[1].title)}</b><div class="bar"><i style="width:${contE[1].pct}%"></i></div></div></a>` : ''}
+    <div class="cols">
+      <a href="#ex/review" class="${sRev.done ? 'done' : ''}"><div class="h">Repaso</div><b>${due ? due + (due === 1 ? ' tarjeta' : ' tarjetas') : 'Al día'}</b><span>${due ? 'Unos ' + Math.max(1, Math.ceil(due / 4)) + ' minutos' : 'Si quieres, uno extra'}</span></a>
+      ${lis ? `<a href="#r/${esc(lis.id)}" data-mode="hide" class="${sListen.done ? 'done' : ''}"><div class="h">Para escuchar</div><b>${esc(lis.title)}</b><span>Primero sin mirar el texto</span></a>` : '<a href="#listen"><div class="h">Para escuchar</div><b>Podcasts y audiolibros</b></a>'}
     </div>
-    <div class="stats4">
-      <div><b>${fmtMin(t.sec)}</b><span>leyendo</span></div><div><b>${fmtMin(t.lsec)}</b><span>escuchando</span></div><div><b>${fmtNum(t.words || 0)}</b><span>palabras leídas</span></div><div><b>${fmtNum(knownCount())}</b><span>conocidas</span></div>
-    </div>
-    ${cont ? `<div class="h2">Seguir leyendo</div><div class="card list-card"><a class="story" href="#r/${esc(cont[0])}"><div class="meta"><span class="tag">${esc(cont[1].kind || '')}</span><span class="read-badge">${cont[1].pct}%</span></div><h3>${esc(cont[1].title)}</h3></a></div>` : ''}
-    ${exp ? `<div class="h2">Expresión del día</div><div class="card pad dayexp"><div class="row"><b class="grow" style="font-family:var(--serif);font-size:20px">${esc(exp.term)}</b><button class="mini" data-say="${esc(exp.term)}">${IC.speak}</button></div><div class="es" style="display:block">${esc(exp.es)}</div><div class="ex">${esc(exp.ex)}</div><div class="row" style="margin-top:8px;gap:6px">${!exp.srs ? `<button class="btn small" data-learn="${esc(exp.id)}">Aprenderla</button>` : '<span class="tag">En tus repasos</span>'}<button class="btn small" data-det="${esc(exp.id)}">Ficha</button></div></div>` : ''}
-    <div class="row" style="margin-top:16px;gap:8px"><a class="btn grow" href="#progress">${ico('chart')} Mi progreso</a><a class="btn grow" href="#settings">${ico('gear')} Ajustes</a></div>`;
+    <div class="planhead"><b>${S.sessionLen === 'short' ? 'Para rematar' : 'Y si te queda tiempo'}</b><span class="lenpick" id="slen">Sesión <button data-l="short" class="${S.sessionLen === 'short' ? 'on' : ''}">corta</button> · <button data-l="long" class="${S.sessionLen !== 'short' ? 'on' : ''}">larga</button></span></div>
+    ${rest.map((s, i) => `<a class="step ${s.done ? 'done' : ''}" href="${esc(s.href)}" ${s.mode ? `data-mode="${s.mode}"` : ''}><span class="n">${s.done ? '✓' : i + 1}</span><span class="grow"><b>${esc(s.t)}</b><span class="d">${esc(s.d || '')}</span></span><span class="m">${s.min} min</span></a>`).join('')}
+    ${exp ? `<div class="dict"><div class="h">La expresión de hoy</div><div><span class="hw">${esc(exp.term)}</span></div><div class="pos">${esc((CATS[exp.cat] || '').toLowerCase())}</div><div class="sense"><i>1</i>${esc(exp.es)}</div><div class="exl">${esc(exp.ex)}</div>
+      <div class="acts"><button class="link" data-say="${esc(exp.term)}">Escuchar</button>${!exp.srs ? `<button class="link" data-learn="${esc(exp.id)}">Aprenderla</button>` : '<span class="muted" style="font-size:14px">Ya está en tus repasos</span>'}<button class="link" data-det="${esc(exp.id)}">Ficha</button></div></div>` : ''}
+    <div class="homefoot"><a href="#progress">Progreso</a><a href="#history">Leídos</a><a href="#settings">Ajustes</a></div>`;
   $('#slen').onclick = e => { const b = e.target.closest('[data-l]'); if (!b) return; S.sessionLen = b.dataset.l; saveSettings(); renderHome(); };
   $('#view').onclick = e => {
     const m = e.target.closest('[data-mode]'); if (m) { READER_START_MODE = m.dataset.mode; return; }
@@ -127,7 +130,7 @@ function renderSettings() {
     <div class="h2">Lectura</div>
     <div class="card set-group">
       ${sw('sColor', 'Colorear las palabras según las conozcas y subrayar expresiones (normalmente el texto sale limpio)', S.colorWords === true)}
-      ${sw('sAutoK', 'Al terminar un texto, dar por conocidas las palabras azules que no he tocado', S.autoKnown)}
+      ${sw('sAutoK', 'Al terminar un texto, dar por conocidas las palabras nuevas que no he tocado', S.autoKnown)}
       ${sw('sSentHide', 'En «Frase a frase», ocultar el texto hasta que lo pida', S.sentHide)}
       <label class="lbl">Tamaño de letra de las lecturas · <span id="sSizeV">${S.readSize}</span> px</label><input type="range" id="sSize" min="15" max="28" step="1" value="${S.readSize}" style="width:100%">
       <div class="row" style="margin-top:10px"><a class="btn grow" href="#calib">Repetir la calibración del vocabulario</a></div>
@@ -135,7 +138,7 @@ function renderSettings() {
     </div>
     <div class="h2">Voz</div>
     <div class="card set-group">
-      ${sw('sAuto', 'Pronunciar automáticamente las palabras en las tarjetas', S.autoplay)}
+      ${sw('sAuto', 'Leer en voz alta automáticamente (tarjetas, aprender, dictados y ejercicios). Si lo quitas, solo suena cuando tocas el altavoz', S.autoplay)}
       <label class="lbl">Voz inglesa</label>
       <select class="select" id="sVoice"><option value="">Automática (la mejor británica)</option>${voices.map(v => `<option value="${esc(v.name)}" ${v.name === S.voice ? 'selected' : ''}>${esc(v.name)} · ${esc(v.lang)}</option>`).join('')}</select>
       <p class="meta" style="margin-top:6px">En el iPhone puedes descargar voces mucho más naturales en Ajustes › Accesibilidad › Contenido leído › Voces › Inglés (Reino Unido). Las «mejoradas» o «premium» suenan casi como una persona.</p>
@@ -157,9 +160,7 @@ function renderSettings() {
     <div class="h2">Aspecto</div>
     <div class="card set-group">
       <label class="lbl">Tu nombre</label><input class="input" id="sName" value="${esc(S.name || '')}">
-      <label class="lbl">Color principal</label>
-      <div class="row wrap" style="gap:10px">${Object.entries(ACCENTS).map(([k, c]) => `<button type="button" class="swatch big ${S.accent === k ? 'on' : ''}" style="background:${c[0]}" data-acc="${k}" aria-label="${k}"></button>`).join('')}</div>
-      <label class="lbl">Tema</label><select class="select" id="sTheme"><option value="auto">Automático (como el móvil)</option><option value="light">Claro</option><option value="dark">Oscuro</option></select>
+      <label class="lbl">Tema</label><select class="select" id="sTheme"><option value="auto">Automático (como el móvil)</option><option value="light">Gris claro</option><option value="dark">Oscuro, para leer de noche</option></select>
       <label class="lbl">Letra de los textos</label><select class="select" id="sFont"><option value="serif">Clásica (con remates)</option><option value="sans">Moderna (sin remates)</option></select>
       <label class="lbl">Tamaño de la interfaz</label><select class="select" id="sUi"><option value="small">Pequeño</option><option value="normal">Normal</option><option value="large">Grande</option></select>
       <label class="lbl">Pestaña al abrir la app</label><select class="select" id="sStart"><option value="home">Hoy</option><option value="read">Leer</option><option value="listen">Escuchar</option><option value="words">Palabras</option><option value="mine">Mío</option></select>

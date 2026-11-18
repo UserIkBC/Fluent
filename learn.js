@@ -143,7 +143,7 @@ function smartBoxHTML(r, chosen) {
   const seen = new Set([deacc(chosen || r.best)]);
   r.alts.forEach(a => { const ws = a.words.filter(w => { const k = deacc(w.w); if (seen.has(k)) return false; seen.add(k); return true; }).slice(0, 5); if (ws.length) alts.push({ pos: a.pos, ws }); });
   return `${r.ctx && deacc(r.ctx) !== deacc(chosen || r.best) ? `<div class="muted" style="font-size:14px;margin-top:4px">En esta frase · «${esc(r.ctx)}»</div>` : ''}
-    ${r.note ? `<div style="font-size:14px;margin-top:6px">💡 ${esc(r.note)}</div>` : ''}
+    ${r.note ? `<div style="font-size:14px;margin-top:6px">${esc(r.note)}</div>` : ''}
     ${alts.length ? `<div class="muted" style="font-size:12px;font-weight:700;margin-top:10px">OTROS SIGNIFICADOS · toca uno para usarlo en la tarjeta</div>${alts.map(a => `<div class="trow"><span class="pos">${esc(a.pos)}</span>${a.ws.map(w => `<button type="button" class="chip trchip" data-tr="${esc(w.w)}" ${w.back && w.back.length ? `title="${esc(w.back.join(', '))}"` : ''}>${esc(w.w)}</button>`).join('')}</div>`).join('')}` : ''}
     ${r.sentTr ? `<details style="margin-top:8px"><summary class="muted" style="font-size:13px">Ver la frase traducida</summary><div class="muted" style="font-size:14px;margin-top:4px">${esc(r.sentTr)}</div></details>` : ''}
     ${r.aiErr ? `<div class="meta" style="margin-top:6px">IA no disponible (${esc(r.aiErr)}); traducción automática normal.</div>` : ''}`;
@@ -229,10 +229,10 @@ function lSee(it, head) {
     <div class="term" style="margin-top:12px">${esc(x.term)}</div><button class="mini" id="lSay" style="margin-top:8px">${IC.speak}</button>
     <div style="margin-top:12px;font-size:19px;font-weight:700">${esc(x.es)}</div>${x.def ? `<div class="muted" style="margin-top:6px;font-size:15px">${esc(x.def)}</div>` : ''}
     ${it.ex ? `<div class="ctx" data-say="${esc(it.ex)}" style="margin-top:12px;font-style:italic">${esc(it.ex)}</div>` : ''}${more.map(s => `<div class="ctx muted" data-say="${esc(s)}" style="margin-top:6px;font-size:15px">${esc(s)}</div>`).join('')}
-    ${x.note ? `<div class="muted" style="margin-top:8px;font-size:14px">📝 ${esc(x.note)}</div>` : ''}</div>
+    ${x.note ? `<div class="muted" style="margin-top:8px;font-size:14px">${esc(x.note)}</div>` : ''}</div>
     <p class="meta" style="text-align:center">Léela en voz alta y fíjate en la frase: así es como la usan los nativos.</p>
     <button class="btn primary block" id="lOk">Entendido</button></div>`;
-  TTS.speak(x.term, { rate: 0.9 });
+  TTS.auto(x.term, { rate: 0.9 });
   $('#lSay').onclick = () => TTS.speak(x.term, { rate: 0.9 });
   $('#qArea').onclick = e => { const s = e.target.closest('[data-say]'); if (s) TTS.speak(s.dataset.say); };
   $('#lOk').onclick = () => learnAdvance(true);
@@ -257,7 +257,7 @@ function lCtx(it, head) {
   $$('.opt').forEach(b => b.onclick = () => {
     if ($('.opt.right')) return; const ok = b.dataset.o === x.term;
     $$('.opt').forEach(o => { if (o.dataset.o === x.term) o.classList.add('right'); }); if (!ok) b.classList.add('wrong');
-    if (it.ex) TTS.speak(it.ex);
+    if (it.ex) TTS.auto(it.ex);
     lFeedback(ok, fullCard(it), () => learnAdvance(ok, true));
   });
 }
@@ -278,17 +278,17 @@ function typedQ(it, head, prompt, sub, target, onDone) {
 }
 function lEar(it, head) {
   const x = it.x; const target = x.term.replace(/\(.*?\)/g, '').split('/')[0].trim();
-  typedQ(it, head, `<p class="muted" style="margin:16px 0 6px">Escucha y escribe lo que oyes</p><div class="card flash" style="min-height:120px"><button class="btn primary" id="lPlay">${ico('speak', 18)} Escuchar</button><button class="btn ghost small" id="lSlow" style="margin-top:8px">🐢 Más despacio</button></div>`, '', target, (ok, said) => {
+  typedQ(it, head, `<p class="muted" style="margin:16px 0 6px">Escucha y escribe lo que oyes</p><div class="card flash" style="min-height:120px"><button class="btn primary" id="lPlay">${ico('speak', 18)} Escuchar</button><button class="btn ghost small" id="lSlow" style="margin-top:8px">Más despacio</button></div>`, '', target, (ok, said) => {
     lFeedback(ok, `${said ? `<div style="margin-top:4px">Has escrito · «${esc(said)}»</div>` : ''}${fullCard(it)}`, () => learnAdvance(ok !== false, true));
   });
-  const play = r => TTS.speak(target, { rate: r }); play(0.85);
+  const play = r => TTS.speak(target, { rate: r }); if (S.autoplay) play(0.85);
   $('#lPlay').onclick = () => play(0.85); $('#lSlow').onclick = () => play(0.6);
 }
 function lProd(it, head) {
   const x = it.x; const target = x.term;
   const bl = it.ex ? blankIn(it.ex, x.term) : null;
   typedQ(it, head, `<p class="muted" style="margin:16px 0 6px">¿Cómo se dice en inglés?</p><div class="card flash" style="min-height:140px"><div class="term" style="font-size:24px">${esc(x.es)}</div>${bl ? `<div class="ctx muted" style="margin-top:10px;font-size:15px">${bl.html}</div>` : x.def ? `<div class="muted" style="margin-top:8px;font-size:14px">${esc(x.def)}</div>` : ''}</div>`, '', target, (ok, said) => {
-    TTS.speak(x.term, { rate: 0.9 });
+    TTS.auto(x.term, { rate: 0.9 });
     lFeedback(ok, `${said ? `<div style="margin-top:4px">Has escrito · «${esc(said)}»</div>` : ''}${fullCard(it)}`, () => learnAdvance(ok !== false, false));
   });
 }
@@ -302,7 +302,7 @@ function learnEnd() {
   });
   saveLearn(); saveNotes();
   const mins = Math.max(1, Math.round((Date.now() - L.t0) / 60000));
-  $('#view').innerHTML = `<div class="card pad" style="text-align:center;padding:28px 18px"><div style="font-size:42px">🧠</div><b>${L.items.length} ${L.items.length === 1 ? 'palabra aprendida' : 'palabras aprendidas'} a fondo</b>
+  $('#view').innerHTML = `<div class="card pad" style="text-align:center;padding:28px 18px"><b>${L.items.length} ${L.items.length === 1 ? 'palabra aprendida' : 'palabras aprendidas'} a fondo</b>
     <p class="muted">${mins} min · ${L.items.filter(i => !i.err).length} sin ningún fallo. Vuelven en tus repasos justo antes de que se te olviden.</p>
     <div class="card" style="text-align:left;margin:12px 0">${L.items.map(it => `<div class="note"><div class="grow"><span class="term">${esc(it.x.term)}</span><div class="es" style="display:block">${esc(it.x.es)}</div></div>${it.err ? `<span class="tag warm">${it.err} ${it.err === 1 ? 'fallo' : 'fallos'}</span>` : '<span class="tag good">✓</span>'}</div>`).join('')}</div>
     <button class="btn primary block" id="lOwn">Último paso: escribe una frase tuya con cada una</button>

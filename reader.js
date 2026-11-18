@@ -175,7 +175,7 @@ function showText(t) {
   const words = wordCount(t.body);
   const pct = knownPct(t.body);
   $('#view').innerHTML = `
-    <div class="art-top"><span class="tag ${t.topic === 'law' ? 'warm' : ''}">${esc(t.kind || 'Texto')}</span><span class="meta">${esc(t.srcName || '')}${t.srcName ? ' · ' : ''}${fmtNum(words)} palabras · ${readMin(t.body)} min</span><span class="grow"></span>${t.editable ? `<button class="mini" id="txEdit">${IC.pen}</button>` : ''}${t.url ? `<a class="mini" href="${esc(t.url)}" target="_blank" rel="noopener" aria-label="Original">${IC.ext}</a>` : ''}</div>
+    <div class="art-top"><span class="kick">${esc(t.kind || 'Texto')}${t.topic && typeof TOPIC_NAMES !== 'undefined' && TOPIC_NAMES[t.topic] && t.src === 'orig' ? ' · ' + esc(TOPIC_NAMES[t.topic]) : ''} · ${readMin(t.body)} min</span><span class="grow"></span>${t.srcName && t.srcName !== 'Fluent' ? `<span class="meta">${esc(t.srcName)}</span>` : ''}${t.editable ? `<button class="mini" id="txEdit">${IC.pen}</button>` : ''}${t.url ? `<a class="mini" href="${esc(t.url)}" target="_blank" rel="noopener" aria-label="Original">${IC.ext}</a>` : ''}</div>
     <h1 class="art-title">${esc(t.title)}</h1>
     ${t.sub ? `<p class="art-stand">${esc(t.sub)}</p>` : ''}
     ${t.byline ? `<p class="meta" style="margin:-4px 0 10px">${esc(t.byline)}${t.date ? ' · ' + esc(t.date) : ''}</p>` : ''}
@@ -192,11 +192,12 @@ function showText(t) {
     <div class="art-body ${S.colorWords === true ? '' : 'nocolor'}" id="artBody">${paras.map((p, i) => p.head ? `<h3 data-pi="${i}">${paraHTML(p, i)}</h3>` : `<p data-pi="${i}">${paraHTML(p, i)}</p>`).join('')}</div>
     ${t.credit ? `<p class="meta" style="margin-top:14px">${t.credit}</p>` : ''}
     <div class="art-end">
-      <button class="btn primary block" id="doneBtn">${prog && prog.done ? '✓ Ya lo has terminado' : 'He terminado ✓'}</button>
-      <p class="meta" style="text-align:center;margin:6px 0 0">${S.autoKnown ? 'Al terminar, las palabras azules que no hayas tocado pasan a «conocidas».' : ''}</p>
+      <p class="kdone">${fmtNum(words)} palabras. Conocías el <span id="kpctEnd">${pct}</span>% antes de empezar.</p>
+      <button class="btn primary block" id="doneBtn">${prog && prog.done ? 'Ya lo has terminado' : 'He terminado'}</button>
+      <p class="meta" style="justify-content:center;margin:2px 0 0">${S.autoKnown ? 'Al terminar, las palabras nuevas que no hayas tocado cuentan como conocidas.' : ''}</p>
       ${t.next ? `<a class="btn block" href="${t.next.href}" style="margin-top:8px">${esc(t.next.label)} ›</a>` : ''}
       <div class="h2">Practica con este texto</div>
-      <div class="row wrap"><a class="btn grow" href="#ex/gap/${encodeURIComponent(t.id)}">Huecos</a><a class="btn grow" href="#ex/dict/${encodeURIComponent(t.id)}">Dictado</a><a class="btn grow" href="#ex/order/${encodeURIComponent(t.id)}">Ordena</a><a class="btn grow" href="#ex/cloze/${encodeURIComponent(t.id)}">Palabra que falta</a></div>
+      <div class="modes"><a class="mode" href="#ex/gap/${encodeURIComponent(t.id)}"><b>Huecos</b><span>La palabra que falta en sus frases</span></a><a class="mode" href="#ex/dict/${encodeURIComponent(t.id)}"><b>Dictado</b><span>Escucha sus frases y escríbelas</span></a><a class="mode" href="#ex/order/${encodeURIComponent(t.id)}"><b>Ordena la frase</b><span>Reconstruye sus frases palabra a palabra</span></a><a class="mode" href="#ex/cloze/${encodeURIComponent(t.id)}"><b>Palabras pequeñas</b><span>Preposiciones y conectores que faltan</span></a></div>
       ${t.more ? `<div class="h2">Más como este</div>${t.more}` : ''}
     </div>`;
   paintStatuses();
@@ -256,7 +257,7 @@ function bindReader() {
     const bar = $('#sentBar'); if (!bar) return;
     if (mode !== 'sent') { bar.classList.add('hidden'); return; }
     bar.classList.remove('hidden');
-    bar.innerHTML = `<div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn small" id="sbRep">${ico('back10', 15)} Otra vez</button><button class="btn small" id="sbSlow">🐢 Lenta</button><button class="btn small" id="sbShow">${body.classList.contains('hide') ? 'Ver texto' : 'Ocultar texto'}</button><button class="btn small" id="sbTr">Traducir</button><button class="btn small primary" id="sbNext">Siguiente ›</button></div><div id="sbOut" class="muted" style="margin-top:6px;font-size:15px"></div>`;
+    bar.innerHTML = `<div class="row" style="gap:6px;flex-wrap:wrap"><button class="btn small" id="sbRep">${ico('back10', 15)} Otra vez</button><button class="btn small" id="sbSlow">Lenta</button><button class="btn small" id="sbShow">${body.classList.contains('hide') ? 'Ver texto' : 'Ocultar texto'}</button><button class="btn small" id="sbTr">Traducir</button><button class="btn small primary" id="sbNext">Siguiente ›</button></div><div id="sbOut" class="muted" style="margin-top:6px;font-size:15px"></div>`;
     $('#sbRep').onclick = () => start(RPLAY.i, false);
     $('#sbSlow').onclick = () => { RPLAY.playing = true; hlSent(RPLAY.i, false); TTS.speak(ART.sents[RPLAY.i].s, { rate: 0.7, onend: () => { RPLAY.playing = false; } }); };
     $('#sbShow').onclick = () => { body.classList.toggle('hide'); paintSentBar(); };
@@ -282,7 +283,7 @@ function bindReader() {
   if ($('#txEdit')) $('#txEdit').onclick = () => openTextEditor((window.TEXTS || []).find(x => 'm:' + x.id === ART.t.id));
   $('#doneBtn').onclick = () => finishText();
   hlSent(RPLAY.i, false); $$('#artBody .w.cur').forEach(x => x.classList.remove('cur')); $('#pLabel').textContent = 'Escuchar · toca dos veces una palabra para empezar desde ahí';
-  window.onscroll = () => { clearTimeout(window._rs); window._rs = setTimeout(() => { if (ART) saveProgress(); }, 800); };
+  window.onscroll = () => { const rp = $('#readProg'); if (rp && ART && location.hash.startsWith('#r/')) { const mx = document.documentElement.scrollHeight - innerHeight; rp.style.width = (mx > 0 ? Math.min(100, scrollY / mx * 100) : 0) + '%'; } clearTimeout(window._rs); window._rs = setTimeout(() => { if (ART) saveProgress(); }, 800); };
   if (typeof READER_START_MODE !== 'undefined' && READER_START_MODE) { const b = $(`#rMode [data-m="${READER_START_MODE}"]`); READER_START_MODE = null; if (b) setTimeout(() => b.click(), 50); }
 }
 function finishText() {
@@ -320,7 +321,7 @@ function paintWordSheet(first) {
   $$('.w.sel').forEach(x => x.classList.remove('sel'));
   for (let i = WSEL.a; i <= WSEL.b; i++) { const el = $(`#artBody .w[data-p="${WSEL.p}"][data-t="${i}"]`); if (el) el.classList.add('sel'); }
   const html = `
-    <div class="row"><h3 class="grow" id="wTerm" style="margin:0">${esc(term)}</h3><button class="mini" id="wSpeak">${IC.speak}</button><button class="mini" id="wSlow">🐢</button></div>
+    <div class="row"><h3 class="grow" id="wTerm" style="margin:0">${esc(term)}</h3><button class="mini" id="wSpeak">${IC.speak}</button><button class="mini" id="wSlow" style="width:auto;padding:0 10px;border-radius:17px;font-size:12px">lento</button></div>
     <div class="row wrap" style="gap:6px;margin:8px 0 10px">
       <button class="btn small" id="wLeft" ${WSEL.a === 0 ? 'disabled' : ''}>◀ +</button>
       <button class="btn small" id="wRight" ${WSEL.b >= p.tokens.length - 1 ? 'disabled' : ''}>+ ▶</button>

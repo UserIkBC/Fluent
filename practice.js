@@ -123,8 +123,8 @@ function renderPractice(arg) {
   const modes = PR_MODES.filter(m => !m.phr || hasPhr);
   if (!modes.some(m => m.id === PR.mode)) PR.mode = 'pmc';
   $('#view').innerHTML = `
-    <div class="h1">Practica lo que quieras</div>
-    <p class="sub">Elige qué, filtra y elige cómo. Se queda guardado para la próxima vez.</p>
+    <div class="h1">Afinar la selección</div>
+    <p class="sub">Elige qué quieres practicar y fíltralo. Luego, en Palabras, eliges cómo y el nivel.</p>
     <div class="h2">Qué</div>
     <div class="chips wrapchips" id="prCats">${Object.entries(PR_CATS).map(([k, n]) => `<button class="chip ${PR.cats.includes(k) ? 'active' : ''}" data-c="${k}">${esc(n)}</button>`).join('')}</div>
     <div class="h2">Filtros</div>
@@ -139,12 +139,7 @@ function renderPractice(arg) {
     </div>
     <div class="row" style="margin:16px 0 8px"><b class="grow" style="font-size:18px">${list.length} ${list.length === 1 ? 'entrada' : 'entradas'}</b>${list.length ? `<button class="btn small" id="prList">Ver la lista</button>` : ''}</div>
     <div id="prListBox" class="hidden"><div class="card">${list.slice(0, 200).map(x => anyRow(x)).join('')}</div>${list.length > 200 ? `<p class="meta">Y ${list.length - 200} más.</p>` : ''}${list.some(x => x.lib && !x.srs) ? `<button class="btn block" id="prAddAll" style="margin-top:8px">Añadir todas a mis repasos</button>` : ''}</div>
-    <div class="h2">Cómo</div>
-    <div class="modes" id="prModes">${modes.map(m => `<button class="mode ${PR.mode === m.id ? 'on' : ''}" data-m="${m.id}"><b>${m.name}</b><span>${m.desc}</span></button>`).join('')}</div>
-    ${PR.mode === 'pmc' ? `<label class="lbl">Qué te pregunta</label><div class="seg" id="prDir">${[['mix', 'Mezclado'], ['en', 'Inglés → español'], ['es', 'Español → inglés'], ['def', 'Definición']].map(([k, n]) => `<button class="${PR.dir === k ? 'on' : ''}" data-d="${k}">${n}</button>`).join('')}</div>` : ''}
-    ${['pmc', 'prod', 'pctx', 'own', 'particle'].includes(PR.mode) ? `<label class="lbl">Preguntas</label><div class="seg" id="prN">${[5, 10, 20, 30].map(k => `<button class="${PR.n === k ? 'on' : ''}" data-n="${k}">${k}</button>`).join('')}</div>` : ''}
-    <button class="btn primary block" id="prGo" style="margin-top:16px" ${list.length ? '' : 'disabled'}>${list.length ? 'Empezar' : 'No hay nada con estos filtros'}</button>
-    ${list.length && list.length < 4 && ['pmc', 'pctx'].includes(PR.mode) ? '<p class="meta" style="text-align:center">Con tan pocas, las opciones falsas saldrán de la misma categoría.</p>' : ''}`;
+    <button class="btn primary block" id="prGo" style="margin-top:16px" ${list.length ? '' : 'disabled'}>${list.length ? 'Usar esta selección' : 'No hay nada con estos filtros'}</button>`;
   const re = () => { savePR(); const y = scrollY; renderPractice(); scrollTo(0, y); };
   $('#prCats').onclick = e => { const b = e.target.closest('[data-c]'); if (!b) return; const c = b.dataset.c; const i = PR.cats.indexOf(c); if (i >= 0) { if (PR.cats.length > 1) PR.cats.splice(i, 1); } else PR.cats.push(c); if (!PR.cats.includes('phrasal')) { PR.verb = ''; PR.parts = []; } PR.tops = []; re(); };
   let tq; const typed = (id, k) => $(id).addEventListener('input', e => { PR[k] = e.target.value.trim(); clearTimeout(tq); tq = setTimeout(() => { const pos = e.target.selectionStart; re(); const el = $(id); el.focus(); try { el.setSelectionRange(pos, pos); } catch (er) { } }, 450); });
@@ -157,16 +152,8 @@ function renderPractice(arg) {
   if ($('#prList')) $('#prList').onclick = () => { $('#prListBox').classList.toggle('hidden'); };
   if ($('#prAddAll')) $('#prAddAll').onclick = () => { const l = list.filter(x => x.lib && !x.srs); if (l.length > 15 && !confirm('¿Añadir ' + l.length + ' entradas a tus repasos de golpe?')) return; l.forEach(x => startLearning(x)); saveLearn(); toast(l.length + ' añadidas a tus repasos'); re(); };
   $('#prListBox').onclick = rowClicks(re);
-  $('#prModes').onclick = e => { const b = e.target.closest('[data-m]'); if (!b) return; PR.mode = b.dataset.m; re(); };
-  if ($('#prDir')) $('#prDir').onclick = e => { const b = e.target.closest('[data-d]'); if (!b) return; PR.dir = b.dataset.d; re(); };
-  if ($('#prN')) $('#prN').onclick = e => { const b = e.target.closest('[data-n]'); if (!b) return; PR.n = +b.dataset.n; re(); };
-  $('#prGo').onclick = () => {
-    PR_IDS = list.map(x => x.id); store.set('practiceIds', PR_IDS); savePR();
-    if (PR.mode === 'learn') { go('#learn/practice'); return; }
-    if (PR.mode === 'review') { go('#ex/review/practice'); return; }
-    go('#ex/' + PR.mode + '/practice');
-  };
+  $('#prGo').onclick = () => { PR_IDS = list.map(x => x.id); store.set('practiceIds', PR_IDS); savePR(); go('#words'); };
 }
-addRoute('practice', renderPractice, 'words', 'Practicar');
+addRoute('practice', renderPractice, 'words', 'Afinar');
 /* el número de preguntas elegido se aplica a la sesión */
 addRoute('ex', arg => { startExercise(arg); if (SESSION && /\/practice$/.test(arg || '')) SESSION.total = PR.n; }, 'words', 'Ejercicios');

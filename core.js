@@ -3,7 +3,7 @@
    Fluent 6 · núcleo: utilidades, estado, tema, voz, biblioteca,
    repetición espaciada (FSRS), estadísticas y navegación
    ========================================================== */
-const VERSION = '6.2.0';
+const VERSION = '7.0.0';
 
 /* ---------- utilidades ---------- */
 const $ = (s, el = document) => el.querySelector(s);
@@ -67,9 +67,9 @@ function applyTheme() {
   if (S.theme === 'auto') r.removeAttribute('data-theme'); else r.setAttribute('data-theme', S.theme);
   r.style.setProperty('--read-size', S.readSize + 'px');
   const dark = S.theme === 'dark' || (S.theme === 'auto' && window.matchMedia && matchMedia('(prefers-color-scheme: dark)').matches);
-  const a = ACCENTS[S.accent] || ACCENTS.blue;
-  r.style.setProperty('--accent', dark ? a[2] : a[0]); r.style.setProperty('--accent-soft', dark ? a[3] : a[1]);
-  if (S.font === 'sans') r.style.setProperty('--serif', 'var(--sans)'); else r.style.removeProperty('--serif');
+  const tc = document.querySelector('meta[name=theme-color]:not([media])') || Object.assign(document.head.appendChild(document.createElement('meta')), { name: 'theme-color' });
+  tc.content = dark ? '#22201D' : '#C0BDB6';
+  r.classList.toggle('sansread', S.font === 'sans');
   document.body.style.fontSize = { small: '15px', normal: '16px', large: '17.5px' }[S.uiSize] || '16px';
   document.body.classList.toggle('hide-es', !S.showEs);
 }
@@ -171,6 +171,8 @@ const TTS = {
     if (cur) out.push(cur);
     return out;
   },
+  /* solo si está activado «leer en voz alta automáticamente» */
+  auto(text, opts = {}) { if (S.autoplay) this.speak(text, opts); },
   speak(text, opts = {}) {
     if (!this.ok) { toast('Este navegador no tiene voz'); return; }
     const tok = ++this.token; clearTimeout(this.timer);
@@ -319,6 +321,9 @@ function sentencePool(srcId) {
   return p;
 }
 
+/* nivel de dificultad de los ejercicios (1 reconocer · 2 recordar · 3 escribir · 4 sin ayuda) */
+function lvlNow() { if (typeof SESSION !== 'undefined' && SESSION && SESSION.lvl) return SESSION.lvl; if (typeof PR !== 'undefined' && PR.lvl) return PR.lvl; return 2; }
+
 /* ---------- estadísticas y racha ---------- */
 function isActive(d) { return d && ((d.art || 0) >= 1 || (d.ex || 0) >= 10 || (d.rev || 0) >= 10 || (d.newLib || 0) >= 5 || (d.sec || 0) >= 600 || (d.lsec || 0) >= 300); }
 function streak() {
@@ -350,11 +355,15 @@ function route() {
   const r = ROUTES[view] || ROUTES.home;
   const isRoot = TABS.includes(view);
   if (isRoot && view !== 'home' && typeof HOME_SESSION !== 'undefined') HOME_SESSION = false;
-  $('#backBtn').classList.toggle('hidden', isRoot);
+  document.body.classList.toggle('root', isRoot);
+  const TAB_NAMES = { home: 'Hoy', read: 'Leer', listen: 'Escuchar', words: 'Palabras', mine: 'Mío' };
+  $('#backLbl').textContent = TAB_NAMES[r.tab] || 'Volver';
+  const rp = $('#readProg'); if (rp) rp.style.width = '0';
   currentTab = r.tab || currentTab;
   $$('.tab').forEach(t => t.classList.toggle('active', t.dataset.tab === currentTab));
   $('#brandSub').textContent = r.title || '';
   window.scrollTo(0, 0);
+  const v = $('#view'); v.classList.remove('enter'); void v.offsetWidth; v.classList.add('enter');
   try { r.fn(arg); }
   catch (e) { console.error(e); $('#view').innerHTML = `<div class="empty">Algo ha fallado al abrir esta pantalla.<br><span class="meta">${esc(e.message)}</span></div><a class="btn block" href="#home">Volver a Hoy</a>`; }
 }
@@ -364,8 +373,6 @@ function emptyBox(msg, href, label) { return `<div class="card pad empty">${msg}
 window.addEventListener('DOMContentLoaded', () => {
   $$('.tab').forEach(t => t.addEventListener('click', () => go('#' + t.dataset.tab)));
   $('#backBtn').addEventListener('click', () => { if (history.length > 1) history.back(); else go('#' + currentTab); });
-  $('#settingsBtn').addEventListener('click', () => go('#settings'));
-  $('#streakPill').addEventListener('click', () => go('#progress'));
   $('#backdrop').addEventListener('click', closeSheet);
   applyTheme(); renderStreak(); updateBadge();
   route();

@@ -66,7 +66,7 @@ EXTRA_RENDER.prod = q => {
     if (x.srs && !ok) grade(x, 0);
     q.it = { s: x.ex || x.term, src: (LIB_CATS[x.cat] || {}).name || 'Mis palabras' };
     answered(ok, `${said ? `<div style="margin-top:4px">Has escrito · «${esc(said)}»</div>` : ''}<div style="margin-top:4px"><b>${esc(x.term)}</b></div>${x.ex ? `<div class="ctx muted" style="margin-top:4px">${esc(x.ex)}</div>` : ''}`);
-    TTS.speak(x.term, { rate: 0.9 });
+    TTS.auto(x.term, { rate: 0.9 });
   };
   $('#pF').onsubmit = e => { e.preventDefault(); const v = $('#pIn').value.trim(); if (v) check(v); };
   $('#pGive').onclick = () => check('');
@@ -198,7 +198,7 @@ function renderNewWords(arg) {
   let i = 0, learned = 0;
   const show = () => {
     if (i >= batch.length) {
-      $('#view').innerHTML = `<div class="card pad" style="text-align:center;padding:28px"><div style="font-size:42px">🎉</div><b>${learned} ${learned === 1 ? 'entrada nueva' : 'entradas nuevas'} en tus repasos</b><p class="muted">Ahora un test rápido para fijarlas. Mañana te las volveré a preguntar.</p>
+      $('#view').innerHTML = `<div class="card pad" style="text-align:center;padding:28px"><b>${learned} ${learned === 1 ? 'entrada nueva' : 'entradas nuevas'} en tus repasos</b><p class="muted">Ahora un test rápido para fijarlas. Mañana te las volveré a preguntar.</p>
         <a class="btn primary block" href="#learn/today">Fijarlas a fondo (5 pasos)</a><a class="btn block" href="#ex/vocab/today" style="margin-top:8px">Solo un test rápido</a><a class="btn ghost block" href="${HOME_SESSION ? '#home' : '#words'}" style="margin-top:8px">Más tarde</a></div>`;
       if (typeof sessionStepDone === 'function') sessionStepDone('new');
       return;
@@ -330,7 +330,7 @@ function openDetail(id) {
   const sib = fam ? LIB.filter(y => y.cat === 'phrasal' && y.id !== x.id && phrParts(y.term).verb === fam.verb).slice(0, 8) : [];
   const paint = () => openSheet(`<div class="row wrap" style="gap:6px"><span class="tag ${x.cat === 'legal' ? 'warm' : ''}">${esc((LIB_CATS[x.cat] || { name: CATS[x.cat] || 'Mía' }).name)}</span>${TOPICS[x.top] ? `<span class="tag">${esc(TOPICS[x.top])}</span>` : ''}${registerTags(x).map(t => `<span class="tag">${esc(t)}</span>`).join('')}${STATUS_TAG[st] || ''}${markBadges(x.id)}</div>
     <div class="term" style="font-size:26px;margin-top:10px">${esc(x.term)}</div>
-    <div class="row" style="gap:8px;margin-top:8px"><button class="btn small" id="dtSay">${ico('speak', 15)} Escuchar</button><button class="btn small" id="dtSlow">🐢 Lento</button><button class="btn small" id="dtMark">${ico('flag', 14)} Marcar</button></div>
+    <div class="row" style="gap:8px;margin-top:8px"><button class="btn small" id="dtSay">${ico('speak', 15)} Escuchar</button><button class="btn small" id="dtSlow">Lento</button><button class="btn small" id="dtMark">${ico('flag', 14)} Marcar</button></div>
     ${x.def ? `<p style="margin:12px 0 4px;font-size:17px">${esc(x.def)}</p>` : ''}<p style="margin:4px 0;font-weight:700;font-size:17px">${esc(x.es || '')}</p>
     ${x.ex ? `<div class="h2" style="margin-top:14px">Ejemplo</div><div class="ctx" data-sayx="${esc(x.ex)}" style="cursor:pointer">${esc(x.ex)}</div>` : ''}
     ${exs.length ? `<div class="h2" style="margin-top:14px">Más ejemplos de los textos</div>${exs.map(p => `<div class="ctx" data-sayx="${esc(p.s)}" style="cursor:pointer;margin-bottom:8px">${esc(p.s)}<div class="meta">${esc(p.src)}</div></div>`).join('')}` : ''}

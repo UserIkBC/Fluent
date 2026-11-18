@@ -107,10 +107,10 @@ function syncLabel() {
   if (!cfg()) return '';
   if (!SYNC.user) return 'Sin cuenta';
   if (SYNC.busy) return 'Sincronizando…';
-  if (SYNC.error) return '⚠ ' + SYNC.error;
+  if (SYNC.error) return '' + SYNC.error;
   if (!SYNC.lastSync) return 'Conectado';
   const m = Math.round((Date.now() - SYNC.lastSync) / 60000);
-  return '☁︎ Guardado ' + (m < 1 ? 'ahora' : 'hace ' + (m < 60 ? m + ' min' : Math.round(m / 60) + ' h'));
+  return 'Guardado ' + (m < 1 ? 'ahora' : 'hace ' + (m < 60 ? m + ' min' : Math.round(m / 60) + ' h'));
 }
 function paintSyncUI() {
   const a = $('#syncMini'); if (a) a.textContent = syncLabel();

@@ -53,7 +53,7 @@ function genGap(srcId) {
         if (ti >= 0) { const q = buildGap(it, toks, ti); if (q) return q; }
       }
     }
-    const cand = toks.map((t, i) => i).filter(i => i > 0 && toks[i].w.length >= 5 && !STOP.has(toks[i].w.toLowerCase()) && !/^[A-Z]/.test(toks[i].w) && !/['’-]/.test(toks[i].w));
+    const cand = toks.map((t, i) => i).filter(i => i > 0 && toks[i].w.length >= (lvlNow() >= 4 ? 7 : 5) && !STOP.has(toks[i].w.toLowerCase()) && !/^[A-Z]/.test(toks[i].w) && !/['’-]/.test(toks[i].w));
     if (!cand.length) continue;
     const q = buildGap(it, toks, pick(cand)); if (q) return q;
   }
@@ -80,7 +80,9 @@ function genCloze(srcId) {
   return null;
 }
 function genOrder(srcId) {
-  const pool = sentencePool(srcId).filter(x => { const n = x.s.split(/\s+/).length; return n >= 6 && n <= 15; });
+  const [lo, hi] = [[5, 8], [7, 11], [10, 15], [14, 24]][lvlNow() - 1];
+  let pool = sentencePool(srcId).filter(x => { const n = x.s.split(/\s+/).length; return n >= lo && n <= hi; });
+  if (!pool.length) pool = sentencePool(srcId).filter(x => { const n = x.s.split(/\s+/).length; return n >= 6 && n <= 15; });
   if (!pool.length) return null;
   const it = pick(pool);
   const words = it.s.replace(/[.!?]+["”’)]*$/, '').split(/\s+/);
@@ -88,9 +90,11 @@ function genOrder(srcId) {
   return { type: 'order', it, words, shuffled: sh.map((w, i) => ({ w, i })) };
 }
 function genDict(srcId) {
-  const pool = sentencePool(srcId).filter(x => { const n = x.s.split(/\s+/).length; return n >= 6 && n <= 20; });
+  const L = lvlNow(); const [lo, hi] = [[5, 9], [8, 13], [11, 18], [15, 28]][L - 1];
+  let pool = sentencePool(srcId).filter(x => { const n = x.s.split(/\s+/).length; return n >= lo && n <= hi; });
+  if (!pool.length) pool = sentencePool(srcId).filter(x => { const n = x.s.split(/\s+/).length; return n >= 6 && n <= 20; });
   if (!pool.length) return null;
-  return { type: 'dict', it: pick(pool) };
+  return { type: 'dict', it: pick(pool), rate: [0.8, 0.92, 1, 1.1][L - 1] };
 }
 function genVocab(arg) {
   const vp = vocabPool(arg); if (vp.length < 2) return null;
@@ -121,6 +125,7 @@ function answered(ok, extraHTML) {
 }
 
 function renderGapQ(q) {
+  if (lvlNow() >= 3) return renderGapTyped(q);
   $('#view').innerHTML = `${exHeader()}<div id="qArea"><p class="muted" style="margin:16px 0 0">Elige la palabra que falta</p>
     <div class="q">${esc(q.before)}<span class="gap">?</span>${esc(q.after)}</div>
     <div class="opts">${q.options.map(o => `<button class="opt" data-o="${esc(o)}">${esc(o)}</button>`).join('')}</div></div>`;
@@ -132,6 +137,22 @@ function renderGapQ(q) {
     $('.gap').textContent = q.answer;
     answered(ok);
   });
+}
+/* huecos sin opciones (niveles 3 y 4): la escribes tú */
+function renderGapTyped(q) {
+  $('#view').innerHTML = `${exHeader()}<div id="qArea"><p class="muted" style="margin:16px 0 0">Escribe la palabra que falta</p>
+    <div class="q">${esc(q.before)}<span class="gap">?</span>${esc(q.after)}</div>
+    <form id="gtForm" class="row"><input class="input grow" id="gtIn" autocomplete="off" autocapitalize="off" autocorrect="off" spellcheck="false" placeholder="Tu respuesta"><button class="btn primary">Comprobar</button></form>
+    ${lvlNow() < 4 ? `<button class="btn small ghost" id="gtHint" style="margin-top:8px">Pista</button><span id="gtOut" class="muted" style="margin-left:6px"></span>` : ''}</div>`;
+  setTimeout(() => $('#gtIn') && $('#gtIn').focus(), 100);
+  if ($('#gtHint')) $('#gtHint').onclick = () => { $('#gtOut').textContent = 'Empieza por «' + q.answer[0].toLowerCase() + '» y tiene ' + q.answer.length + ' letras'; };
+  $('#gtForm').onsubmit = e => {
+    e.preventDefault(); if ($('.feedback')) return;
+    const said = $('#gtIn').value.trim(); if (!said) return;
+    const r = typeof checkTyped === 'function' ? checkTyped(said, q.answer) : (norm(said) === norm(q.answer) ? 'ok' : 'ko');
+    $('.gap').textContent = q.answer; $('#gtForm').querySelector('button').disabled = true;
+    answered(r !== 'ko', r === 'ok' ? '' : r === 'typo' ? `<div>Casi. Se escribe <b>${esc(q.answer)}</b>.</div>` : `<div>Era <b>${esc(q.answer)}</b>. Has escrito «${esc(said)}».</div>`);
+  };
 }
 function renderClozeQ(q) {
   $('#view').innerHTML = `${exHeader()}<div id="qArea"><p class="muted" style="margin:16px 0 0">Escribe UNA palabra que complete la frase</p>
@@ -179,12 +200,12 @@ function lcsDiff(a, b) { // a = original, b = usuario (arrays)
 }
 function renderDictQ(q) {
   $('#view').innerHTML = `${exHeader()}<div id="qArea"><p class="muted" style="margin:16px 0 8px">Escucha la frase y escríbela</p>
-    <div class="row" style="justify-content:center;gap:12px;margin:14px 0"><button class="btn primary" id="dPlay">${IC.play.replace('<svg', '<svg width="18" height="18"')} Escuchar</button><button class="btn" id="dSlow">🐢 Lento</button></div>
+    <div class="row" style="justify-content:center;gap:12px;margin:14px 0"><button class="btn primary" id="dPlay">${IC.play.replace('<svg', '<svg width="18" height="18"')} Escuchar</button><button class="btn" id="dSlow">Lento</button></div>
     <textarea class="textarea" id="dIn" autocomplete="off" autocapitalize="sentences" spellcheck="false" placeholder="Escribe lo que oyes…"></textarea>
     <button class="btn primary block" id="dCheck" style="margin-top:10px">Comprobar</button></div>`;
-  $('#dPlay').onclick = () => TTS.speak(q.it.s);
+  $('#dPlay').onclick = () => TTS.speak(q.it.s, { rate: q.rate || S.rate });
   $('#dSlow').onclick = () => TTS.speak(q.it.s, { rate: 0.7 });
-  setTimeout(() => TTS.speak(q.it.s), 300);
+  setTimeout(() => TTS.auto(q.it.s, { rate: q.rate || S.rate }), 300);
   $('#dCheck').onclick = () => {
     if ($('.feedback')) return;
     const a = tokenize(q.it.s).map(t => t.w), b = tokenize($('#dIn').value).map(t => t.w);
@@ -237,7 +258,7 @@ function startReview(arg) {
     v.innerHTML = `<div class="row" style="margin-bottom:8px"><b class="grow">${setMode ? esc(setName(arg.replace(/^set:/, ''))) : 'Repaso' + (extra ? ' extra' : '')}</b><span class="muted">${done + 1}/${total}</span></div><div class="progressbar"><i style="width:${done / total * 100}%"></i></div>
       ${extra && done === 0 ? '<div class="notice" style="margin-top:12px">No tienes repasos pendientes hoy. Aquí van unas cuantas tarjetas extra.</div>' : ''}
       <div class="card flash" style="margin-top:14px" id="card"><div class="row" style="width:100%;justify-content:center;gap:6px"><span class="tag">${esc(CATS[n.cat] || '')}</span>${markBadges(n.id)}</div>${front === 'type' || front === 'clozeType' ? `${front === 'clozeType' ? `<div class="ctx" style="margin-top:12px;font-size:19px;line-height:1.5">${(blankIn(n.ex, n.term) || { html: esc(n.ex) }).html}</div>` : ''}<div class="term" style="margin-top:10px;font-size:${front === 'clozeType' ? 18 : 24}px">${esc(n.es)}</div><div class="muted" style="font-size:13px;margin-top:6px">Escríbelo en inglés</div>` : front === 'cloze' ? `<div class="ctx" style="margin-top:12px;font-size:20px;line-height:1.5">${esc(n.ex).replace(new RegExp('\\b' + esc(n.term.split('/')[0].trim()).replace(/[.*+?^${}()|[\]\\]/g, '\\$&') + '\\b', 'i'), '<span class="gap">?</span>')}</div><div class="muted" style="font-size:13px;margin-top:8px">${esc(n.es || '')} · ¿qué falta?</div>` : front === 'es' ? `<div class="term" style="margin-top:10px;font-size:24px">${esc(n.es || n.term)}</div><div class="muted" style="font-size:13px;margin-top:6px">¿Cómo se dice en inglés?</div>` : `<div class="term" style="margin-top:10px">${esc(n.term)}</div><button class="mini" id="cSay" style="margin-top:10px">${IC.speak}</button>`}
-      <div id="back" class="back hidden">${front !== 'en' ? `<div class="term" style="font-size:24px">${esc(n.term)}</div><button class="mini" id="cSay2" style="margin:6px auto">${IC.speak}</button>` : `<div style="font-size:19px;font-weight:600">${esc(n.es || '—')}</div>`}${n.def ? `<div class="muted" style="margin-top:6px;font-size:15px">${esc(n.def)}</div>` : ''}${n.ex ? `<div class="ctx muted" style="margin-top:8px;font-style:italic">${esc(n.ex)}</div>` : ''}${n.note ? `<div class="muted" style="margin-top:6px;font-size:14px">📝 ${esc(n.note)}</div>` : ''}${own.length ? `<div style="margin-top:8px;font-size:14.5px">✍️ ${esc(own[own.length - 1])}</div>` : ''}<div id="typeRes"></div>${leech ? `<div class="notice" style="margin-top:10px;text-align:left">Esta se te resiste (${n.srs.lapses} fallos). Lo que mejor funciona: <a href="#" id="cOwn">escribir una frase tuya con ella</a> o aprenderla de nuevo paso a paso en «Aprender a fondo».</div>` : ''}</div></div>
+      <div id="back" class="back hidden">${front !== 'en' ? `<div class="term" style="font-size:24px">${esc(n.term)}</div><button class="mini" id="cSay2" style="margin:6px auto">${IC.speak}</button>` : `<div style="font-size:19px;font-weight:600">${esc(n.es || '—')}</div>`}${n.def ? `<div class="muted" style="margin-top:6px;font-size:15px">${esc(n.def)}</div>` : ''}${n.ex ? `<div class="ctx muted" style="margin-top:8px;font-style:italic">${esc(n.ex)}</div>` : ''}${n.note ? `<div class="muted" style="margin-top:6px;font-size:14px">${esc(n.note)}</div>` : ''}${own.length ? `<div style="margin-top:8px;font-size:14.5px">${esc(own[own.length - 1])}</div>` : ''}<div id="typeRes"></div>${leech ? `<div class="notice" style="margin-top:10px;text-align:left">Esta se te resiste (${n.srs.lapses} fallos). Lo que mejor funciona: <a href="#" id="cOwn">escribir una frase tuya con ella</a> o aprenderla de nuevo paso a paso en «Aprender a fondo».</div>` : ''}</div></div>
       ${front === 'type' || front === 'clozeType' ? `<form class="row typebox" id="tyF"><input class="input grow" id="tyIn" placeholder="En inglés…" autocapitalize="off" autocomplete="off" spellcheck="false"><button class="btn primary">OK</button></form><button class="btn ghost small" id="tyGive" style="margin-top:6px">No me acuerdo</button>` : ''}
       <button class="btn primary block ${front === 'type' || front === 'clozeType' ? 'hidden' : ''}" id="reveal" style="margin-top:14px">Mostrar respuesta</button>
       <div class="row" style="justify-content:center;margin-top:10px;gap:8px"><button class="btn small" id="cFav">★</button><button class="btn small" id="cMark">${IC.flag.replace('<svg', '<svg width="14" height="14"')} Marcar</button></div>
@@ -248,7 +269,7 @@ function startReview(arg) {
         <button class="btn" data-g="3" style="color:var(--accent)">Fácil<small>${ivlLabel(srsPreview(sr, 3))}</small></button></div>`;
     if ($('#cSay')) $('#cSay').onclick = e => { e.stopPropagation(); TTS.speak(n.term, { rate: 0.9 }); };
     if ($('#cSay2')) $('#cSay2').onclick = e => { e.stopPropagation(); TTS.speak(n.term, { rate: 0.9 }); };
-    if (front === 'en' && S.autoplay) TTS.speak(n.term, { rate: 0.9 });
+    if (front === 'en') TTS.auto(n.term, { rate: 0.9 });
     if (front === 'cloze' && $('.gap')) $('.gap').onclick = e => e.stopPropagation();
     $('#cFav').onclick = () => { setMark(n.id, { fav: !mark(n.id).fav }); toast(mark(n.id).fav ? 'Añadida a favoritas' : 'Quitada de favoritas'); };
     $('#cMark').onclick = () => openMarkSheet(n.id);
@@ -265,7 +286,7 @@ function startReview(arg) {
         if (front === 'clozeType' && $('.gap')) $('.gap').textContent = n.term;
         $('#back').classList.remove('hidden'); $('#grades').classList.remove('hidden');
         const sb = $(`#grades [data-g="${g}"]`); if (sb) sb.classList.add('sugg');
-        TTS.speak(n.term, { rate: 0.9 });
+        TTS.auto(n.term, { rate: 0.9 });
       };
       $('#tyF').onsubmit = e => { e.preventDefault(); const v = $('#tyIn').value.trim(); if (v) fin(v); };
       $('#tyGive').onclick = () => fin('');
@@ -282,7 +303,9 @@ function startReview(arg) {
 }
 
 async function genTrans(srcId) {
-  const pool = sentencePool(srcId).filter(x => { const n = x.s.split(/\s+/).length; return n >= 6 && n <= 20; });
+  const [lo, hi] = [[5, 9], [8, 13], [11, 18], [15, 26]][lvlNow() - 1];
+  let pool = sentencePool(srcId).filter(x => { const n = x.s.split(/\s+/).length; return n >= lo && n <= hi; });
+  if (!pool.length) pool = sentencePool(srcId).filter(x => { const n = x.s.split(/\s+/).length; return n >= 6 && n <= 20; });
   if (!pool.length) return null;
   const it = pick(pool);
   const es = await translate(it.s);
@@ -401,12 +424,12 @@ function genPair(id) {
 }
 function renderPairQ(q) {
   $('#view').innerHTML = `${exHeader()}<div id="qArea"><p class="muted" style="margin:16px 0 4px">${esc(q.p.title)}</p><p style="margin:0 0 14px">¿Qué palabra has oído?</p>
-    <div class="row" style="justify-content:center;gap:10px;margin-bottom:16px"><button class="btn primary" id="pPlayQ">${IC.play.replace('<svg', '<svg width="16" height="16"')} Escuchar</button><button class="btn" id="pSlowQ">🐢 Lento</button></div>
+    <div class="row" style="justify-content:center;gap:10px;margin-bottom:16px"><button class="btn primary" id="pPlayQ">${IC.play.replace('<svg', '<svg width="16" height="16"')} Escuchar</button><button class="btn" id="pSlowQ">Lento</button></div>
     <div class="opts">${q.pair.map(o => `<button class="opt" data-o="${esc(o)}" style="text-align:center;font-size:20px">${esc(o)}</button>`).join('')}</div></div>`;
   $('#view').onclick = e => { const b = e.target.closest('[data-say]'); if (b) TTS.speak(b.dataset.say, { rate: 0.85 }); };
   $('#pPlayQ').onclick = () => TTS.speak(q.answer, { rate: 0.9 });
   $('#pSlowQ').onclick = () => TTS.speak(q.answer, { rate: 0.7 });
-  setTimeout(() => TTS.speak(q.answer, { rate: 0.9 }), 250);
+  setTimeout(() => TTS.auto(q.answer, { rate: 0.9 }), 250);
   $$('.opt').forEach(b => b.onclick = () => {
     if ($('.opt.right')) return;
     const ok = b.dataset.o === q.answer;
