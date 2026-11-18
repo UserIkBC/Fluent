@@ -7,7 +7,7 @@ html = (root / 'index.html').read_text()
 sw = (root / 'sw.js').read_text()
 srcs = re.findall(r'<script src="([^"]+)"', html)
 css = re.findall(r'<link rel="stylesheet" href="([^"]+)"', html)
-shell = ['./', 'index.html'] + css + ['manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png',
+shell = ['./', 'index.html'] + css + ['manifest.webmanifest', 'icons/icon-192.png', 'icons/icon-512.png', 'icons/apple-touch-icon.png', 'icons/icon.svg',
          'fonts/newsreader.woff2', 'fonts/newsreader-italic.woff2', 'fonts/franklin.woff2'] + srcs
 m = re.search(r"const CACHE = 'fluent-v([\d.]+?)(\d+)';", sw)
 cache = f"fluent-v{m.group(1)}{int(m.group(2)) + 1}" if m else 'fluent-v7.0.1'
