@@ -3,7 +3,7 @@
    Fluent 6 · núcleo: utilidades, estado, tema, voz, biblioteca,
    repetición espaciada (FSRS), estadísticas y navegación
    ========================================================== */
-const VERSION = '8.0.0';
+const VERSION = '9.0.0';
 
 /* ---------- utilidades ---------- */
 const $ = (s, el = document) => el.querySelector(s);
@@ -302,7 +302,7 @@ function renderStreak() { const el = $('#streakNum'); if (el) el.textContent = s
    ========================================================== */
 const ROUTES = {};          // nombre -> { fn, tab, title }
 const STOPPERS = [];        // funciones que paran audio o temporizadores al cambiar de pantalla
-const TABS = ['home', 'read', 'listen', 'words', 'mine'];
+const TABS = ['home', 'read', 'listen', 'words', 'ls', 'mine'];
 function addRoute(name, fn, tab, title) { ROUTES[name] = { fn, tab, title }; }
 let currentTab = 'home';
 function go(hash) { if (location.hash === hash) route(); else location.hash = hash; }
@@ -320,7 +320,7 @@ function route() {
   if (isRoot && view !== 'home' && typeof HOME_SESSION !== 'undefined') HOME_SESSION = false;
   document.body.classList.toggle('root', isRoot);
   document.body.dataset.tab = isRoot ? view : '';
-  const TAB_NAMES = { home: 'Hoy', read: 'Leer', listen: 'Escuchar', words: 'Palabras', mine: 'Mío' };
+  const TAB_NAMES = { home: 'Hoy', read: 'Leer', listen: 'Escuchar', words: 'Palabras', ls: 'Examen', mine: 'Mío' };
   $('#backLbl').textContent = TAB_NAMES[r.tab] || 'Volver';
   const rp = $('#readProg'); if (rp) rp.style.width = '0';
   currentTab = r.tab || currentTab;

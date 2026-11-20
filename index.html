@@ -16,7 +16,7 @@
 <link rel="icon" type="image/png" href="icons/icon-192.png?v=8">
 <link rel="preload" href="fonts/newsreader.woff2" as="font" type="font/woff2" crossorigin>
 <link rel="preload" href="fonts/hanken.woff2" as="font" type="font/woff2" crossorigin>
-<link rel="stylesheet" href="styles.css?v=8.0.0">
+<link rel="stylesheet" href="styles.css?v=9.0.0">
 </head>
 <body>
 <div id="readProg"></div>
@@ -37,6 +37,7 @@
     <button class="tab" data-tab="read" data-ic="book"><span class="ti"></span><span>Leer</span></button>
     <button class="tab" data-tab="listen" data-ic="ear"><span class="ti"></span><span>Escuchar</span></button>
     <button class="tab" data-tab="words" data-ic="cards"><span class="ti"></span><span>Palabras</span><span class="badge hidden" id="dueBadge"></span></button>
+    <button class="tab" data-tab="ls" data-ic="cap"><span class="ti"></span><span>Examen</span></button>
     <button class="tab" data-tab="mine" data-ic="user"><span class="ti"></span><span>Mío</span></button>
   </div>
 </nav>
@@ -45,29 +46,29 @@
 <div class="sheet hidden" id="sheet" role="dialog" aria-modal="true"><div class="grabber"></div><div id="sheetBody"></div></div>
 <div class="toast" id="toast"></div>
 
-<script src="config.js?v=8.0.0"></script>
-<script src="icons.js?v=8.0.0"></script>
-<script src="content/vocab_general.js?v=8.0.0"></script>
-<script src="content/vocab_general2.js?v=8.0.0"></script>
-<script src="content/vocab_general3.js?v=8.0.0"></script>
-<script src="content/vocab_expr.js?v=8.0.0"></script>
-<script src="content/vocab_expr2.js?v=8.0.0"></script>
-<script src="content/phrasal3.js?v=8.0.0"></script>
-<script src="content/chunks.js?v=8.0.0"></script>
-<script src="content/slang.js?v=8.0.0"></script>
-<script src="content/vocab_legal.js?v=8.0.0"></script>
-<script src="content/vocab_legal2.js?v=8.0.0"></script>
-<script src="content/grammar.js?v=8.0.0"></script>
-<script src="content/grammar2.js?v=8.0.0"></script>
-<script src="content/situations.js?v=8.0.0"></script>
-<script src="content/situations2.js?v=8.0.0"></script>
-<script src="content/pronunciation.js?v=8.0.0"></script>
-<script src="content/native.js?v=8.0.0"></script>
-<script src="content/dialogues.js?v=8.0.0"></script>
-<script src="content/connected.js?v=8.0.0"></script>
-<script src="content/freq.js?v=8.0.0"></script>
-<script src="content/books/index.js?v=8.0.0"></script>
-<script src="content/texts/index.js?v=8.0.0"></script>
+<script src="config.js?v=9.0.0"></script>
+<script src="icons.js?v=9.0.0"></script>
+<script src="content/vocab_general.js?v=9.0.0"></script>
+<script src="content/vocab_general2.js?v=9.0.0"></script>
+<script src="content/vocab_general3.js?v=9.0.0"></script>
+<script src="content/vocab_expr.js?v=9.0.0"></script>
+<script src="content/vocab_expr2.js?v=9.0.0"></script>
+<script src="content/phrasal3.js?v=9.0.0"></script>
+<script src="content/chunks.js?v=9.0.0"></script>
+<script src="content/slang.js?v=9.0.0"></script>
+<script src="content/vocab_legal.js?v=9.0.0"></script>
+<script src="content/vocab_legal2.js?v=9.0.0"></script>
+<script src="content/grammar.js?v=9.0.0"></script>
+<script src="content/grammar2.js?v=9.0.0"></script>
+<script src="content/situations.js?v=9.0.0"></script>
+<script src="content/situations2.js?v=9.0.0"></script>
+<script src="content/pronunciation.js?v=9.0.0"></script>
+<script src="content/native.js?v=9.0.0"></script>
+<script src="content/dialogues.js?v=9.0.0"></script>
+<script src="content/connected.js?v=9.0.0"></script>
+<script src="content/freq.js?v=9.0.0"></script>
+<script src="content/books/index.js?v=9.0.0"></script>
+<script src="content/texts/index.js?v=9.0.0"></script>
 <script src="content/texts/s00.js"></script>
 <script src="content/texts/s01.js"></script>
 <script src="content/texts/s02.js"></script>
@@ -77,18 +78,28 @@
 <script src="content/texts/s06.js"></script>
 <script src="content/texts/s07.js"></script>
 <script src="content/texts/s08.js"></script>
-<script src="content/monthly.js?v=8.0.0"></script>
-<script src="core.js?v=8.0.0"></script>
-<script src="reader.js?v=8.0.0"></script>
-<script src="library.js?v=8.0.0"></script>
-<script src="exercises.js?v=8.0.0"></script>
-<script src="vocab.js?v=8.0.0"></script>
-<script src="listen.js?v=8.0.0"></script>
-<script src="home.js?v=8.0.0"></script>
-<script src="mine.js?v=8.0.0"></script>
-<script src="learn.js?v=8.0.0"></script>
-<script src="practice.js?v=8.0.0"></script>
-<script src="words.js?v=8.0.0"></script>
-<script src="sync.js?v=8.0.0"></script>
+<script src="content/monthly.js?v=9.0.0"></script>
+<script src="core.js?v=9.0.0"></script>
+<script src="reader.js?v=9.0.0"></script>
+<script src="library.js?v=9.0.0"></script>
+<script src="exercises.js?v=9.0.0"></script>
+<script src="vocab.js?v=9.0.0"></script>
+<script src="listen.js?v=9.0.0"></script>
+<script src="home.js?v=9.0.0"></script>
+<script src="mine.js?v=9.0.0"></script>
+<script src="learn.js?v=9.0.0"></script>
+<script src="practice.js?v=9.0.0"></script>
+<script src="words.js?v=9.0.0"></script>
+<script src="content/ls/short.js?v=9.0.0"></script>
+<script src="content/ls/disc.js?v=9.0.0"></script>
+<script src="content/ls/mcc.js?v=9.0.0"></script>
+<script src="content/ls/open.js?v=9.0.0"></script>
+<script src="content/ls/comp5.js?v=9.0.0"></script>
+<script src="content/ls/comp2.js?v=9.0.0"></script>
+<script src="content/ls/para.js?v=9.0.0"></script>
+<script src="content/ls/sent.js?v=9.0.0"></script>
+<script src="content/ls/match.js?v=9.0.0"></script>
+<script src="ls.js?v=9.0.0"></script>
+<script src="sync.js?v=9.0.0"></script>
 </body>
 </html>

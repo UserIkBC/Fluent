@@ -1,4 +1,4 @@
-FLUENT · APP PARA APRENDER INGLÉS (versión 4)
+FLUENT · APP PARA APRENDER INGLÉS (versión 9)
 
 PROBARLA EN EL ORDENADOR
 Haz doble clic en index.html. Para verla con tamaño de iPhone, pulsa F12 y luego Ctrl+Shift+M.
@@ -14,3 +14,8 @@ sw.js, manifest.webmanifest y la carpeta icons sirven para instalarla en el iPho
 REGLAS DE FIRESTORE
 En la consola de Firebase, entra en Firestore Database, pestaña Reglas, borra lo que haya, pega el contenido de firestore.rules y pulsa Publicar.
 Así cada usuario solo puede leer y escribir sus propios datos.
+
+APARTADO LINGUASKILL (pestaña Examen, versión 9)
+ls.js es el apartado del examen y content/ls tiene los ejercicios de Reading, un archivo por tarea.
+Para añadir ejercicios nuevos basta con añadirlos al archivo de su tarea con el mismo formato.
+El progreso del examen se guarda con el resto de tu progreso y se sincroniza con tu cuenta.
