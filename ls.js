@@ -160,10 +160,12 @@ function renderLS() {
     <div class="card pad">${lvRow('b', 'B1–B2')}${lvRow('C1', 'C1 · lo que necesitas (180–199)')}${lvRow('C2', 'C2')}<p class="meta" style="margin-top:4px">El examen es adaptativo. Si aciertas, las preguntas suben de nivel. Para sacar C1 tienes que manejarte bien en las de C1.</p></div>
     <div class="h2">Más</div>
     <div class="group">
+      <a class="li" href="#" id="lsVoc"><span class="tile" style="--tc:var(--t-green)">${ICF.cap}</span><span class="g"><b>Mi vocabulario del examen</b><span>${(() => { const L = LISTS.find(x => x.name === 'Linguaskill'); return L && L.items.length ? L.items.length + ' palabras y expresiones guardadas' : 'Las palabras que guardes de los ejercicios irán aquí'; })()}</span></span><span class="chev"></span></a>
       <a class="li" href="#lsfail"><span class="tile" style="--tc:var(--t-red)">${ICF.target}</span><span class="g"><b>Repetir lo que fallé</b><span>${failed ? failed + (failed === 1 ? ' ejercicio con errores' : ' ejercicios con errores') : 'Aquí irán los ejercicios en los que falles algo'}</span></span><span class="chev"></span></a>
       <a class="li" href="#lsinfo"><span class="tile" style="--tc:var(--t-slate)">${ICF.cap}</span><span class="g"><b>Cómo es el examen</b><span>Formato, tiempos, puntuación y qué cuenta para el C1</span></span><span class="chev"></span></a>
     </div>
     <div class="notice">Listening, Speaking y los simulacros completos llegarán en las próximas versiones de este apartado.</div>`;
+  $('#lsVoc').onclick = e => { e.preventDefault(); go('#list/' + lsList().id); };
   $('#lsDate').onclick = () => {
     openSheet(`<h3>Fecha del examen</h3><p class="muted" style="margin-top:4px">Para ver cuántos días te quedan. Puedes cambiarla cuando quieras.</p>
       <input class="input" type="date" id="lsD" value="${esc(S.lsDate || '')}" min="2026-11-01">
@@ -334,7 +336,8 @@ function lsPaint() {
   if (!LSQ.checked && !single) foot = `<button class="btn primary block lscheck" id="lsCheck">${ICF.checkc}Comprobar${answered < nq ? ` <span class="lsleft">${nq - answered} sin responder</span>` : ''}</button>`;
   let banner = '';
   if (LSQ.checked) { const rf = lsResultFoot(); foot = rf.foot; banner = rf.banner; }
-  $('#view').innerHTML = `<div class="lsq ${LSQ.checked ? 'checked' : ''}">${head}${banner}${body}${foot}</div>`;
+  $('#view').innerHTML = `<div class="lsq ${LSQ.checked ? 'checked' : ''}">${head}${banner}${body}${LSQ.checked ? lsVocabHTML(LSQ.x) : ''}${foot}</div>`;
+  if (LSQ.checked) lsBindVocab($('#view'));
   lsBind();
 }
 function lsAnswered() { return Object.values(LSQ.ans).filter(v => v != null && v !== '').length; }
@@ -514,6 +517,44 @@ function lsBind() {
   }
 }
 
+
+/* ---------- vocabulario del examen: lista «Linguaskill» y guardado ---------- */
+function lsList() {
+  let L = LISTS.find(x => x.name === 'Linguaskill');
+  if (!L) { L = createList('Linguaskill'); }
+  return L;
+}
+function lsAddToList(id) { const L = lsList(); if (L && !L.items.includes(id)) { L.items.push(id); L.upd = Date.now(); saveLists(); } }
+function lsSaveVocab(term, es, ex, srcId) {
+  const t = term.trim(); if (!t) return null;
+  let n = NOTES.find(z => norm(z.term) === norm(t));
+  if (!n) {
+    n = { id: uid(), term: t, cat: guessCat(t), es: es || '', def: '', ex: ex || '', exs: '', syn: '', ant: '', pron: '', note: '', src: 'Linguaskill', srcId: srcId || '', created: Date.now(), upd: Date.now(), srs: newSrs() };
+    NOTES.unshift(n); saveNotes(); bump('saved');
+  }
+  lsAddToList(n.id);
+  return n;
+}
+function lsVocabOf(x) {
+  const out = (x.v || []).map(([t, es]) => ({ t, es }));
+  return out;
+}
+function lsVocabHTML(x) {
+  const v = lsVocabOf(x); if (!v.length) return '';
+  const all = v.every(z => NOTES.some(n => norm(n.term) === norm(z.t)));
+  return `<div class="card pad lsvocab"><div class="row"><b class="grow">Vocabulario de este ejercicio</b>${all ? '<span class="tag good">Guardado</span>' : '<button class="btn small" id="lsVAll">Guardar todo</button>'}</div>
+    ${v.map((z, i) => { const has = NOTES.some(n => norm(n.term) === norm(z.t)); return `<div class="lsv"><button class="mini" data-vsay="${i}" aria-label="Escuchar">${IC.speak}</button><span class="grow"><b>${esc(z.t)}</b><br><span class="muted">${esc(z.es)}</span></span>${has ? '<span class="pk">✓</span>' : `<button class="btn small" data-vsave="${i}">Guardar</button>`}</div>`; }).join('')}
+    <p class="meta" style="margin-top:8px">Se guardan en tus palabras, en la lista «Linguaskill», y entran en tus repasos.</p></div>`;
+}
+function lsBindVocab(root) {
+  const x = LSQ.x, v = lsVocabOf(x); if (!v.length) return;
+  const ctx = (typeof x.s === 'string' ? x.s.replace('___', v[0].t) : '');
+  const refresh = () => { const c = $('.lsvocab', root); if (c) c.outerHTML = lsVocabHTML(x); lsBindVocab(root); };
+  $$('[data-vsay]', root).forEach(b => b.onclick = () => TTS.speak(v[+b.dataset.vsay].t, { rate: 0.9 }));
+  $$('[data-vsave]', root).forEach(b => b.onclick = () => { const z = v[+b.dataset.vsave]; lsSaveVocab(z.t, z.es, ctx, 'ls:' + x.id); toast('Guardada en «Linguaskill»'); refresh(); });
+  const all = $('#lsVAll', root); if (all) all.onclick = () => { v.forEach(z => lsSaveVocab(z.t, z.es, ctx, 'ls:' + x.id)); toast(v.length + ' guardadas en «Linguaskill»'); refresh(); };
+}
+
 /* ---------- palabra tocada tras corregir ---------- */
 function lsWord(el) {
   const term = el.textContent.replace(/[’]/g, "'");
@@ -533,7 +574,7 @@ function lsWord(el) {
     <div style="margin-top:14px">${existing ? `<div class="notice">Ya está en tus palabras.</div><button class="btn block" id="lwEdit">Ver o editar la tarjeta</button>` : `<button class="btn primary block" id="lwSave">${ico('plus', 18)} Guardar en mis palabras (con esta frase)</button>`}</div>`, b => {
     $('#lwSay', b).onclick = () => TTS.speak(term, { rate: 0.9 });
     let best = '', def = '';
-    if ($('#lwSave', b)) $('#lwSave', b).onclick = () => openNoteEditor({ term: term.toLowerCase(), cat: guessCat(term), es: best || (lib && lib.es) || '', def: def || (lib && lib.def) || '', ex: sent, src: 'Linguaskill · ' + (LSQ.x.title || LS_TASKS[LSQ.x.task].name), srcId: 'ls:' + LSQ.x.id }, () => { if (wstatus(term) === 0) setWord(term, 1); });
+    if ($('#lwSave', b)) $('#lwSave', b).onclick = () => openNoteEditor({ term: term.toLowerCase(), cat: guessCat(term), es: best || (lib && lib.es) || '', def: def || (lib && lib.def) || '', ex: sent, src: 'Linguaskill · ' + (LSQ.x.title || LS_TASKS[LSQ.x.task].name), srcId: 'ls:' + LSQ.x.id }, (sv) => { if (wstatus(term) === 0) setWord(term, 1); const nn = NOTES.find(z => norm(z.term) === norm(term)); if (nn) lsAddToList(nn.id); });
     if ($('#lwEdit', b)) $('#lwEdit', b).onclick = () => openNoteEditor(existing);
     const stale = () => !$('#lwTr') || !$('#sheet').classList.contains('show');
     (typeof smartLookup === 'function' ? smartLookup(term, sent) : translate(term).then(t => ({ best: t, alts: [] }))).then(r => {

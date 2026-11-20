@@ -1,0 +1,53 @@
+=== C1 ## Learning on the job ## Trabajo
+Most graduates assume that the skills they acquire at university will be enough to carry them through their careers. In reality, employers are [1] more interested in how quickly new recruits can adapt than in what they already know. Companies that invest in training tend to retain staff for [2] longer, and they are often [3] to attract the most ambitious candidates. This is hardly surprising, [4] the fact that workers who feel supported are far likelier to stay. It is therefore no coincidence that the most successful firms are [5] that treat learning as part of everyday work.
+1: far/much/even/increasingly ## Hace falta un intensificador del comparativo «more interested». «Far» o «much» refuerzan la comparación, e «increasingly» indica que va en aumento. ##
+2: much/far/considerably/significantly ## Se refuerza el comparativo «longer». «Much» y «far» son las más naturales. ##
+3: able/better placed/more likely ## «Be able to attract» es poder atraer. También valen «better placed to» y «more likely to». ##
+4: given/considering ## «Given the fact that» o «considering the fact that» es dado que. ##
+5: those/ones ## Pronombre que sustituye a «firms»: «are those that treat learning…». ##
+V: far more interested=mucho más interesado; retain staff=retener plantilla; hardly surprising=poco sorprendente
+
+=== C1 ## A tale of two cities ## Ciudad
+Barcelona and Valencia are often compared, yet the two cities could hardly be more different in character. Barcelona, [1] is famous for its architecture, attracts millions of visitors every year, [2] Valencia has traditionally been regarded as a quieter alternative. In recent years, however, Valencia has begun to catch [3] with its rival, thanks largely [4] a series of ambitious urban projects. Whether it will ever match Barcelona's international profile remains [5] be seen.
+1: which ## Relativa explicativa tras coma para una cosa o lugar: «Barcelona, which is famous…». ##
+2: whereas/while/but ## Introduce un contraste entre las dos ciudades. ##
+3: up ## «Catch up with» es alcanzar a alguien. ##
+4: to ## «Thanks to» o «thanks largely to» es gracias a. ##
+5: to ## «Remains to be seen» es está por ver. ##
+V: could hardly be more different=no podrían ser más distintas; catch up with=alcanzar a; thanks largely to=gracias en gran parte a
+
+=== C1 ## Reading between the lines ## Lenguaje
+Legal contracts are notorious [1] their complexity, and it is not unusual for ordinary people to sign documents without fully understanding them. Part of the problem is that the language used in contracts has barely changed [2] centuries. Many of the terms are borrowed from Latin or French, [3] makes them almost incomprehensible to non-specialists. A growing number of lawyers are now calling [4] plain English, arguing that clarity should take precedence [5] tradition.
+1: for ## «Notorious for» es famoso por algo negativo. ##
+2: for/in/over ## «For centuries» o «over centuries» indican duración. ##
+3: which ## Relativa que se refiere a toda la idea anterior: «which makes them…». ##
+4: for ## «Call for» es reclamar. ##
+5: over ## «Take precedence over» es tener prioridad sobre. ##
+V: notorious for=conocido por (algo negativo); call for=reclamar; take precedence over=tener prioridad sobre
+
+=== C1 ## The quiet revolution in farming ## Medio ambiente
+Farmers are under increasing pressure to produce more food using fewer resources. Some have turned [1] technology for help, installing sensors that monitor soil moisture and tell them exactly when crops need water. Others have gone back to traditional methods, [2] as crop rotation, which can improve the soil without chemicals. Neither approach is perfect, [3] both have proved effective in reducing waste. What is clear is that the way we produce food will have to change, [4] only to protect the environment [5] also to feed a growing population.
+1: to ## «Turn to» es recurrir a. ##
+2: such ## «Such as» es como, por ejemplo. ##
+3: but/yet/although/though ## Introduce contraste con lo anterior. ##
+4: not ## «Not only... but also». ##
+5: but ## «Not only... but also». ##
+V: turn to=recurrir a; crop rotation=rotación de cultivos; not only... but also=no solo... sino también
+
+=== C1 ## When AI writes the contract ## Tecnología
+Artificial intelligence is already being used to review contracts, a task that [1] to take junior lawyers days. Software can now scan hundreds of pages in a matter of minutes and flag clauses that deviate from standard terms. Supporters claim this frees up lawyers to concentrate [2] more complex work. Sceptics, [3] the other hand, worry that over-reliance on automation could erode the very skills young lawyers need to develop. It is far [4] clear how the profession will adapt, but few expect it to remain [5] it is today.
+1: used ## «Used to take» es solía tardar. ##
+2: on ## «Concentrate on» es concentrarse en. ##
+3: on ## «On the other hand» es por otro lado. ##
+4: from ## «Far from clear» es nada claro. ##
+5: as ## «Remain as it is today» es seguir como es hoy. ##
+V: flag a clause=señalar una cláusula; deviate from=desviarse de; far from clear=nada claro
+
+=== C1 ## An uneasy truce ## Sociedad
+The dispute between the tenants and the landlord had been dragging [1] for almost two years when both sides finally agreed to sit down together. Under the terms of the deal, rents will be frozen for twelve months, [2] the landlord has promised to carry out urgent repairs. Tenants, for their [3] , have agreed to withdraw their legal complaint. Few people believe the agreement will last, [4] , and some have already accused the other side of failing to keep [5] the bargain.
+1: on ## «Drag on» es alargarse. ##
+2: while/and/whereas ## Une dos compromisos del acuerdo. ##
+3: part ## «For their part» es por su parte. ##
+4: though/however/mind you ## Marca contraste al final de la frase. ##
+5: to/up ## «Keep to the bargain» o «keep up your end of the bargain» es cumplir el trato. ##
+V: drag on=alargarse; for one's part=por su parte; keep to the bargain=cumplir lo pactado

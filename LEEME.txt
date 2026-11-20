@@ -19,3 +19,10 @@ APARTADO LINGUASKILL (pestaña Examen, versión 9)
 ls.js es el apartado del examen y content/ls tiene los ejercicios de Reading, un archivo por tarea.
 Para añadir ejercicios nuevos basta con añadirlos al archivo de su tarea con el mismo formato.
 El progreso del examen se guarda con el resto de tu progreso y se sincroniza con tu cuenta.
+
+VERSION 9.1 · Linguaskill
+- Cada ejercicio nuevo trae su vocabulario: al corregir aparece un cuadro con las palabras y expresiones clave.
+  Se guardan una a una o todas a la vez en tus palabras, dentro de la lista «Linguaskill», y entran en tus repasos.
+- Las palabras que toques en los textos tras corregir también se añaden a esa lista.
+- En el hub de Examen, «Mi vocabulario del examen» abre la lista (Test, Tarjetas y repasos).
+- Más ejercicios de C1: tools/src/*.txt se compilan con «node tools/build_ls.js» a content/ls/more_*.js.

@@ -718,3 +718,10 @@ mark.clue sup{font:700 11px var(--ui);color:var(--on-accent);background:var(--ac
 .lstable tr.hl td{background:var(--accent-soft);color:var(--accent);font-weight:600}
 @media (max-width:380px){.tab{font-size:10px}.tab .ti svg{width:23px;height:23px}}
 .lsq .ladder{margin:0 2px 12px}
+
+/* Linguaskill · vocabulario del ejercicio */
+.lsvocab{margin-top:12px}
+.lsvocab .lsv{display:flex;align-items:center;gap:10px;padding:9px 0;border-top:1px solid var(--line, rgba(128,128,128,.18))}
+.lsvocab .lsv:first-of-type{margin-top:8px}
+.lsvocab .lsv b{font-size:16px}
+.lsvocab .pk{font-weight:700;color:var(--good, #1f9d55);padding:0 8px}
